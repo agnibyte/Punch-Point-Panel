@@ -189,7 +189,7 @@ export default function Scoreboard() {
         <FinalResultModal
           onExit={() => {
             setMatchFinshModal(false);
-            handleReset();
+            handleResetMatch();
           }}
           redScore={redScore}
           blueScore={blueScore}
