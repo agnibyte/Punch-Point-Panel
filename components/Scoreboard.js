@@ -98,6 +98,10 @@ export default function Scoreboard() {
       </div>
 
       {/* Main Content */}
+      <div className="grid grid-cols-1 items-center justify-center w-full text-center">
+        <div className="text-xl font-bold uppercase">Match</div>
+        <div className="text-5xl font-bold mt-2">428</div>
+      </div>
       <div className="flex flex-col items-center justify-between w-full h-full px-4">
         {/* Timer - Responsive and Desktop Placement */}
         <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
@@ -118,7 +122,7 @@ export default function Scoreboard() {
         </div>
 
         {/* Scores Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between w-full">
+        <div className="flex  md:flex-row items-center justify-between w-full">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
