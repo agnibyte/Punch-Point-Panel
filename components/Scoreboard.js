@@ -4,9 +4,10 @@ import Rounds from "./Rounds";
 import moment from "moment";
 import CommonModal from "./common/commonModal";
 import ResetConfirmation from "./common/resetConfirmation";
+import FinalResultModal from "./common/finalResultModal";
 
 export default function Scoreboard() {
-  const duration = 120;
+  const duration = 5;
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
@@ -18,6 +19,7 @@ export default function Scoreboard() {
   const [intervalId, setIntervalId] = useState(null);
 
   const [resetModal, setResetModal] = useState(false);
+  const [matchFinshModal, setMatchFinshModal] = useState(false);
   const totalRounds = 5;
   const winScore = 5;
   const [roundScores, setRoundScores] = useState(
@@ -66,7 +68,8 @@ export default function Scoreboard() {
 
   const handleTimerEnd = () => {
     setIsMatchStart(false);
-    alert("Time's up for this round!");
+    // alert("Time's up for this round!");
+    setMatchFinshModal(true);
   };
 
   const handleResetMatch = () => {
@@ -106,7 +109,7 @@ export default function Scoreboard() {
         {/* Timer - Responsive and Desktop Placement */}
         <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
-            duration={120}
+            duration={duration}
             onTimerEnd={handleTimerEnd}
             timeLeft={timeLeft}
             setTimeLeft={setTimeLeft}
@@ -175,6 +178,21 @@ export default function Scoreboard() {
           onCancel={() => {
             setResetModal(false);
           }}
+        />
+      </CommonModal>
+
+      <CommonModal
+        modalOpen={matchFinshModal}
+        setModalOpen={setMatchFinshModal}
+        backDrop={false}
+      >
+        <FinalResultModal
+          onExit={() => {
+            setMatchFinshModal(false);
+            handleReset();
+          }}
+          redScore={redScore}
+          blueScore={blueScore}
         />
       </CommonModal>
     </div>
