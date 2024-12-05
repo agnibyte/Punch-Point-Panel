@@ -181,14 +181,7 @@ export default function Scoreboard() {
           </div>
         </div>
 
-        {/* Rounds */}
-        <Rounds
-          totalRounds={totalRounds}
-          currentRound={currentRound}
-          onRoundChange={handleRoundChange}
-          roundScores={roundScores}
-          //   onRoundScoreChange={handleRoundScoreChange}
-        />
+       
       </div>
     </div>
   );

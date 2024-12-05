@@ -82,3 +82,14 @@ export default function Rounds({
     </div>
   );
 }
+
+{
+  /* Rounds 
+        <Rounds
+          totalRounds={totalRounds}
+          currentRound={currentRound}
+          onRoundChange={handleRoundChange}
+          roundScores={roundScores}
+          //   onRoundScoreChange={handleRoundScoreChange}
+        />*/
+}
