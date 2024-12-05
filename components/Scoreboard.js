@@ -127,11 +127,27 @@ export default function Scoreboard() {
             player 2
           </div>
         </div>
+        <div className="block md:hidden flex flex-col items-center w-5/12 my-3">
+          <Timer
+            duration={120}
+            onTimerEnd={handleTimerEnd}
+            timeLeft={timeLeft}
+            setTimeLeft={setTimeLeft}
+            isRunning={isRunning}
+            setIsRunning={setIsRunning}
+            intervalId={intervalId}
+            setIntervalId={setIntervalId}
+            handleReset={handleReset}
+            isMatchStart={isMatchStart}
+            setIsMatchStart={setIsMatchStart}
+            setRoundScores={setRoundScores}
+          />
+        </div>
 
         {/* Scores and Timer */}
         <div className="flex items-center justify-between w-full">
           {/* Red Score */}
-          <div className="flex flex-col items-center w-1/3">
+          <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div
               className={`bg-red-600  text-white  text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl `}
             >
@@ -148,7 +164,7 @@ export default function Scoreboard() {
           </div>
 
           {/* Timer */}
-          <div className="flex flex-col items-center w-1/3">
+          <div className="hidden md:flex flex-col items-center w-1/3">
             <Timer
               duration={120}
               onTimerEnd={handleTimerEnd}
@@ -166,7 +182,7 @@ export default function Scoreboard() {
           </div>
 
           {/* Blue Score */}
-          <div className="flex flex-col items-center w-1/3">
+          <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {blueScore}
             </div>
@@ -180,8 +196,6 @@ export default function Scoreboard() {
             )}
           </div>
         </div>
-
-       
       </div>
     </div>
   );

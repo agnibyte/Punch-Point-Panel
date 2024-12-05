@@ -88,7 +88,7 @@ export default function Timer({
               Resume
             </button>
           )}
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <button
               onClick={handleAddTime}
               className="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg mx-2"
@@ -101,7 +101,7 @@ export default function Timer({
             >
               -10s
             </button>
-          </div>
+          </div> */}
           {/* <button
             onClick={handleReset}
             className="mt-6 bg-red-700 text-white font-bold py-2 px-6 rounded-lg"
