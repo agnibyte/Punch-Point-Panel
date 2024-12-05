@@ -60,28 +60,6 @@ export default function Scoreboard() {
     console.log("Updated Round Scores:", newRoundScores);
   };
 
-  //   const handleScoreChange = (team, value) => {
-  //     setRoundScores((prevScores) => {
-  //       const updatedScores = [...prevScores];
-  //       const currentRoundIndex = currentRound - 1;
-
-  //       // Update the score for the current round in roundScores
-  //       if (team === "red") {
-  //         updatedScores[currentRoundIndex].red = Math.max(
-  //           0,
-  //           updatedScores[currentRoundIndex].red + value
-  //         );
-  //       } else {
-  //         updatedScores[currentRoundIndex].blue = Math.max(
-  //           0,
-  //           updatedScores[currentRoundIndex].blue + value
-  //         );
-  //       }
-
-  //       return updatedScores;
-  //     });
-  //   };
-
   const handleRoundChange = (round) => {
     setCurrentRound(round);
   };
@@ -107,24 +85,22 @@ export default function Scoreboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-red-800 to-blue-800">
-      <div className="flex items-center justify-between">
-        <div className="text-xl font-bold ">Punch Point Panel</div>
+    <div className="min-h-screen bg-gradient-to-r from-red-800 to-blue-800 relative">
+      {/* Header */}
+      <div className="flex items-center justify-between p-4">
+        <div className="text-xl font-bold text-white">Punch Point Panel</div>
         <button
           onClick={() => setResetModal(true)}
-          className="mt-6 bg-red-700  hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg"
+          className="mt-6 bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg"
         >
           Reset Match
         </button>
       </div>
-      <div className="flex items-center justify-center w-full h-full flex flex-col items-center justify-center text-white px-4">
-        {/* Contestant Names */}
-        <div className="grid grid-cols-1 items-center justify-center w-full text-center">
-          <div className="text-xl font-bold uppercase">Match</div>
-          <div className="text-5xl font-bold mt-2">428</div>
-        </div>
 
-        <div className="block md:hidden flex flex-col items-center w-5/12 my-3">
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-between w-full h-full px-4">
+        {/* Timer - Responsive and Desktop Placement */}
+        <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
             duration={120}
             onTimerEnd={handleTimerEnd}
@@ -141,16 +117,14 @@ export default function Scoreboard() {
           />
         </div>
 
-        {/* Scores and Timer */}
-        <div className="flex items-center justify-between w-full">
+        {/* Scores Section */}
+        <div className="flex flex-col md:flex-row items-center justify-between w-full">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
-              player 1
+              Player 1
             </div>
-            <div
-              className={`bg-red-600  text-white  text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl `}
-            >
+            <div className="bg-red-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {redScore}
             </div>
             {isMatchStart && (
@@ -163,28 +137,10 @@ export default function Scoreboard() {
             )}
           </div>
 
-          {/* Timer */}
-          <div className="hidden md:flex flex-col items-center w-1/3">
-            <Timer
-              duration={120}
-              onTimerEnd={handleTimerEnd}
-              timeLeft={timeLeft}
-              setTimeLeft={setTimeLeft}
-              isRunning={isRunning}
-              setIsRunning={setIsRunning}
-              intervalId={intervalId}
-              setIntervalId={setIntervalId}
-              handleReset={handleReset}
-              isMatchStart={isMatchStart}
-              setIsMatchStart={setIsMatchStart}
-              setRoundScores={setRoundScores}
-            />
-          </div>
-
           {/* Blue Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-blue-200 text-center uppercase mb-3">
-              player 2
+              Player 2
             </div>
             <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {blueScore}
@@ -192,7 +148,7 @@ export default function Scoreboard() {
             {isMatchStart && (
               <button
                 onClick={() => handleScoreChange("blue", 1)}
-                className="mt-4 bg-green-500  hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
+                className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
               >
                 Add Point +1
               </button>
@@ -201,12 +157,10 @@ export default function Scoreboard() {
         </div>
       </div>
 
+      {/* Reset Modal */}
       <CommonModal
         modalOpen={resetModal}
         setModalOpen={setResetModal}
-        // modalTitle="Are You Sure  Want To Reset Current Match?"
-        showBackButton={true}
-        // handleBackButtonClick={() => alert("Back button clicked!")}
         backDrop={false}
       >
         <ResetConfirmation
