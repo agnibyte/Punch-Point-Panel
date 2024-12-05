@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Timer from "./Timer";
 import Rounds from "./Rounds";
 import moment from "moment";
+import CommonModal from "./common/commonModal";
+import ResetConfirmation from "./common/resetConfirmation";
 
 export default function Scoreboard() {
   const duration = 120;
@@ -14,6 +16,8 @@ export default function Scoreboard() {
   );
   const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
+
+  const [resetModal, setResetModal] = useState(false);
   const totalRounds = 5;
   const winScore = 5;
   const [roundScores, setRoundScores] = useState(
@@ -107,7 +111,7 @@ export default function Scoreboard() {
       <div className="flex items-center justify-between">
         <div className="text-xl font-bold ">Punch Point Panel</div>
         <button
-          onClick={handleResetMatch}
+          onClick={() => setResetModal(true)}
           className="mt-6 bg-red-700  hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg"
         >
           Reset Match
@@ -115,18 +119,11 @@ export default function Scoreboard() {
       </div>
       <div className="flex items-center justify-center w-full h-full flex flex-col items-center justify-center text-white px-4">
         {/* Contestant Names */}
-        <div className="grid grid-cols-3 items-center w-full">
-          <div className="text-3xl font-bold text-red-200 text-center uppercase">
-            player 1
-          </div>
-          <div className="text-center">
-            <div className="text-xl font-bold uppercase">Match</div>
-            <div className="text-5xl font-bold mt-2">428</div>
-          </div>
-          <div className="text-3xl font-bold text-blue-200 text-center uppercase">
-            player 2
-          </div>
+        <div className="grid grid-cols-1 items-center justify-center w-full text-center">
+          <div className="text-xl font-bold uppercase">Match</div>
+          <div className="text-5xl font-bold mt-2">428</div>
         </div>
+
         <div className="block md:hidden flex flex-col items-center w-5/12 my-3">
           <Timer
             duration={120}
@@ -148,6 +145,9 @@ export default function Scoreboard() {
         <div className="flex items-center justify-between w-full">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
+            <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
+              player 1
+            </div>
             <div
               className={`bg-red-600  text-white  text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl `}
             >
@@ -183,6 +183,9 @@ export default function Scoreboard() {
 
           {/* Blue Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
+            <div className="text-3xl font-bold text-blue-200 text-center uppercase mb-3">
+              player 2
+            </div>
             <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {blueScore}
             </div>
@@ -197,6 +200,25 @@ export default function Scoreboard() {
           </div>
         </div>
       </div>
+
+      <CommonModal
+        modalOpen={resetModal}
+        setModalOpen={setResetModal}
+        // modalTitle="Are You Sure  Want To Reset Current Match?"
+        showBackButton={true}
+        // handleBackButtonClick={() => alert("Back button clicked!")}
+        backDrop={false}
+      >
+        <ResetConfirmation
+          onConfirm={() => {
+            handleResetMatch();
+            setResetModal(false);
+          }}
+          onCancel={() => {
+            setResetModal(false);
+          }}
+        />
+      </CommonModal>
     </div>
   );
 }
