@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useState } from "react";
 import CommonModal from "./common/commonModal";
 import MatchForm from "./common/matchForm";
+import { postApiData } from "@/utils/services/apiService";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const onClickSetup = () => {
     setSetUpMatchModal(true);
   };
+
+  const getCapturedImages = async () => {
+    const payload = {
+      mobile_number: "y89ryew",
+    };
+    const response = await postApiData("GET_ALL_USERS", payload);
+    console.log("response", response);
+    if (response.status) {
+    } else {
+    }
+  };
+  useEffect(() => {
+    getCapturedImages();
+  }, []);
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-center justify-center">
