@@ -89,24 +89,26 @@ export default function Scoreboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
-  <div className="flex items-center justify-between p-4 shadow-md bg-opacity-50 bg-black">
-    <div className="text-2xl font-bold text-white tracking-wide uppercase">
-      Punch Point Panel
-    </div>
-    <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300">
-      Match <span className="ml-2 text-3xl font-extrabold">428</span>
-    </div>
-    <button
-      onClick={() => setResetModal(true)}
-      className="mt-6 bg-gradient-to-r from-red-600 via-red-500 to-red-400 hover:from-red-800 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
-    >
-      Reset Match
-    </button>
-  </div>
+      {/* Header Section */}
+      <header className="flex items-center justify-between p-4 shadow-md bg-opacity-50 bg-black fixed top-0 w-full z-10">
+        <div className="text-2xl font-bold text-white tracking-wide uppercase">
+          Punch Point Panel
+        </div>
+        <div className="flex-1 flex justify-center items-center"> {/* Centering the match number */}
+          <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300">
+            Match <span className="ml-2 text-3xl font-extrabold">428</span>
+          </div>
+        </div>
+        <button
+          onClick={() => setResetModal(true)}
+          className="bg-gradient-to-r from-red-600 via-red-500 to-red-400 hover:from-red-800 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+        >
+          Reset Match
+        </button>
+      </header>
 
       {/* Main Content */}
-      
-      <div className="flex flex-col items-center justify-between w-full h-full px-4">
+      <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20"> {/* Added pt-20 to offset the fixed header */}
         {/* Timer - Responsive and Desktop Placement */}
         <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
@@ -126,7 +128,7 @@ export default function Scoreboard() {
         </div>
 
         {/* Scores Section */}
-        <div className="flex  md:flex-row items-center justify-between w-full">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
