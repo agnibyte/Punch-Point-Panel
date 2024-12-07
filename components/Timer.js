@@ -65,7 +65,7 @@ export default function Timer({
   return (
     <div className="text-center bg-gray-900 text-white p-8 rounded-lg shadow-lg">
       <div className="text-4xl font-bold mb-6">Scoreboard Timer</div>
-      <div className="text-9xl font-extrabold bg-white text-green-500 rounded-lg px-12 py-8 mb-6">
+      <div className="text-9xl font-extrabold bg-black text-green-500 rounded-lg px-12 py-8 mb-6">
         {formattedTime}
       </div>
       <div className="w-full bg-gray-700 h-4 rounded-lg overflow-hidden mb-6">
