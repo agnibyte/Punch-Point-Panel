@@ -94,7 +94,7 @@ export default function Scoreboard() {
         <div className="text-xl font-bold text-white">Punch Point Panel</div>
         <button
           onClick={() => setResetModal(true)}
-          className="mt-6 bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg"
+          className="mt-6 bg-gradient-to-r from-red-600 via-red-500 to-red-400 hover:from-red-800 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
         >
           Reset Match
         </button>

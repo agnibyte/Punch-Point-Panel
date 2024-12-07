@@ -59,55 +59,59 @@ export default function Timer({
     .toString()
     .padStart(2, "0")}`;
 
+  // Calculate progress percentage for the loading bar
+  const progress = (timeLeft.asSeconds() / duration) * 100;
+
   return (
-    <div className="text-center">
+    <div className="text-center bg-gray-900 text-white p-8 rounded-lg shadow-lg">
+      <div className="text-4xl font-bold mb-6">Scoreboard Timer</div>
+      <div className="text-9xl font-extrabold bg-white text-green-500 rounded-lg px-12 py-8 mb-6">
+        {formattedTime}
+      </div>
+      <div className="w-full bg-gray-700 h-4 rounded-lg overflow-hidden mb-6">
+        <div
+          className="bg-green-500 h-full"
+          style={{ width: `${progress}%`, transition: "width 0.5s ease" }}
+        ></div>
+      </div>
       {!isRunning && timeLeft.asSeconds() === duration ? (
         <button
           onClick={handlePlay}
-          className="bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
+          className="bg-green-600 text-white font-bold py-3 px-6 rounded-lg text-lg"
         >
           Start Match
         </button>
       ) : (
         <div>
-          <div className="text-8xl font-bold bg-white text-black rounded-lg px-8 py-4 mb-4">
-            {formattedTime}
-          </div>
           {isRunning ? (
             <button
               onClick={handlePause}
-              className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg"
+              className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg text-lg"
             >
               Pause
             </button>
           ) : (
             <button
               onClick={handleResume}
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg"
+              className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg"
             >
               Resume
             </button>
           )}
-          {/* <div className="mt-4">
+         {/*} <div className="mt-4 flex justify-center gap-4">
             <button
               onClick={handleAddTime}
-              className="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg mx-2"
+              className="bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg"
             >
-              +10s
+              +10 Sec
             </button>
             <button
               onClick={handleSubtractTime}
-              className="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg mx-2"
+              className="bg-purple-500 text-white font-bold py-2 px-4 rounded-lg"
             >
-              -10s
+              -10 Sec
             </button>
-          </div> */}
-          {/* <button
-            onClick={handleReset}
-            className="mt-6 bg-red-700 text-white font-bold py-2 px-6 rounded-lg"
-          >
-            Reset Timer
-          </button> */}
+          </div>*/}
         </div>
       )}
     </div>
