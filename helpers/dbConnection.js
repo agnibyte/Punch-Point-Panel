@@ -3,11 +3,11 @@ import mysql from "serverless-mysql";
 const database = mysql({
   config: {
     host: process.env.MYSQL_HOST,
-    // port: process.env.MYSQL_PORT,
+    port: process.env.MYSQL_PORT,
     database: process.env.MYSQL_DATABASE,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    // timezone: 'IST',
+    timezone: "IST",
   },
 });
 
@@ -16,7 +16,7 @@ export default function executeQuery(query, values = []) {
     try {
       database.query(query, values).then((results) => {
         database.end();
-		console.log("db connected successfully====")
+        console.log("db connected successfully====");
         resolve(JSON.parse(JSON.stringify(results)));
       });
     } catch (error) {

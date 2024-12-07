@@ -5,6 +5,7 @@ import moment from "moment";
 import CommonModal from "./common/commonModal";
 import ResetConfirmation from "./common/resetConfirmation";
 import FinalResultModal from "./common/finalResultModal";
+import Link from "next/link";
 
 export default function Scoreboard() {
   const duration = 5;
@@ -91,10 +92,15 @@ export default function Scoreboard() {
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
       {/* Header Section */}
       <header className="flex items-center justify-between p-4 shadow-md bg-opacity-50 bg-black fixed top-0 w-full z-10">
-        <div className="text-2xl font-bold text-white tracking-wide uppercase">
+        <Link
+          href={"/"}
+          className="text-2xl font-bold text-white tracking-wide uppercase"
+        >
           Punch Point Panel
-        </div>
-        <div className="flex-1 flex justify-center items-center"> {/* Centering the match number */}
+        </Link>
+        <div className="flex-1 flex justify-center items-center">
+          {" "}
+          {/* Centering the match number */}
           <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300">
             Match <span className="ml-2 text-3xl font-extrabold">428</span>
           </div>
@@ -108,7 +114,9 @@ export default function Scoreboard() {
       </header>
 
       {/* Main Content */}
-      <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20"> {/* Added pt-20 to offset the fixed header */}
+      <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
+        {" "}
+        {/* Added pt-20 to offset the fixed header */}
         {/* Timer - Responsive and Desktop Placement */}
         <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
@@ -126,7 +134,6 @@ export default function Scoreboard() {
             setRoundScores={setRoundScores}
           />
         </div>
-
         {/* Scores Section */}
         <div className="flex flex-col md:flex-row items-center justify-between w-full">
           {/* Red Score */}
