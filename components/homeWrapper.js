@@ -42,7 +42,7 @@ export default function HomeWrapper() {
       router.push(
         `/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`
       );
-      setMardaniMatchModal(false); // Close the modal
+      setTraditionalMatchModal(false); // Close the modal
     } else {
       alert("Please enter a participant name!");
     }
