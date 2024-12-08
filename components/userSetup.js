@@ -5,9 +5,9 @@ export default function UserSetup({}) {
 
   const onclick = async () => {
     const payload = {
-      user_id: "fightadmin",
-      hash_password: "fightadmin@m1",
-      role: "fight_admin",
+      user_id: "fightreferee1",
+      hash_password: "fightreferee@m1",
+      role: "red_referee",
     };
     console.log("payload REGISTER_NEW_USER", payload);
     const response = await postApiData("REGISTER_NEW_USER", payload);

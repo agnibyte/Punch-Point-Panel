@@ -26,13 +26,12 @@ export function getAllUsers() {
 }
 export function addNeUserModel(request) {
   return new Promise((resolve, reject) => {
-    // const hashedPassword = hashWithSHA256(request.password);
+    const hashedPassword = hashWithSHA256(request.hash_password);
 
     let tempObj = {
-      user_id: "fightadmin",
-      hash_password:
-        "1b1e430aab8409e43bd773daa6229c36764eaca6d93d3be47ed95ed032a5d5b3",
-      role: "fight_admin",
+      user_id: request.user_id,
+      hash_password: hashedPassword,
+      role: request.role,
     };
     console.log("tempObj", tempObj);
     const insertQuery = `INSERT INTO ${REFEREE_MASTER} SET ?`;
