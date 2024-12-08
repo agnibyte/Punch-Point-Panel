@@ -6,7 +6,6 @@ export default function FinalResultModal({
   blueScore,
   onReset,
   onExit,
-  currentMatchNo,
 }) {
   const winner =
     redScore > blueScore
@@ -33,9 +32,6 @@ export default function FinalResultModal({
       </h2>
       <div className="text-center">
         <p className="text-xl font-semibold mb-2 text-black">Final Scores</p>
-        <p className="text-xl font-semibold mb-2 text-black">
-          Match {currentMatchNo || "-"}
-        </p>
         <div className="flex justify-center space-x-8 mb-4">
           <div className="text-red-600">
             <p className="text-lg font-bold">Player 1 (Red)</p>
@@ -49,10 +45,10 @@ export default function FinalResultModal({
         <p className="text-xl font-bold text-green-700 mb-6">{winner}</p>
         <div className="flex justify-center space-x-4">
           <button
-            onClick={handleDownload}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
+            onClick={onReset}
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
           >
-            Download Result
+            Reset Match
           </button>
           <button
             onClick={onExit}
@@ -61,7 +57,7 @@ export default function FinalResultModal({
             Exit
           </button>
           <button
-            onClick={handleDownload}
+            onClick={handleDownloadPDF}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
           >
             Download Result

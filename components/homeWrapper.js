@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import CommonModal from "./common/commonModal";
 import MatchForm from "./common/matchForm";
 import { postApiData } from "@/utils/services/apiService";
@@ -11,21 +10,16 @@ export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
+  const [setUpMardaniMatchModal, setSetUpMardaniMatchModal] = useState(false);
+  const [participantName, setParticipantName] = useState("");
   const router = useRouter();
 
   const onClickSetup = () => {
     setSetUpMatchModal(true);
   };
 
-  const getCapturedImages = async () => {
-    const payload = {
-      mobile_number: "y89ryew",
-    };
-    const response = await postApiData("GET_ALL_USERS", payload);
-    // console.log("response getCapturedImages", response);
-    if (response.status) {
-    } else {
-    }
+  const onClickSetupMardaniMatch = () => {
+    setSetUpMardaniMatchModal(true);
   };
 
   useEffect(() => {
@@ -40,6 +34,15 @@ export default function HomeWrapper() {
   // useEffect(() => {
   //   getCapturedImages();
   // }, []);
+  const handleMardaniMatchSubmit = () => {
+    if (participantName) {
+      // Redirect to the Mardani match scoreboard with the participant name as query param
+      router.push(`/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`);
+      setSetUpMardaniMatchModal(false); // Close the modal
+    } else {
+      alert("Please enter a participant name!");
+    }
+  };
 
   return (
     <>
@@ -89,9 +92,43 @@ export default function HomeWrapper() {
           >
             View Results
           </Link>
+
+          {/* New Button for Mardani Match */}
+          <button
+            onClick={onClickSetupMardaniMatch}
+            className="px-6 py-3 bg-white text-green-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+          >
+            Setup Mardani Match
+          </button>
         </nav>
       </div>
 
+      {/* Modal for Mardani Match */}
+      <CommonModal
+        modalOpen={setUpMardaniMatchModal}
+        setModalOpen={setSetUpMardaniMatchModal}
+        backDrop={true}
+        modalTitle="Enter Participant Name"
+        modalSize="w-[95%] md:w-3/4"
+      >
+        <div className="flex flex-col items-center">
+          <input
+            type="text"
+            value={participantName}
+            onChange={(e) => setParticipantName(e.target.value)}
+            placeholder="Enter Participant Name"
+            className="px-4 py-2 mb-4 border rounded-lg w-full"
+          />
+          <button
+            onClick={handleMardaniMatchSubmit}
+            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-green-600"
+          >
+            Submit
+          </button>
+        </div>
+      </CommonModal>
+
+      {/* Modal for Setup Match */}
       <CommonModal
         modalOpen={setUpMatchModal}
         setModalOpen={setSetUpMatchModal}
