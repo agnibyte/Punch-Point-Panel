@@ -5,9 +5,11 @@ import MatchForm from "./common/matchForm";
 import { postApiData } from "@/utils/services/apiService";
 import { getCookie } from "@/utils/utils";
 import { useRouter } from "next/router";
+import StartMardaniMatchModal from "./common/startMardaniMatchModal";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
+  const [sportsMardaniMatchModal, setSportsMardaniMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
@@ -19,7 +21,7 @@ export default function HomeWrapper() {
   };
 
   const onClickSportsMardaniFight = () => {
-    setSetUpMatchModal(true);
+    setSportsMardaniMatchModal(true);
   };
 
   const onClickSetupMardaniMatch = () => {
@@ -35,9 +37,6 @@ export default function HomeWrapper() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   getCapturedImages();
-  // }, []);
   const handleMardaniMatchSubmit = () => {
     if (participantName) {
       // Redirect to the Mardani match scoreboard with the participant name as query param
@@ -49,6 +48,29 @@ export default function HomeWrapper() {
       alert("Please enter a participant name!");
     }
   };
+
+  const pendingMatches = [
+    { id: "1", label: "Match 1", value: "1" },
+    { id: "2", label: "Match 2", value: "2" },
+    { id: "3", label: "Match 3", value: "3" },
+    { id: "4", label: "Match 4", value: "4" },
+    { id: "5", label: "Match 5", value: "5" },
+    { id: "6", label: "Match 6", value: "6" },
+    { id: "7", label: "Match 7", value: "7" },
+    { id: "8", label: "Match 8", value: "8" },
+    { id: "9", label: "Match 9", value: "9" },
+    { id: "10", label: "Match 10", value: "10" },
+    { id: "11", label: "Match 11", value: "11" },
+    { id: "12", label: "Match 12", value: "12" },
+    { id: "13", label: "Match 13", value: "13" },
+    { id: "14", label: "Match 14", value: "14" },
+    { id: "15", label: "Match 15", value: "15" },
+    { id: "16", label: "Match 16", value: "16" },
+    { id: "17", label: "Match 17", value: "17" },
+    { id: "18", label: "Match 18", value: "18" },
+    { id: "19", label: "Match 19", value: "19" },
+    { id: "20", label: "Match 20", value: "20" },
+  ];
 
   return (
     <>
@@ -128,6 +150,16 @@ export default function HomeWrapper() {
         modalSize="w-[95%] md:w-3/4"
       >
         <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
+      </CommonModal>
+
+      <CommonModal
+        modalOpen={sportsMardaniMatchModal}
+        setModalOpen={setSportsMardaniMatchModal}
+        backDrop={false}
+        modalTitle="Select Match No."
+        // modalSize="w-[95%] md:w-3/4"
+      >
+        <StartMardaniMatchModal pendingMatches={pendingMatches} />
       </CommonModal>
     </>
   );
