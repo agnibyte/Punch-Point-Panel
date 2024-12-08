@@ -43,12 +43,8 @@ export default function HomeWrapper() {
       {/* Header */}
       <header className="w-full bg-white shadow-sm sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
-          <img src="/images/logo.png" alt="Logo" className="h-8" />
-          <div className="flex items-center space-x-4">
-            <img src="/icons/search.svg" alt="Search" className="h-6 w-6" />
-            <img src="/icons/notification.svg" alt="Notifications" className="h-6 w-6" />
-            <img src="/icons/profile.svg" alt="Profile" className="h-6 w-6" />
-          </div>
+          <img src="/images/images.png" alt="Logo" className="h-8" />
+          <div className="flex items-center space-x-4"></div>
         </div>
       </header>
 
@@ -133,6 +129,26 @@ export default function HomeWrapper() {
       >
         <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
       </CommonModal>
+
+      {/* Footer */}
+      <footer className="w-full bg-white py-6 mt-auto">
+        <div className="text-center text-sm text-gray-500">
+          <p>
+            All rights are reserved to{" "}
+            <span className="font-semibold text-gray-700">Sports Mardani</span>{" "}
+            and{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700"
+            >
+              AgniByte Private Limited
+            </a>{" "}
+            2024.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
