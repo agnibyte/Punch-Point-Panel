@@ -34,6 +34,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
   const [formData, setFormData] = useState(defaultFormData);
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(false);
+  const [showSuccessMsg, setShowSuccessMsg] = useState(false);
 
   const filteredMatches =
     query === ""
@@ -42,12 +43,19 @@ export default function MatchForm({ setSetUpMatchModal }) {
           match.toLowerCase().includes(query.toLowerCase())
         );
 
+  const updateSelectedForm = (type, value) => {
+    const updatedFormData = { ...formData };
+    updatedFormData[type] = value;
+    setFormData(updatedFormData);
+    setShowSuccessMsg(false);
+  };
+
   const onSubmit = async (data) => {
     const matchNumber = data.matchName?.match(/\d+/)?.[0] || "";
     const updatedData = {
-      ...data,
+      ...formData,
       matchDetails: {
-        matchName: data.matchName,
+        matchName: formData.matchName,
         matchNo: matchNumber,
       },
     };
@@ -56,7 +64,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
 
     const payload = {
       ...updatedData,
-      matchName: data.matchName,
+      matchName: formData.matchName,
       matchNo: matchNumber,
     };
     setApiLoading(true);
@@ -64,19 +72,15 @@ export default function MatchForm({ setSetUpMatchModal }) {
     console.log("payload ADD_FIGHT_MATCH", payload);
     try {
       const response = await postApiData("ADD_FIGHT_MATCH", payload);
-      // console.log("response", response);
       if (response.status) {
         reset();
         setFormData(defaultFormData);
-        setSetUpMatchModal(false);
         localStorage.setItem("currentMatch", matchNumber);
-
-        router.push("/scoreboard");
+        setShowSuccessMsg(true);
       } else {
         setApiError(true);
       }
     } catch (error) {
-      // Handle any errors during the API call
       console.error("Error occurred during form submission:", error);
     }
     setApiLoading(false);
@@ -88,12 +92,10 @@ export default function MatchForm({ setSetUpMatchModal }) {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-h-[75vh] overflow-y-auto rounded-lg space-y-8"
       >
-        {/* Title */}
         <div className="m-4 md:m-8">
-          <p className="text-center text-gray-600">
+          {/* <p className="text-center text-gray-600">
             Please fill out the match and player details below.
-          </p>
-          {/* Match Number */}
+          </p> */}
           <label className="block text-lg font-semibold text-gray-700 mb-2">
             Match Number
           </label>
@@ -103,12 +105,18 @@ export default function MatchForm({ setSetUpMatchModal }) {
             rules={{ required: "Please select a match." }}
             render={({ field }) => (
               <Combobox
-                value={field.value || ""}
-                onChange={(value) => field.onChange(value)}
+                value={formData.matchName}
+                onChange={(value) => {
+                  field.onChange(value);
+                  updateSelectedForm("matchName", value);
+                }}
               >
                 <div className="relative">
                   <Combobox.Input
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      updateSelectedForm("matchName", e.target.value);
+                    }}
                     placeholder="Search Match No."
                     className={`w-full p-4 border rounded-lg text-gray-700 focus:ring-2 ${
                       errors.matchName
@@ -148,7 +156,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
           )}
         </div>
 
-        {/* Players' Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-4 md:m-8">
           {/* Red Corner */}
           <div className="p-6 bg-red-50 border-l-4 border-red-500 rounded-lg">
@@ -160,9 +167,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
                 Player Name
               </label>
               <input
-                {...register("playerRed", {
-                  required: "This field is required.",
-                })}
                 type="text"
                 placeholder="Enter Red Corner Player Name"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -170,6 +174,11 @@ export default function MatchForm({ setSetUpMatchModal }) {
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-gray-500"
                 }`}
+                {...register("playerRed", {
+                  required: "This field is required.",
+                  onChange: (e) =>
+                    updateSelectedForm("playerRed", e.target.value),
+                })}
               />
               {errors.playerRed && (
                 <p className="text-red-500 text-sm mt-1">
@@ -182,9 +191,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
                 State
               </label>
               <input
-                {...register("stateRed", {
-                  required: "This field is required.",
-                })}
                 type="text"
                 placeholder="Enter State"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -192,6 +198,11 @@ export default function MatchForm({ setSetUpMatchModal }) {
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-gray-500"
                 }`}
+                {...register("stateRed", {
+                  required: "This field is required.",
+                  onChange: (e) =>
+                    updateSelectedForm("stateRed", e.target.value),
+                })}
               />
               {errors.stateRed && (
                 <p className="text-red-500 text-sm mt-1">
@@ -202,7 +213,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
           </div>
 
           {/* Blue Corner */}
-          <div className="p-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+          <div className="p-6 bg-blue-50 border-r-4 border-blue-500 rounded-lg">
             <h3 className="text-2xl font-semibold text-blue-600 mb-4">
               Blue Corner
             </h3>
@@ -211,9 +222,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
                 Player Name
               </label>
               <input
-                {...register("playerBlue", {
-                  required: "This field is required.",
-                })}
                 type="text"
                 placeholder="Enter Blue Corner Player Name"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -221,6 +229,11 @@ export default function MatchForm({ setSetUpMatchModal }) {
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-gray-500"
                 }`}
+                {...register("playerBlue", {
+                  required: "This field is required.",
+                  onChange: (e) =>
+                    updateSelectedForm("playerBlue", e.target.value),
+                })}
               />
               {errors.playerBlue && (
                 <p className="text-red-500 text-sm mt-1">
@@ -233,9 +246,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
                 State
               </label>
               <input
-                {...register("stateBlue", {
-                  required: "This field is required.",
-                })}
                 type="text"
                 placeholder="Enter State"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -243,6 +253,11 @@ export default function MatchForm({ setSetUpMatchModal }) {
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-gray-500"
                 }`}
+                {...register("stateBlue", {
+                  required: "This field is required.",
+                  onChange: (e) =>
+                    updateSelectedForm("stateBlue", e.target.value),
+                })}
               />
               {errors.stateBlue && (
                 <p className="text-red-500 text-sm mt-1">
@@ -258,14 +273,17 @@ export default function MatchForm({ setSetUpMatchModal }) {
           <div>
             <label className="block text-gray-700 font-medium">Category</label>
             <input
-              {...register("category", { required: "This field is required." })}
               type="text"
               placeholder="Enter Category"
-              className={`w-full p-4 border rounded-lg focus:ring-2  ${
+              className={`w-full p-4 border rounded-lg focus:ring-2 ${
                 errors.category
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-gray-500"
               }`}
+              {...register("category", {
+                required: "This field is required.",
+                onChange: (e) => updateSelectedForm("category", e.target.value),
+              })}
             />
             {errors.category && (
               <p className="text-red-500 text-sm mt-1">
@@ -276,21 +294,22 @@ export default function MatchForm({ setSetUpMatchModal }) {
           <div>
             <label className="block text-gray-700 font-medium">Age</label>
             <input
+              type="text"
+              maxLength="2"
+              placeholder="Enter Age"
+              className={`w-full p-4 border rounded-lg focus:ring-2 ${
+                errors.age
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-gray-500"
+              }`}
               {...register("age", {
                 required: "This field is required.",
                 pattern: {
                   value: /^[0-9]+$/,
                   message: "Please enter valid number.",
                 },
+                onChange: (e) => updateSelectedForm("age", e.target.value),
               })}
-              type="text"
-              maxLength="2"
-              placeholder="Enter Age"
-              className={`w-full p-4 border rounded-lg focus:ring-2  ${
-                errors.age
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-gray-500"
-              }`}
             />
             {errors.age && (
               <p className="text-red-500 text-sm mt-1">{errors.age.message}</p>
@@ -301,21 +320,22 @@ export default function MatchForm({ setSetUpMatchModal }) {
               Weight (kg)
             </label>
             <input
+              type="text"
+              maxLength="3"
+              placeholder="Enter Weight"
+              className={`w-full p-4 border rounded-lg focus:ring-2 ${
+                errors.weight
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-gray-500"
+              }`}
               {...register("weight", {
                 required: "This field is required.",
                 pattern: {
                   value: /^[0-9]+$/,
                   message: "Please enter valid number.",
                 },
+                onChange: (e) => updateSelectedForm("weight", e.target.value),
               })}
-              type="text"
-              maxLength="3"
-              placeholder="Enter Weight"
-              className={`w-full p-4 border rounded-lg focus:ring-2  ${
-                errors.weight
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-gray-500"
-              }`}
             />
             {errors.weight && (
               <p className="text-red-500 text-sm mt-1">
@@ -329,14 +349,19 @@ export default function MatchForm({ setSetUpMatchModal }) {
         <div className="sticky bottom-0 bg-white shadow-lg p-4 flex flex-col justify-center items-center">
           <button
             type="submit"
-            className="w-1/2 bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition"
+            className="w-1/2 bg-indigo-500 text-white text-lg p-4 rounded-lg hover:bg-indigo-600 transition"
             disabled={apiLoading}
           >
-            {apiLoading ? getConstant("LOADING_TEXT") : "Submit"}
+            {apiLoading ? getConstant("LOADING_TEXT") : "submit & add more"}
           </button>
           {apiError && (
-            <div className=" text-red-500 text-base mt-3">
+            <div className=" text-red-500 text-lg mt-3">
               {getConstant("SOMETHING_WRONG_TRY_LATER")}
+            </div>
+          )}
+          {showSuccessMsg && (
+            <div className=" text-green-700 text-lg mt-3">
+              Match data added sucsesfully
             </div>
           )}
         </div>
