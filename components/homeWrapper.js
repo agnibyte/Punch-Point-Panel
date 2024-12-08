@@ -77,7 +77,7 @@ export default function HomeWrapper() {
       <header className="w-full bg-white shadow-sm sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
           <img
-            src="/images/images.png"
+            src="/images/image.png"
             alt="Logo"
             className="h-8"
           />
