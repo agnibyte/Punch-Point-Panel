@@ -75,7 +75,6 @@ export default function MatchForm({ setSetUpMatchModal }) {
       if (response.status) {
         reset();
         setFormData(defaultFormData);
-        localStorage.setItem("currentMatch", matchNumber);
         setShowSuccessMsg(true);
       } else {
         setApiError(true);

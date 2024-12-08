@@ -28,6 +28,7 @@ const Login = ({ test }) => {
 
       if (response.status) {
         setCookie("temp_auth", true);
+        setCookie("auth_role", response.user);
         router.push("/");
       } else {
         setLoginError(response.message);
@@ -42,14 +43,21 @@ const Login = ({ test }) => {
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <img src="/images/image.png" alt="Logo" className="w-32 h-auto" />
+          <img
+            src="/images/image.png"
+            alt="Logo"
+            className="w-32 h-auto"
+          />
         </div>
 
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
           Login
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
           {/* User ID Input */}
           <div>
             <label
@@ -136,24 +144,21 @@ const Login = ({ test }) => {
 
         {/* Footer */}
         <div className="mt-6 text-center text-sm text-gray-500">
-  <p>
-    All rights are reserved to{" "}
-    <span className="font-semibold text-gray-700">
-      Sports Mardani
-    </span>{" "}
-    and{" "}
-    <a
-      href="https://www.agni-byte.com"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 hover:text-blue-700"
-    >
-      AgniByte Private Limited
-    </a>{" "}
-    2024.
-  </p>
-</div>
-
+          <p>
+            All rights are reserved to{" "}
+            <span className="font-semibold text-gray-700">Sports Mardani</span>{" "}
+            and{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700"
+            >
+              AgniByte Private Limited
+            </a>{" "}
+            2024.
+          </p>
+        </div>
       </div>
     </div>
   );

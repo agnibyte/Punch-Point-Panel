@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonModal from "@/components/common/commonModal";
+import { postApiData } from "@/utils/services/apiService";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
+  // const getCapturedImages = async () => {
+  //   const payload = {
+  //     mobile_number: "y89ryew",
+  //   };
+  //   const response = await postApiData("GET_ALL_USERS", payload);
+  //   console.log("response", response);
+  //   if (response.status) {
+  //   } else {
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getCapturedImages();
+  // }, []);
 
   return (
     <div>

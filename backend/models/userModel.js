@@ -6,9 +6,9 @@ import { hashWithSHA256 } from "@/utils/utils";
 
 export function getAllUsers() {
   return new Promise((resolve, reject) => {
-    const getSql = "SELECT * FROM test_one";
-    const hashedPassword = hashWithSHA256("fightadmin@m1");
-    console.log("hashedPassword", hashedPassword);
+    const getSql = "SELECT matchNo FROM fight_master";
+    // const hashedPassword = hashWithSHA256("fightadmin@m1");
+    // console.log("hashedPassword", hashedPassword);
 
     executeQuery(getSql)
       .then((checkResult) => {
@@ -72,8 +72,10 @@ export function verifyUserModel(user_id, password) {
         executeQuery(checkPasswordSql, [user_id, hashedPassword])
           .then((checkPasswordResult) => {
             if (checkPasswordResult.length > 0) {
+              console.log("checkPasswordResult", checkPasswordResult);
               // Password matches
               response.status = true;
+              response.user = checkPasswordResult[0].role;
               resolve(response);
             } else {
               // Password doesn't match
