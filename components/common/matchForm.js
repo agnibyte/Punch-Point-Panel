@@ -39,11 +39,11 @@ export default function MatchForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-h-[70vh] overflow-y-auto  rounded-lg p-4 md:p-8 space-y-8"
+        className="w-full max-h-[70vh] overflow-y-auto  rounded-lg  space-y-8"
       >
         {" "}
         {/* Title */}
-        <div>
+        <div className="m-4 md:m-8">
           <p className="text-center text-gray-600">
             Please fill out the match and player details below.
           </p>
@@ -102,7 +102,7 @@ export default function MatchForm() {
           )}
         </div>
         {/* Players' Details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-4 md:m-8">
           {/* Red Corner */}
           <div className="p-6 bg-red-50 border-l-4 border-red-500 rounded-lg">
             <h3 className="text-2xl font-semibold text-red-600 mb-4">
@@ -206,7 +206,7 @@ export default function MatchForm() {
           </div>
         </div>
         {/* Additional Details */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4 md:m-8">
           <div>
             <label className="block text-gray-700 font-medium">Category</label>
             <input
@@ -237,13 +237,14 @@ export default function MatchForm() {
             />
           </div>
         </div>
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition"
-        >
-          Submit
-        </button>
+        <div className="sticky bottom-0 bg-white shadow-lg p-4">
+          <button
+            type="submit"
+            className="w-full bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </>
   );
