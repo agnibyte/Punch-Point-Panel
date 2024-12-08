@@ -22,17 +22,18 @@ export default function MatchForm() {
         );
 
   const onSubmit = (data) => {
-    const matchNumber = data.matchNo?.match(/\d+/)?.[0] || ""; // Extract match number
+    const matchNumber = data.matchName?.match(/\d+/)?.[0] || ""; // Extract match number
     const formData = {
       ...data,
+      matchName: data.matchName,
       matchDetails: {
-        match: data.matchNo,
-        no: matchNumber,
+        matchName: data.matchName,
+        matchNo: matchNumber,
       },
     };
 
     console.log(formData);
-    reset();
+    // reset();
   };
 
   return (
@@ -52,7 +53,7 @@ export default function MatchForm() {
             Match Number
           </label>
           <Controller
-            name="matchNo"
+            name="matchName"
             control={control}
             rules={{ required: "Please select a match." }}
             render={({ field }) => (
@@ -65,7 +66,7 @@ export default function MatchForm() {
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Search Match No."
                     className={`w-full p-4 border rounded-lg text-gray-700 focus:ring-2 ${
-                      errors.matchNo
+                      errors.matchName
                         ? "border-red-500 focus:ring-red-500"
                         : "border-gray-300 focus:ring-indigo-500"
                     }`}
@@ -95,9 +96,9 @@ export default function MatchForm() {
               </Combobox>
             )}
           />
-          {errors.matchNo && (
+          {errors.matchName && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.matchNo.message}
+              {errors.matchName.message}
             </p>
           )}
         </div>
