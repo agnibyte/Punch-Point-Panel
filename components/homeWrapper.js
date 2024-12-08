@@ -25,7 +25,7 @@ export default function HomeWrapper() {
   };
 
   const onClickSetupMardaniMatch = () => {
-    setMardaniMatchModal(true);
+    setTraditionalMatchModal(true);
   };
 
   useEffect(() => {
@@ -37,23 +37,8 @@ export default function HomeWrapper() {
     }
   }, []);
 
-  const getCapturedImages = async () => {
-    const payload = {
-      mobile_number: "y89ryew",
-    };
-    const response = await postApiData("GET_ALL_USERS", payload);
-    console.log("response", response);
-    if (response.status) {
-    } else {
-    }
-  };
-
-  // useEffect(() => {
-  //   getCapturedImages();
-  // }, []);
   const handleMardaniMatchSubmit = () => {
     if (participantName) {
-      // Redirect to the Mardani match scoreboard with the participant name as query param
       router.push(
         `/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`
       );
@@ -87,16 +72,27 @@ export default function HomeWrapper() {
   ];
 
   return (
-    <>
-      <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-end justify-center pr-8 relative min-h-screen overflow-y-auto">
-        {/* Karate Logo on Left Side */}
-        <img
-          src="/images/karate.jpg" // Updated path to your .webp image
-          alt="Karate Logo"
-          className="absolute left-8 top-8 w-16 h-16" // Adjust the size and position as needed
-        />
+    <div className="bg-gray-50 min-h-screen flex flex-col items-center">
+      {/* Header */}
+      <header className="w-full bg-white shadow-sm sticky top-0 z-10">
+        <div className="flex items-center justify-between px-6 py-4">
+          <img
+            src="/images/images.png"
+            alt="Logo"
+            className="h-8"
+          />
+          <div className="flex items-center space-x-4"></div>
+        </div>
+      </header>
 
-        <h1 className="text-5xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-yellow-400 animate-textGlow">
+      {/* Main Content */}
+      <main className="flex flex-col items-center w-full max-w-md mt-8">
+        <img
+          src="/images/image.png"
+          alt="Karate Logo"
+          className="rounded-full border w-40 h-40 mb-4"
+        />
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Punch Point Panel
         </h1>
 
@@ -115,26 +111,24 @@ export default function HomeWrapper() {
           </button>
           <Link
             href="/results"
-            className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="block w-full bg-yellow-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-600"
           >
             View Results
           </Link>
-
-          {/* New Button for Mardani Match */}
           <button
             onClick={onClickSetupMardaniMatch}
-            className="px-6 py-3 bg-white text-green-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
           >
             Setup Traditional Mardani Match
           </button>
         </nav>
-      </div>
+      </main>
 
       {/* Modal for Mardani Match */}
       <CommonModal
         modalOpen={traditionalMatchModal}
         setModalOpen={setTraditionalMatchModal}
-        backDrop={true}
+        backDrop={false}
         modalTitle="Enter Participant Name"
         modalSize="w-[95%] md:w-3/4"
       >
@@ -144,7 +138,7 @@ export default function HomeWrapper() {
             value={participantName}
             onChange={(e) => setParticipantName(e.target.value)}
             placeholder="Enter Participant Name"
-            className="px-4 py-2 mb-4 border rounded-lg w-full"
+            className="px-4 py-2 mb-4 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={handleMardaniMatchSubmit}
@@ -166,6 +160,26 @@ export default function HomeWrapper() {
         <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
       </CommonModal>
 
+      {/* Footer */}
+      <footer className="w-full bg-white py-6 mt-auto">
+        <div className="text-center text-sm text-gray-500">
+          <p>
+            All rights are reserved to{" "}
+            <span className="font-semibold text-gray-700">Sports Mardani</span>{" "}
+            and{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700"
+            >
+              AgniByte Private Limited
+            </a>{" "}
+            2024.
+          </p>
+        </div>
+      </footer>
+
       <CommonModal
         modalOpen={sportsMardaniMatchModal}
         setModalOpen={setSportsMardaniMatchModal}
@@ -175,6 +189,6 @@ export default function HomeWrapper() {
       >
         <StartMardaniMatchModal pendingMatches={pendingMatches} />
       </CommonModal>
-    </>
+    </div>
   );
 }
