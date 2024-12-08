@@ -1,4 +1,5 @@
 import React from "react";
+import { jsPDF } from "jspdf";
 
 export default function FinalResultModal({
   redScore,
@@ -14,20 +15,15 @@ export default function FinalResultModal({
       ? "Player 2 (Blue)"
       : "It's a Tie!";
 
-  const handleDownload = () => {
-    const resultData = `
-      Match Results:
-      - Player 1 (Red): ${redScore}
-      - Player 2 (Blue): ${blueScore}
-      - Winner: ${winner}
-    `;
-    const blob = new Blob([resultData], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "match_results.txt";
-    a.click();
-    URL.revokeObjectURL(url);
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Match Results", 20, 20);
+    doc.setFontSize(12);
+    doc.text(`Player 1 (Red): ${redScore}`, 20, 40);
+    doc.text(`Player 2 (Blue): ${blueScore}`, 20, 50);
+    doc.text(`Winner: ${winner}`, 20, 70);
+    doc.save("match_results.pdf");
   };
 
   return (
@@ -63,6 +59,12 @@ export default function FinalResultModal({
             className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
           >
             Exit
+          </button>
+          <button
+            onClick={handleDownload}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
+          >
+            Download Result
           </button>
         </div>
       </div>
