@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // Import useRouter hook
+import { jsPDF } from "jspdf";
 
 export default function MardaniScoreboard() {
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
   const [timer, setTimer] = useState(120); // 2 minutes in seconds
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer running state
-  const router = useRouter();
-
-  // Extract participant name from query parameters
-  const { participant } = router.query; // This will get the participant name from the URL
 
   // Timer Logic
   useEffect(() => {
@@ -54,6 +50,26 @@ export default function MardaniScoreboard() {
     setIsMatchOver(false);
   };
 
+  // Function to generate and download PDF
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+
+    doc.setFont("Arial", "B", 16);
+    doc.text("Mardani Match Scoreboard", 20, 20);
+
+    doc.setFont("Arial", "I", 12);
+    doc.text(`Match Status: ${isMatchOver ? "Match Over" : "In Progress"}`, 20, 30);
+    doc.text(`Time Remaining: ${formatTime(timer)}`, 20, 40);
+    doc.text(`Total Score: ${totalScore}`, 20, 50);
+
+    doc.text("Referee Scores:", 20, 60);
+    refereeScores.forEach((score, index) => {
+      doc.text(`Referee ${index + 1}: ${score}`, 20, 70 + index * 10);
+    });
+
+    doc.save("mardani_scoreboard.pdf");
+  };
+
   return (
     <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white">
       {/* Header */}
@@ -63,13 +79,6 @@ export default function MardaniScoreboard() {
       <p className="text-lg mb-8 text-center">
         Track scores and time for a dynamic match experience
       </p>
-
-      {/* Display Participant Name */}
-      {participant && (
-        <p className="text-xl mb-6 text-center">
-          Participant: <strong>{participant}</strong>
-        </p>
-      )}
 
       {/* Timer */}
       <div className="flex items-center justify-center bg-white text-indigo-600 rounded-full px-6 py-3 shadow-lg mb-8">
@@ -156,6 +165,14 @@ export default function MardaniScoreboard() {
         className="mt-8 px-6 py-3 bg-white text-indigo-600 rounded-lg shadow-md hover:bg-gray-200 transition-transform transform hover:scale-105"
       >
         Back to Home
+      </button>
+
+      {/* Download PDF Button */}
+      <button
+        onClick={downloadPDF}
+        className="mt-8 px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-transform transform hover:scale-105"
+      >
+        Download Score as PDF
       </button>
     </div>
   );
