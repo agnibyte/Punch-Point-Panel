@@ -19,14 +19,21 @@ export default function MardaniScoreboard() {
         setTimer((prev) => prev - 1);
       }, 1000);
     } else if (timer === 0) {
-      setIsMatchOver(true);
+      setIsMatchOver(true); // Mark match as over when timer reaches 0
+      setIsTimerRunning(false); // Stop the timer when match is over
     }
 
     // Clear interval when timer stops or reaches 0
     return () => clearInterval(interval);
   }, [isTimerRunning, timer]);
 
+  // Prevent score update if match is over or timer is stopped
   const handleScoreChange = (refereeIndex, score) => {
+    if (!isTimerRunning || isMatchOver) {
+      alert("The match is over or timer is stopped. You cannot update the score.");
+      return; // Prevent score change if the match is over or timer is stopped
+    }
+
     setRefereeScores((prev) => {
       const updatedScores = [...prev];
       updatedScores[refereeIndex] = score;
@@ -44,14 +51,14 @@ export default function MardaniScoreboard() {
 
   const toggleTimer = () => {
     if (timer > 0) {
-      setIsTimerRunning((prev) => !prev);
+      setIsTimerRunning((prev) => !prev); // Toggle the timer running state
     }
   };
 
   const resetTimer = () => {
     setTimer(120); // Reset to initial time (2 minutes)
-    setIsTimerRunning(false);
-    setIsMatchOver(false);
+    setIsTimerRunning(false); // Stop the timer
+    setIsMatchOver(false); // Reset match status
   };
 
   // Function to generate and download PDF
@@ -140,17 +147,17 @@ export default function MardaniScoreboard() {
           >
             <h2 className="text-xl font-bold mb-2">Referee {index + 1}</h2>
             {!isMatchOver ? (
-              <input
-                type="number"
-                min="1"
-                max="10"
-                value={score}
-                onChange={(e) =>
-                  handleScoreChange(index, parseInt(e.target.value) || 0)
-                }
-                className="mt-4 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                placeholder="Enter Score"
-              />
+              <div className="overflow-auto max-h-36">
+                <input
+                  type="number"
+                  min="0"
+                  max="10" // Limit input to 10 digits
+                  value={score}
+                  onChange={(e) => handleScoreChange(index, parseInt(e.target.value) || 0)}
+                  className="mt-4 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                  placeholder="Enter Score"
+                />
+              </div>
             ) : (
               <p className="text-lg mt-4 font-semibold">
                 Final Score: <span className="text-indigo-600">{score}</span>
