@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
+import { useRouter } from "next/router";
 
 export default function MardaniScoreboard() {
+  const router = useRouter();
+  const { participant } = router.query; // Get participant name from query param
+
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
   const [timer, setTimer] = useState(120); // 2 minutes in seconds
   const [isMatchOver, setIsMatchOver] = useState(false);
@@ -52,22 +56,30 @@ export default function MardaniScoreboard() {
 
   // Function to generate and download PDF
   const downloadPDF = () => {
+    if (!participant) {
+      alert("Participant name is required to download the PDF.");
+      return;
+    }
+
     const doc = new jsPDF();
 
     doc.setFont("Arial", "B", 16);
     doc.text("Mardani Match Scoreboard", 20, 20);
 
+    // Ensure participant name is available in the PDF
     doc.setFont("Arial", "I", 12);
-    doc.text(`Match Status: ${isMatchOver ? "Match Over" : "In Progress"}`, 20, 30);
-    doc.text(`Time Remaining: ${formatTime(timer)}`, 20, 40);
-    doc.text(`Total Score: ${totalScore}`, 20, 50);
+    doc.text(`Participant: ${participant}`, 20, 30);
+    doc.text(`Match Status: ${isMatchOver ? "Match Over" : "In Progress"}`, 20, 40);
+    doc.text(`Time Remaining: ${formatTime(timer)}`, 20, 50);
+    doc.text(`Total Score: ${totalScore}`, 20, 60);
 
-    doc.text("Referee Scores:", 20, 60);
+    doc.text("Referee Scores:", 20, 70);
     refereeScores.forEach((score, index) => {
-      doc.text(`Referee ${index + 1}: ${score}`, 20, 70 + index * 10);
+      doc.text(`Referee ${index + 1}: ${score}`, 20, 80 + index * 10);
     });
 
-    doc.save("mardani_scoreboard.pdf");
+    // Save PDF with the participant's name
+    doc.save(`${participant}_scoreboard.pdf`);
   };
 
   return (
@@ -76,22 +88,34 @@ export default function MardaniScoreboard() {
       <h1 className="text-5xl font-extrabold mb-4 text-center">
         Mardani Match Scoreboard
       </h1>
-      <p className="text-lg mb-8 text-center">
-        Track scores and time for a dynamic match experience
-      </p>
 
-      {/* Timer */}
-      <div className="flex items-center justify-center bg-white text-indigo-600 rounded-full px-6 py-3 shadow-lg mb-8">
-        {isMatchOver ? (
-          <span className="text-2xl font-bold">Match Over</span>
-        ) : (
-          <div className="text-2xl font-bold">
-            <span>Time Remaining: {formatTime(timer)}</span>
-          </div>
-        )}
+      {/* Display Participant Name */}
+      {participant && (
+        <div className="text-xl font-semibold mt-4">
+          <span>Participant: {participant}</span>
+        </div>
+      )}
+
+      {/* Score and Timer Boxes - Horizontally Aligned */}
+      <div className="flex space-x-12 mt-12">
+        {/* Total Score */}
+        <div className="text-3xl font-bold bg-white text-indigo-600 px-6 py-4 rounded-full shadow-md">
+          Total Score: {totalScore}
+        </div>
+
+        {/* Timer */}
+        <div className="flex items-center justify-center bg-white text-indigo-600 rounded-full px-6 py-3 shadow-lg">
+          {isMatchOver ? (
+            <span className="text-2xl font-bold">Match Over</span>
+          ) : (
+            <div className="text-2xl font-bold">
+              <span>Time Remaining: {formatTime(timer)}</span>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Timer Control Button */}
+      {/* Timer Control Buttons */}
       <div className="flex justify-center gap-4 mt-8">
         {!isMatchOver && (
           <button
@@ -107,8 +131,8 @@ export default function MardaniScoreboard() {
         )}
       </div>
 
-      {/* Referee Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Referee Boxes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
         {refereeScores.map((score, index) => (
           <div
             key={index}
@@ -134,11 +158,6 @@ export default function MardaniScoreboard() {
             )}
           </div>
         ))}
-      </div>
-
-      {/* Total Score */}
-      <div className="mt-12 text-3xl font-bold bg-white text-indigo-600 px-6 py-4 rounded-full shadow-md">
-        Total Score: {totalScore}
       </div>
 
       {/* Timer Control Buttons */}
