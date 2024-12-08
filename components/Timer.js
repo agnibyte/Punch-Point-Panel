@@ -63,7 +63,7 @@ export default function Timer({
   const progress = (timeLeft.asSeconds() / duration) * 100;
 
   return (
-    <div className="text-center bg-gray-900 text-white p-8 px-24 rounded-lg shadow-lg">
+    <div className="text-center bg-gray-900 text-white py-5 md:py-8 px-24 rounded-lg shadow-lg">
       {/* <div className="text-4xl font-bold mb-6">Scoreboard Timer</div> */}
       <div className="text-6xl font-extrabold   rounded-lg px-12 py-7 ">
         {formattedTime}

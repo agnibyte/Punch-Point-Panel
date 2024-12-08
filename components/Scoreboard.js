@@ -112,7 +112,7 @@ export default function Scoreboard() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
-        <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 my-3">
+        <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 mt-0 md:mt-3 my-3">
           Match <span className="ml-2 text-3xl font-extrabold">428</span>
         </div>{" "}
         {/* Added pt-20 to offset the fixed header */}
@@ -134,7 +134,7 @@ export default function Scoreboard() {
           />
         </div>
         {/* Scores Section */}
-        <div className="flex  md:flex-row items-center justify-between w-full">
+        <div className="flex  md:flex-row items-center justify-between w-full mb-20">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
