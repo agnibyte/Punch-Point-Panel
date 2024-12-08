@@ -10,7 +10,7 @@ export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
 
-  const [setUpMardaniMatchModal, setSetUpMardaniMatchModal] = useState(false);
+  const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [participantName, setParticipantName] = useState("");
   const router = useRouter();
 
@@ -18,8 +18,12 @@ export default function HomeWrapper() {
     setSetUpMatchModal(true);
   };
 
+  const onClickSportsMardaniFight = () => {
+    setSetUpMatchModal(true);
+  };
+
   const onClickSetupMardaniMatch = () => {
-    setSetUpMardaniMatchModal(true);
+    setMardaniMatchModal(true);
   };
 
   useEffect(() => {
@@ -37,8 +41,10 @@ export default function HomeWrapper() {
   const handleMardaniMatchSubmit = () => {
     if (participantName) {
       // Redirect to the Mardani match scoreboard with the participant name as query param
-      router.push(`/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`);
-      setSetUpMardaniMatchModal(false); // Close the modal
+      router.push(
+        `/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`
+      );
+      setMardaniMatchModal(false); // Close the modal
     } else {
       alert("Please enter a participant name!");
     }
@@ -59,33 +65,18 @@ export default function HomeWrapper() {
         </h1>
 
         <nav className="flex flex-col space-y-4">
-          {!isLogin ? (
-            <button
-              onClick={onClickSetup}
-              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
-            >
-              login
-            </button>
-          ) : (
-            <button
-              onClick={onClickSetup}
-              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
-            >
-              true
-            </button>
-          )}
           <button
             onClick={onClickSetup}
             className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
-            Setup Match with Form
+            Setup Match
           </button>
-          <Link
-            href="/scoreboard"
+          <button
+            onClick={onClickSportsMardaniFight}
             className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
-            Setup Match
-          </Link>
+            Start Sports Mardani Fight
+          </button>
           <Link
             href="/results"
             className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
@@ -98,15 +89,15 @@ export default function HomeWrapper() {
             onClick={onClickSetupMardaniMatch}
             className="px-6 py-3 bg-white text-green-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
-            Setup Mardani Match
+            Setup Traditional Mardani Match
           </button>
         </nav>
       </div>
 
       {/* Modal for Mardani Match */}
       <CommonModal
-        modalOpen={setUpMardaniMatchModal}
-        setModalOpen={setSetUpMardaniMatchModal}
+        modalOpen={traditionalMatchModal}
+        setModalOpen={setTraditionalMatchModal}
         backDrop={true}
         modalTitle="Enter Participant Name"
         modalSize="w-[95%] md:w-3/4"
