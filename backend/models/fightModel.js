@@ -20,7 +20,7 @@ export function addNewFightMatchModel(request) {
     executeQuery(insertQuery, [tempObj])
       .then((insertResult) => {
         if (insertResult.affectedRows > 0) {
-          console.log("Insert successful", insertResult);
+          // console.log("Insert successful", insertResult);
           resolve(true);
         } else {
           reject(new Error("Insertion failed"));
