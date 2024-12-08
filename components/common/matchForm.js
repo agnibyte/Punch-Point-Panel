@@ -69,6 +69,8 @@ export default function MatchForm({ setSetUpMatchModal }) {
         reset();
         setFormData(defaultFormData);
         setSetUpMatchModal(false);
+        localStorage.setItem("currentMatch", matchNumber);
+
         router.push("/scoreboard");
       } else {
         setApiError(true);

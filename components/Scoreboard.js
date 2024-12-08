@@ -6,12 +6,16 @@ import CommonModal from "./common/commonModal";
 import ResetConfirmation from "./common/resetConfirmation";
 import FinalResultModal from "./common/finalResultModal";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Scoreboard() {
   const duration = 5;
+  const router = useRouter();
+
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
+  const [currentMatchNo, setCurrentMatchNo] = useState("");
   const [isMatchStart, setIsMatchStart] = useState(false); // Track if the timer is running
   const [timeLeft, setTimeLeft] = useState(
     moment.duration(duration, "seconds")
@@ -30,6 +34,15 @@ export default function Scoreboard() {
       roundWinner: 0,
     }))
   );
+
+  useEffect(() => {
+    const localMatchNo = localStorage.getItem("currentMatch");
+    if (localMatchNo) {
+      setCurrentMatchNo(localMatchNo);
+    } else {
+      // router.push("/");
+    }
+  }, []);
 
   const handleScoreChange = (team, value) => {
     if (team === "red") {
@@ -113,7 +126,8 @@ export default function Scoreboard() {
       {/* Main Content */}
       <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
         <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 mt-0 md:mt-3 my-3">
-          Match <span className="ml-2 text-3xl font-extrabold">428</span>
+          Match{" "}
+          <span className="ml-2 text-3xl font-extrabold">{currentMatchNo}</span>
         </div>{" "}
         {/* Added pt-20 to offset the fixed header */}
         {/* Timer - Responsive and Desktop Placement */}
@@ -202,6 +216,7 @@ export default function Scoreboard() {
           }}
           redScore={redScore}
           blueScore={blueScore}
+          currentMatchNo={currentMatchNo}
         />
       </CommonModal>
     </div>
