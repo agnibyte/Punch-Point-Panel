@@ -37,6 +37,20 @@ export default function HomeWrapper() {
     }
   }, []);
 
+  const getCapturedImages = async () => {
+    const payload = {
+      mobile_number: "y89ryew",
+    };
+    const response = await postApiData("GET_ALL_USERS", payload);
+    console.log("response", response);
+    if (response.status) {
+    } else {
+    }
+  };
+
+  // useEffect(() => {
+  //   getCapturedImages();
+  // }, []);
   const handleMardaniMatchSubmit = () => {
     if (participantName) {
       // Redirect to the Mardani match scoreboard with the participant name as query param

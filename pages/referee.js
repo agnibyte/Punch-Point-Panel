@@ -20,19 +20,19 @@ export default function Referee() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-700 via-gray-900 to-black relative overflow-hidden">
-      <h1 className="text-4xl md:text-6xl text-white font-extrabold mb-12 tracking-wide">
+      <h1 className="text-5xl md:text-6xl text-white font-extrabold mb-12 tracking-wide shadow-lg">
         Referee Panel
       </h1>
 
-      <div className="flex flex-wrap justify-center items-center w-full gap-8">
+      <div className="flex flex-wrap justify-center items-center w-full gap-10">
         {/* Player 1 Button */}
         <button
           onClick={() => handleGivePoint("red")}
-          className="relative bg-red-500 text-white text-2xl md:text-4xl w-full md:w-1/3 h-48 md:h-64 rounded-full shadow-2xl hover:scale-105 hover:bg-red-600 transition transform duration-300 ease-out flex items-center justify-center"
+          className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
         >
           Player 1
           {animation.show && animation.player === "red" && (
-            <div className="absolute text-5xl font-extrabold text-white animate-pop-out -top-14">
+            <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
               +1
             </div>
           )}
@@ -41,17 +41,16 @@ export default function Referee() {
         {/* Player 2 Button */}
         <button
           onClick={() => handleGivePoint("blue")}
-          className="relative bg-blue-500 text-white text-2xl md:text-4xl w-full md:w-1/3 h-48 md:h-64 rounded-full shadow-2xl hover:scale-105 hover:bg-blue-600 transition transform duration-300 ease-out flex items-center justify-center"
+          className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
         >
           Player 2
           {animation.show && animation.player === "blue" && (
-            <div className="absolute text-5xl font-extrabold text-white animate-pop-out -top-14">
+            <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
               +1
             </div>
           )}
         </button>
       </div>
-
     </div>
   );
 }
