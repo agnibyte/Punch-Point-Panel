@@ -12,7 +12,21 @@ export default function MatchForm() {
     formState: { errors },
     reset,
   } = useForm();
+
+  const defaultFormData = {
+    matchName: "",
+    playerRed: "",
+    stateRed: "",
+    playerBlue: "",
+    stateBlue: "",
+    category: "",
+    age: "",
+    weight: "",
+    matchDetails: {},
+  };
+
   const [query, setQuery] = useState("");
+  const [formData, setFormData] = useState(defaultFormData);
 
   const filteredMatches =
     query === ""
@@ -21,28 +35,54 @@ export default function MatchForm() {
           match.toLowerCase().includes(query.toLowerCase())
         );
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const matchNumber = data.matchName?.match(/\d+/)?.[0] || ""; // Extract match number
-    const formData = {
+    const updatedData = {
       ...data,
-      matchName: data.matchName,
       matchDetails: {
         matchName: data.matchName,
         matchNo: matchNumber,
       },
     };
 
-    console.log(formData);
-    // reset();
+    setFormData(updatedData);
+    console.log(updatedData);
+
+    // Example API call using fetch
+    try {
+      const response = await fetch("https://yourapiendpoint.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // Handle successful response
+        console.log("Form submitted successfully:", result);
+
+        // Reset form and state
+        reset(); // Reset form fields to initial empty state
+        setFormData(defaultFormData);
+      } else {
+        // Handle API error response
+        console.log("Error submitting form:", result);
+      }
+    } catch (error) {
+      // Handle any errors during the API call
+      console.error("Error occurred during form submission:", error);
+    }
   };
 
   return (
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-h-[70vh] overflow-y-auto  rounded-lg  space-y-8"
+        className="w-full max-h-[70vh] overflow-y-auto rounded-lg space-y-8"
       >
-        {" "}
         {/* Title */}
         <div className="m-4 md:m-8">
           <p className="text-center text-gray-600">
@@ -102,6 +142,7 @@ export default function MatchForm() {
             </p>
           )}
         </div>
+
         {/* Players' Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-4 md:m-8">
           {/* Red Corner */}
@@ -206,6 +247,7 @@ export default function MatchForm() {
             </div>
           </div>
         </div>
+
         {/* Additional Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 m-4 md:m-8">
           <div>
@@ -214,30 +256,71 @@ export default function MatchForm() {
               {...register("category", { required: "This field is required." })}
               type="text"
               placeholder="Enter Category"
-              className="w-full p-4 border rounded-lg"
+              className={`w-full p-4 border rounded-lg focus:ring-2  ${
+                errors.category
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-gray-500"
+              }`}
             />
+            {errors.category && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.category.message}
+              </p>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 font-medium">Age</label>
             <input
-              {...register("age", { required: "This field is required." })}
-              type="number"
+              {...register("age", {
+                required: "This field is required.",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Please enter valid number.",
+                },
+              })}
+              type="text"
+              maxLength="2"
               placeholder="Enter Age"
-              className="w-full p-4 border rounded-lg"
+              className={`w-full p-4 border rounded-lg focus:ring-2  ${
+                errors.age
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-gray-500"
+              }`}
             />
+            {errors.age && (
+              <p className="text-red-500 text-sm mt-1">{errors.age.message}</p>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 font-medium">
               Weight (kg)
             </label>
             <input
-              {...register("weight", { required: "This field is required." })}
-              type="number"
+              {...register("weight", {
+                required: "This field is required.",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Please enter valid number.",
+                },
+              })}
+              type="text"
+              maxLength="3"
               placeholder="Enter Weight"
-              className="w-full p-4 border rounded-lg"
+              className={`w-full p-4 border rounded-lg focus:ring-2  ${
+                errors.weight
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-gray-500"
+              }`}
             />
+            {errors.weight && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.weight.message}
+              </p>
+            )}
           </div>
         </div>
+
+        {/* Sticky Submit Button */}
         <div className="sticky bottom-0 bg-white shadow-lg p-4">
           <button
             type="submit"
