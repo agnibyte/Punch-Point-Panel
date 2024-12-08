@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-
   const [setUpMardaniMatchModal, setSetUpMardaniMatchModal] = useState(false);
   const [participantName, setParticipantName] = useState("");
   const router = useRouter();
@@ -24,84 +23,80 @@ export default function HomeWrapper() {
 
   useEffect(() => {
     const isLoginCheck = getCookie("temp_auth");
-
-    if (isLoginCheck != "true") {
+    if (isLoginCheck !== "true") {
       router.push("/login");
       setIsLogin(false);
     }
   }, []);
 
-  // useEffect(() => {
-  //   getCapturedImages();
-  // }, []);
   const handleMardaniMatchSubmit = () => {
     if (participantName) {
-      // Redirect to the Mardani match scoreboard with the participant name as query param
       router.push(`/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`);
-      setSetUpMardaniMatchModal(false); // Close the modal
+      setSetUpMardaniMatchModal(false);
     } else {
       alert("Please enter a participant name!");
     }
   };
 
   return (
-    <>
-      <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-end justify-center pr-8 relative min-h-screen overflow-y-auto">
-        {/* Karate Logo on Left Side */}
+    <div className="bg-gray-50 min-h-screen flex flex-col items-center">
+      {/* Header */}
+      <header className="w-full bg-white shadow-sm sticky top-0 z-10">
+        <div className="flex items-center justify-between px-6 py-4">
+          <img src="/images/logo.png" alt="Logo" className="h-8" />
+          <div className="flex items-center space-x-4">
+            <img src="/icons/search.svg" alt="Search" className="h-6 w-6" />
+            <img src="/icons/notification.svg" alt="Notifications" className="h-6 w-6" />
+            <img src="/icons/profile.svg" alt="Profile" className="h-6 w-6" />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex flex-col items-center w-full max-w-md mt-8">
         <img
-          src="/images/image.png" // Updated path to your .webp image
+          src="/images/image.png"
           alt="Karate Logo"
-          className="absolute left-8 top-8 w-16 h-16" // Adjust the size and position as needed
+          className="rounded-full border w-40 h-40 mb-4"
         />
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">Punch Point Panel</h1>
 
-        <h1 className="text-5xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-yellow-400 animate-textGlow">
-          Punch Point Panel
-        </h1>
-
-        <nav className="flex flex-col space-y-4">
+        <div className="space-y-4 w-full">
           {!isLogin ? (
             <button
               onClick={onClickSetup}
-              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+              className="w-full bg-blue-500 text-white py-3 rounded-lg shadow-md transition hover:bg-blue-600"
             >
-              login
+              Login
             </button>
           ) : (
             <button
               onClick={onClickSetup}
-              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+              className="w-full bg-green-500 text-white py-3 rounded-lg shadow-md transition hover:bg-green-600"
             >
-              true
+              Setup Match
             </button>
           )}
-          <button
-            onClick={onClickSetup}
-            className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
-          >
-            Setup Match with Form
-          </button>
           <Link
             href="/scoreboard"
-            className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="block w-full bg-purple-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-purple-600"
           >
-            Setup Match
+            View Scoreboard
           </Link>
           <Link
             href="/results"
-            className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="block w-full bg-yellow-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-600"
           >
             View Results
           </Link>
-
-          {/* New Button for Mardani Match */}
           <button
             onClick={onClickSetupMardaniMatch}
-            className="px-6 py-3 bg-white text-green-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
           >
             Setup Mardani Match
           </button>
-        </nav>
-      </div>
+        </div>
+      </main>
 
       {/* Modal for Mardani Match */}
       <CommonModal
@@ -117,7 +112,7 @@ export default function HomeWrapper() {
             value={participantName}
             onChange={(e) => setParticipantName(e.target.value)}
             placeholder="Enter Participant Name"
-            className="px-4 py-2 mb-4 border rounded-lg w-full"
+            className="px-4 py-2 mb-4 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button
             onClick={handleMardaniMatchSubmit}
@@ -138,6 +133,6 @@ export default function HomeWrapper() {
       >
         <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
       </CommonModal>
-    </>
+    </div>
   );
 }
