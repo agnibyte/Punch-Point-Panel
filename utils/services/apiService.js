@@ -56,7 +56,6 @@ const callFetchMethod = (
 // POST API call to NextJs API
 export function postApiData(action, payload = {}) {
   return new Promise((resolve, reject) => {
-    console.log("apiList", apiList, action);
     if (typeof apiList[action] != "undefined") {
       const apiCall = callFetchMethod(apiList[action], payload);
       //   const apiCall = callFetchMethod(

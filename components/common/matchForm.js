@@ -1,10 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
 import { Combobox } from "@headlessui/react";
 import { useState } from "react";
+import { postApiData } from "@/utils/services/apiService";
+import { getConstant } from "@/utils/utils";
+import { useRouter } from "next/router";
 
 const matchNumbers = Array.from({ length: 50 }, (_, i) => `Match ${i + 1}`);
 
-export default function MatchForm() {
+export default function MatchForm({ setSetUpMatchModal }) {
   const {
     register,
     handleSubmit,
@@ -12,6 +15,8 @@ export default function MatchForm() {
     formState: { errors },
     reset,
   } = useForm();
+
+  const router = useRouter();
 
   const defaultFormData = {
     matchName: "",
@@ -27,6 +32,8 @@ export default function MatchForm() {
 
   const [query, setQuery] = useState("");
   const [formData, setFormData] = useState(defaultFormData);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiError, setApiError] = useState(false);
 
   const filteredMatches =
     query === ""
@@ -36,7 +43,7 @@ export default function MatchForm() {
         );
 
   const onSubmit = async (data) => {
-    const matchNumber = data.matchName?.match(/\d+/)?.[0] || ""; // Extract match number
+    const matchNumber = data.matchName?.match(/\d+/)?.[0] || "";
     const updatedData = {
       ...data,
       matchDetails: {
@@ -46,35 +53,31 @@ export default function MatchForm() {
     };
 
     setFormData(updatedData);
-    console.log(updatedData);
 
-    // Example API call using fetch
+    const payload = {
+      ...updatedData,
+      matchName: data.matchName,
+      matchNo: matchNumber,
+    };
+    setApiLoading(true);
+    setApiError("");
+    console.log("payload ADD_FIGHT_MATCH", payload);
     try {
-      const response = await fetch("https://yourapiendpoint.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        // Handle successful response
-        console.log("Form submitted successfully:", result);
-
-        // Reset form and state
-        reset(); // Reset form fields to initial empty state
+      const response = await postApiData("ADD_FIGHT_MATCH", payload);
+      // console.log("response", response);
+      if (response.status) {
+        reset();
         setFormData(defaultFormData);
+        setSetUpMatchModal(false);
+        router.push("/scoreboard");
       } else {
-        // Handle API error response
-        console.log("Error submitting form:", result);
+        setApiError(true);
       }
     } catch (error) {
       // Handle any errors during the API call
       console.error("Error occurred during form submission:", error);
     }
+    setApiLoading(false);
   };
 
   return (
@@ -321,13 +324,19 @@ export default function MatchForm() {
         </div>
 
         {/* Sticky Submit Button */}
-        <div className="sticky bottom-0 bg-white shadow-lg p-4">
+        <div className="sticky bottom-0 bg-white shadow-lg p-4 flex flex-col justify-center items-center">
           <button
             type="submit"
-            className="w-full bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition"
+            className="w-1/2 bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition"
+            disabled={apiLoading}
           >
-            Submit
+            {apiLoading ? getConstant("LOADING_TEXT") : "Submit"}
           </button>
+          {apiError && (
+            <div className=" text-red-500 text-base mt-3">
+              {getConstant("SOMETHING_WRONG_TRY_LATER")}
+            </div>
+          )}
         </div>
       </form>
     </>

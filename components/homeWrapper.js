@@ -17,7 +17,7 @@ export default function HomeWrapper() {
       mobile_number: "y89ryew",
     };
     const response = await postApiData("GET_ALL_USERS", payload);
-    console.log("response", response);
+    // console.log("response getCapturedImages", response);
     if (response.status) {
     } else {
     }
@@ -49,7 +49,7 @@ export default function HomeWrapper() {
             Setup Match with Form
           </button>
           <Link
-            href="/setup"
+            href="/scoreboard"
             className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
             Setup Match
@@ -68,9 +68,9 @@ export default function HomeWrapper() {
         setModalOpen={setSetUpMatchModal}
         backDrop={false}
         modalTitle="Sports Match Details Form"
-        modalSize="w-full md:w-3/4"
+        modalSize="w-[95%] md:w-3/4"
       >
-        <MatchForm />
+        <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
       </CommonModal>
     </>
   );

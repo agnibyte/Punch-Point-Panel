@@ -1,0 +1,1 @@
+export const FIGHT_MASTER ="fight_master"

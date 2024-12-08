@@ -1,4 +1,4 @@
-import { getCustomers } from "@/backend/controllers/usersController";
+import { addNewFightMatch } from "@/backend/controllers/fightController";
 
 export default function handler(req, res) {
   return new Promise((resolve, reject) => {
@@ -6,11 +6,12 @@ export default function handler(req, res) {
     const response = {
       status: false,
     };
+    console.log("request addNewFightMatch----", request);
 
-    getCustomers(request)
+    addNewFightMatch(request)
       .then((result) => {
         res.status(200).json(result);
-        resolve();
+        resolve(result);
       })
       .catch((error) => {
         response.error = error;
