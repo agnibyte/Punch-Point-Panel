@@ -13,8 +13,24 @@ export default function FinalResultModal({
       ? "Player 2 (Blue)"
       : "It's a Tie!";
 
+  const handleDownload = () => {
+    const resultData = `
+      Match Results:
+      - Player 1 (Red): ${redScore}
+      - Player 2 (Blue): ${blueScore}
+      - Winner: ${winner}
+    `;
+    const blob = new Blob([resultData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "match_results.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="bg-white  p-10 max-w-md mx-auto">
+    <div className="bg-white p-10 max-w-md mx-auto">
       <h2 className="text-2xl font-bold text-center mb-4 text-black">
         Match Results
       </h2>
@@ -33,7 +49,7 @@ export default function FinalResultModal({
         <p className="text-xl font-bold text-green-700 mb-6">{winner}</p>
         <div className="flex justify-center space-x-4">
           <button
-            // onClick={onReset}
+            onClick={onReset}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
           >
             Reset Match
@@ -43,6 +59,12 @@ export default function FinalResultModal({
             className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
           >
             Exit
+          </button>
+          <button
+            onClick={handleDownload}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
+          >
+            Download Result
           </button>
         </div>
       </div>
