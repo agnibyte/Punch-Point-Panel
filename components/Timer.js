@@ -10,8 +10,6 @@ export default function Timer({
   setIsRunning,
   intervalId,
   setIntervalId,
-  handleReset = () => {},
-  isMatchStart,
   setIsMatchStart,
 }) {
   useEffect(() => {
@@ -44,15 +42,15 @@ export default function Timer({
   };
   const handleResume = () => setIsRunning(true);
 
-  const handleAddTime = () => {
-    setTimeLeft((prev) => moment.duration(prev.asSeconds() + 10, "seconds")); // Add 10 seconds
-  };
+  // const handleAddTime = () => {
+  //   setTimeLeft((prev) => moment.duration(prev.asSeconds() + 10, "seconds")); // Add 10 seconds
+  // };
 
-  const handleSubtractTime = () => {
-    setTimeLeft((prev) =>
-      moment.duration(Math.max(0, prev.asSeconds() - 10), "seconds")
-    ); // Subtract 10 seconds (ensure time doesn't go negative)
-  };
+  // const handleSubtractTime = () => {
+  //   setTimeLeft((prev) =>
+  //     moment.duration(Math.max(0, prev.asSeconds() - 10), "seconds")
+  //   ); // Subtract 10 seconds (ensure time doesn't go negative)
+  // };
 
   const formattedTime = `${timeLeft.minutes()}:${timeLeft
     .seconds()
@@ -86,17 +84,36 @@ export default function Timer({
           {isRunning ? (
             <button
               onClick={handlePause}
-              className="bg-red-500 text-white font-bold py-3 px-6 rounded-lg text-lg"
+              className="bg-transparent border-2 border-red-500 text-red-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-red-500 hover:text-white transition"
             >
               Pause
             </button>
           ) : (
-            <button
-              onClick={handleResume}
-              className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg text-lg"
-            >
-              Resume
-            </button>
+            <div className="flex space-x-4 mt-6">
+              {/* Resume Button */}
+              <button
+                onClick={handleResume}
+                className="bg-transparent border-2 border-blue-500 text-blue-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-500 hover:text-white transition"
+              >
+                Resume
+              </button>
+
+              {/* New Button 1 
+              <button
+                // onClick={handleNewAction1}
+                className="bg-transparent border-2 border-green-500 text-green-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-green-500 hover:text-white transition"
+              >
+                Action 1
+              </button>*/}
+
+              {/* New Button 2 */}
+              <button
+                // onClick={handleNewAction2}
+                className="bg-transparent border-2 border-red-500 text-red-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-red-500 hover:text-white transition"
+              >
+                Result
+              </button>
+            </div>
           )}
           {/*} <div className="mt-4 flex justify-center gap-4">
             <button

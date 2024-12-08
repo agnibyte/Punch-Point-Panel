@@ -45,12 +45,6 @@ export default function FinalResultModal({
         <p className="text-xl font-bold text-green-700 mb-6">{winner}</p>
         <div className="flex justify-center space-x-4">
           <button
-            onClick={onReset}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg"
-          >
-            Reset Match
-          </button>
-          <button
             onClick={onExit}
             className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg"
           >

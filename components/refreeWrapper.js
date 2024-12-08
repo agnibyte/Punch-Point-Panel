@@ -13,17 +13,13 @@ export default function RefreeWrapper() {
     setUserRole(user);
   }, []);
 
-  // Function to handle point increment
   const handleGivePoint = (player) => {
-    // Trigger the animation
     setAnimation({ player, show: true });
 
-    // Reset animation after it completes
     setTimeout(() => setAnimation({ player: null, show: false }), 1000);
 
-    // Send the score increment action to the Scoreboard
     window.localStorage.setItem("lastPointPlayer", player);
-    window.dispatchEvent(new Event("storage")); // Trigger storage event
+    window.dispatchEvent(new Event("storage")); 
   };
 
   return (

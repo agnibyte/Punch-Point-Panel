@@ -82,7 +82,7 @@ export default function Scoreboard() {
 
   const handleTimerEnd = () => {
     setIsMatchStart(false);
-    setMatchFinshModal(true);
+    // setMatchFinshModal(true);
     setResetModal(false);
   };
 
@@ -142,7 +142,6 @@ export default function Scoreboard() {
             intervalId={intervalId}
             setIntervalId={setIntervalId}
             handleReset={handleReset}
-            isMatchStart={isMatchStart}
             setIsMatchStart={setIsMatchStart}
             setRoundScores={setRoundScores}
           />
