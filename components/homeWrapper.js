@@ -4,9 +4,14 @@ import { useState } from "react";
 import CommonModal from "./common/commonModal";
 import MatchForm from "./common/matchForm";
 import { postApiData } from "@/utils/services/apiService";
+import { getCookie } from "@/utils/utils";
+import { useRouter } from "next/router";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+
+  const router = useRouter();
 
   const onClickSetup = () => {
     setSetUpMatchModal(true);
@@ -22,6 +27,15 @@ export default function HomeWrapper() {
     } else {
     }
   };
+
+  useEffect(() => {
+    const isLoginCheck = getCookie("temp_auth");
+
+    if (isLoginCheck != "true") {
+      router.push("/login");
+      setIsLogin(false);
+    }
+  }, []);
 
   // useEffect(() => {
   //   getCapturedImages();
@@ -42,6 +56,21 @@ export default function HomeWrapper() {
         </h1>
 
         <nav className="flex flex-col space-y-4">
+          {!isLogin ? (
+            <button
+              onClick={onClickSetup}
+              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            >
+              login
+            </button>
+          ) : (
+            <button
+              onClick={onClickSetup}
+              className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            >
+              true
+            </button>
+          )}
           <button
             onClick={onClickSetup}
             className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
