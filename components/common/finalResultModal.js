@@ -14,8 +14,10 @@ export default function FinalResultModal({
       : "It's a Tie!";
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold text-center mb-4 text-black">Match Results</h2>
+    <div className="bg-white  p-10 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold text-center mb-4 text-black">
+        Match Results
+      </h2>
       <div className="text-center">
         <p className="text-xl font-semibold mb-2 text-black">Final Scores</p>
         <div className="flex justify-center space-x-8 mb-4">

@@ -36,21 +36,18 @@ export default function MatchForm() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-screen bg-gray-50">
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-4xl bg-white shadow-xl rounded-lg p-8 space-y-8"
-    >
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-h-[70vh] overflow-y-auto  rounded-lg p-4 md:p-8 space-y-8"
+      >
+        {" "}
         {/* Title */}
-        <h2 className="text-4xl font-extrabold text-center text-gray-800">
-          Sports Match Details Form
-        </h2>
-        <p className="text-center text-gray-600">
-          Please fill out the match and player details below.
-        </p>
-
-        {/* Match Number */}
         <div>
+          <p className="text-center text-gray-600">
+            Please fill out the match and player details below.
+          </p>
+          {/* Match Number */}
           <label className="block text-lg font-semibold text-gray-700 mb-2">
             Match Number
           </label>
@@ -89,7 +86,9 @@ export default function MatchForm() {
                         </Combobox.Option>
                       ))
                     ) : (
-                      <div className="px-4 py-2 text-gray-500">No results found</div>
+                      <div className="px-4 py-2 text-gray-500">
+                        No results found
+                      </div>
                     )}
                   </Combobox.Options>
                 </div>
@@ -97,19 +96,26 @@ export default function MatchForm() {
             )}
           />
           {errors.matchNo && (
-            <p className="text-red-500 text-sm mt-1">{errors.matchNo.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.matchNo.message}
+            </p>
           )}
         </div>
-
         {/* Players' Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Red Corner */}
           <div className="p-6 bg-red-50 border-l-4 border-red-500 rounded-lg">
-            <h3 className="text-2xl font-semibold text-red-600 mb-4">Red Corner</h3>
+            <h3 className="text-2xl font-semibold text-red-600 mb-4">
+              Red Corner
+            </h3>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Player Name</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                Player Name
+              </label>
               <input
-                {...register("playerRed", { required: "This field is required." })}
+                {...register("playerRed", {
+                  required: "This field is required.",
+                })}
                 type="text"
                 placeholder="Enter Red Corner Player Name"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -125,9 +131,13 @@ export default function MatchForm() {
               )}
             </div>
             <div className="mt-4">
-              <label className="block text-gray-700 font-medium mb-2">State</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                State
+              </label>
               <input
-                {...register("stateRed", { required: "This field is required." })}
+                {...register("stateRed", {
+                  required: "This field is required.",
+                })}
                 type="text"
                 placeholder="Enter State"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -146,11 +156,17 @@ export default function MatchForm() {
 
           {/* Blue Corner */}
           <div className="p-6 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
-            <h3 className="text-2xl font-semibold text-blue-600 mb-4">Blue Corner</h3>
+            <h3 className="text-2xl font-semibold text-blue-600 mb-4">
+              Blue Corner
+            </h3>
             <div>
-              <label className="block text-gray-700 font-medium mb-2">Player Name</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                Player Name
+              </label>
               <input
-                {...register("playerBlue", { required: "This field is required." })}
+                {...register("playerBlue", {
+                  required: "This field is required.",
+                })}
                 type="text"
                 placeholder="Enter Blue Corner Player Name"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -166,9 +182,13 @@ export default function MatchForm() {
               )}
             </div>
             <div className="mt-4">
-              <label className="block text-gray-700 font-medium mb-2">State</label>
+              <label className="block text-gray-700 font-medium mb-2">
+                State
+              </label>
               <input
-                {...register("stateBlue", { required: "This field is required." })}
+                {...register("stateBlue", {
+                  required: "This field is required.",
+                })}
                 type="text"
                 placeholder="Enter State"
                 className={`w-full p-4 border rounded-lg focus:ring-2 ${
@@ -185,7 +205,6 @@ export default function MatchForm() {
             </div>
           </div>
         </div>
-
         {/* Additional Details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div>
@@ -207,7 +226,9 @@ export default function MatchForm() {
             />
           </div>
           <div>
-            <label className="block text-gray-700 font-medium">Weight (kg)</label>
+            <label className="block text-gray-700 font-medium">
+              Weight (kg)
+            </label>
             <input
               {...register("weight", { required: "This field is required." })}
               type="number"
@@ -216,7 +237,6 @@ export default function MatchForm() {
             />
           </div>
         </div>
-
         {/* Submit Button */}
         <button
           type="submit"
@@ -225,6 +245,6 @@ export default function MatchForm() {
           Submit
         </button>
       </form>
-    </div>
+    </>
   );
 }

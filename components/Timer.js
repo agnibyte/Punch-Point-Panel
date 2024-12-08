@@ -63,12 +63,12 @@ export default function Timer({
   const progress = (timeLeft.asSeconds() / duration) * 100;
 
   return (
-    <div className="text-center bg-gray-900 text-white p-8 rounded-lg shadow-lg">
-      <div className="text-4xl font-bold mb-6">Scoreboard Timer</div>
-      <div className="text-9xl font-extrabold bg-black text-green-500 rounded-lg px-12 py-8 mb-6">
+    <div className="text-center bg-gray-900 text-white p-8 px-24 rounded-lg shadow-lg">
+      {/* <div className="text-4xl font-bold mb-6">Scoreboard Timer</div> */}
+      <div className="text-6xl font-extrabold   rounded-lg px-12 py-7 ">
         {formattedTime}
       </div>
-      <div className="w-full bg-gray-700 h-4 rounded-lg overflow-hidden mb-6">
+      <div className="w-full bg-gray-700 h-2 rounded-lg overflow-hidden mb-6">
         <div
           className="bg-green-500 h-full"
           style={{ width: `${progress}%`, transition: "width 0.5s ease" }}
@@ -98,7 +98,7 @@ export default function Timer({
               Resume
             </button>
           )}
-         {/*} <div className="mt-4 flex justify-center gap-4">
+          {/*} <div className="mt-4 flex justify-center gap-4">
             <button
               onClick={handleAddTime}
               className="bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg"

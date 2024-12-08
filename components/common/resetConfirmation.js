@@ -7,7 +7,7 @@ const ResetConfirmation = ({
   cancelText = "No",
 }) => {
   return (
-    <div>
+    <div className="p-4">
       <p className="text-black m-5">
         Are You Sure Want To Reset Current Match?
       </p>

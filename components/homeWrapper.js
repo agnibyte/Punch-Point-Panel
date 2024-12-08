@@ -23,23 +23,24 @@ export default function HomeWrapper() {
     }
   };
 
-  useEffect(() => {
-    getCapturedImages();
-  }, []);
+  // useEffect(() => {
+  //   getCapturedImages();
+  // }, []);
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-end justify-center pr-8 relative">
+      <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-end justify-center pr-8 relative min-h-screen overflow-y-auto">
         {/* Karate Logo on Left Side */}
-        <img 
+        <img
           src="/images/karate.jpg" // Updated path to your .webp image
           alt="Karate Logo"
-          className="absolute left-8 top-8 w-16 h-16"  // Adjust the size and position as needed
+          className="absolute left-8 top-8 w-16 h-16" // Adjust the size and position as needed
         />
 
         <h1 className="text-5xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-white to-yellow-400 animate-textGlow">
           Punch Point Panel
         </h1>
+
         <nav className="flex flex-col space-y-4">
           <button
             onClick={onClickSetup}
@@ -66,6 +67,8 @@ export default function HomeWrapper() {
         modalOpen={setUpMatchModal}
         setModalOpen={setSetUpMatchModal}
         backDrop={false}
+        modalTitle="Sports Match Details Form"
+        modalSize="w-full md:w-3/4"
       >
         <MatchForm />
       </CommonModal>

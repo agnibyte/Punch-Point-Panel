@@ -69,8 +69,8 @@ export default function Scoreboard() {
 
   const handleTimerEnd = () => {
     setIsMatchStart(false);
-    // alert("Time's up for this round!");
     setMatchFinshModal(true);
+    setResetModal(false);
   };
 
   const handleResetMatch = () => {
@@ -94,16 +94,13 @@ export default function Scoreboard() {
       <header className="flex items-center justify-between p-4 shadow-md bg-opacity-50 bg-black fixed top-0 w-full z-10">
         <Link
           href={"/"}
-          className="text-2xl font-bold text-white tracking-wide uppercase"
+          className=" text-sm md:text-2xl font-bold text-white tracking-wide uppercase"
         >
           Punch Point Panel
         </Link>
         <div className="flex-1 flex justify-center items-center">
           {" "}
           {/* Centering the match number */}
-          <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300">
-            Match <span className="ml-2 text-3xl font-extrabold">428</span>
-          </div>
         </div>
         <button
           onClick={() => setResetModal(true)}
@@ -115,10 +112,12 @@ export default function Scoreboard() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
-        {" "}
+        <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 my-3">
+          Match <span className="ml-2 text-3xl font-extrabold">428</span>
+        </div>{" "}
         {/* Added pt-20 to offset the fixed header */}
         {/* Timer - Responsive and Desktop Placement */}
-        <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-[45%] md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
             duration={duration}
             onTimerEnd={handleTimerEnd}
@@ -135,7 +134,7 @@ export default function Scoreboard() {
           />
         </div>
         {/* Scores Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between w-full">
+        <div className="flex  md:flex-row items-center justify-between w-full">
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">

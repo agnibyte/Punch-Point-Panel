@@ -8,6 +8,7 @@ export default function CommonModal({
   backDrop = false,
   handleBackButtonClick,
   showBackButton,
+  modalSize = "w-11/12 md:w-[32%]",
 }) {
   const toggleModal = () => {
     setModalOpen(!modalOpen);
@@ -19,6 +20,13 @@ export default function CommonModal({
     }
   };
 
+  // modalSize === "sm"
+  //   ? "w-[32%]"
+  //   : modalSize === "md"
+  //   ? "w-1/2"
+  //   : modalSize === "lg"
+  //   ? "w-3/4"
+  //   : "w-[32%]";
   return (
     <>
       {modalOpen && (
@@ -28,7 +36,7 @@ export default function CommonModal({
           onClick={handleBackdropClick}
         >
           <div
-            className="bg-white rounded-lg shadow-lg w-full max-w-lg mx-auto"
+            className={`bg-white rounded-lg shadow-lg ${modalSize} mx-auto`}
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
           >
             {/* Modal Header */}
@@ -55,7 +63,7 @@ export default function CommonModal({
             )}
 
             {/* Modal Body */}
-            <div className="p-4">
+            <div className="">
               {React.cloneElement(children, { toggleModal })}
             </div>
           </div>
