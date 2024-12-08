@@ -84,7 +84,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-h-[70vh] overflow-y-auto rounded-lg space-y-8"
+        className="w-full max-h-[75vh] overflow-y-auto rounded-lg space-y-8"
       >
         {/* Title */}
         <div className="m-4 md:m-8">
