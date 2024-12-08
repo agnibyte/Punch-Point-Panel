@@ -49,7 +49,7 @@ export default function HomeWrapper() {
       <div className="bg-gradient-to-r from-red-500 to-blue-500 text-white flex flex-col items-end justify-center pr-8 relative min-h-screen overflow-y-auto">
         {/* Karate Logo on Left Side */}
         <img
-          src="/images/karate.jpg" // Updated path to your .webp image
+          src="/images/image.png" // Updated path to your .webp image
           alt="Karate Logo"
           className="absolute left-8 top-8 w-16 h-16" // Adjust the size and position as needed
         />
