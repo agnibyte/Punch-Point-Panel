@@ -1,24 +1,26 @@
+// pages/mardani-scoreboard.js
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 
 export default function MardaniScoreboard() {
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
   const [timer, setTimer] = useState(120); // 2 minutes in seconds
   const [isMatchOver, setIsMatchOver] = useState(false);
-  const router = useRouter();
-  const { participant } = router.query; // Get the participant name from the URL
+  const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer running state
 
   // Timer Logic
   useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
+    let interval;
+    if (isTimerRunning && timer > 0) {
+      interval = setInterval(() => {
         setTimer((prev) => prev - 1);
       }, 1000);
-      return () => clearInterval(interval);
-    } else {
+    } else if (timer === 0) {
       setIsMatchOver(true);
     }
-  }, [timer]);
+
+    // Clear interval when timer stops or reaches 0
+    return () => clearInterval(interval);
+  }, [isTimerRunning, timer]);
 
   const handleScoreChange = (refereeIndex, score) => {
     setRefereeScores((prev) => {
@@ -36,6 +38,18 @@ export default function MardaniScoreboard() {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
+  const toggleTimer = () => {
+    if (timer > 0) {
+      setIsTimerRunning((prev) => !prev);
+    }
+  };
+
+  const resetTimer = () => {
+    setTimer(120); // Reset to initial time (2 minutes)
+    setIsTimerRunning(false);
+    setIsMatchOver(false);
+  };
+
   return (
     <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white">
       {/* Header */}
@@ -43,7 +57,7 @@ export default function MardaniScoreboard() {
         Mardani Match Scoreboard
       </h1>
       <p className="text-lg mb-8 text-center">
-        Track scores and time for {participant ? participant : "the match"}.
+        Track scores and time for a dynamic match experience
       </p>
 
       {/* Timer */}
@@ -51,9 +65,25 @@ export default function MardaniScoreboard() {
         {isMatchOver ? (
           <span className="text-2xl font-bold">Match Over</span>
         ) : (
-          <span className="text-2xl font-bold">
-            Time Remaining: {formatTime(timer)}
-          </span>
+          <div className="text-2xl font-bold">
+            <span>Time Remaining: {formatTime(timer)}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Timer Control Button */}
+      <div className="flex justify-center gap-4 mt-8">
+        {!isMatchOver && (
+          <button
+            onClick={toggleTimer}
+            className={`px-6 py-3 rounded-lg text-white shadow-md transition-transform transform hover:scale-105 ${
+              isTimerRunning
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            {isTimerRunning ? "Stop Timer" : "Start Timer"}
+          </button>
         )}
       </div>
 
@@ -91,12 +121,30 @@ export default function MardaniScoreboard() {
         Total Score: {totalScore}
       </div>
 
+      {/* Timer Control Buttons */}
+      <div className="mt-8 flex space-x-4">
+        {!isMatchOver && (
+          <button
+            onClick={toggleTimer}
+            className="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-transform transform hover:scale-105"
+          >
+            {isTimerRunning ? "Stop Timer" : "Start Timer"}
+          </button>
+        )}
+        <button
+          onClick={resetTimer}
+          className="px-6 py-3 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-transform transform hover:scale-105"
+        >
+          Reset Timer
+        </button>
+      </div>
+
       {/* Back Button */}
       <button
         onClick={() => window.history.back()}
         className="mt-8 px-6 py-3 bg-white text-indigo-600 rounded-lg shadow-md hover:bg-gray-200 transition-transform transform hover:scale-105"
       >
-        Back to Setup
+        Back to Home
       </button>
     </div>
   );
