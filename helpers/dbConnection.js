@@ -16,7 +16,7 @@ export default function executeQuery(query, values = []) {
     try {
       database.query(query, values).then((results) => {
         database.end();
-        console.log("db connected successfully====");
+        // console.log("db connected successfully====");
         resolve(JSON.parse(JSON.stringify(results)));
       });
     } catch (error) {
