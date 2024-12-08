@@ -1,11 +1,15 @@
-// pages/mardani-scoreboard.js
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // Import useRouter hook
 
 export default function MardaniScoreboard() {
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
   const [timer, setTimer] = useState(120); // 2 minutes in seconds
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false); // Timer running state
+  const router = useRouter();
+
+  // Extract participant name from query parameters
+  const { participant } = router.query; // This will get the participant name from the URL
 
   // Timer Logic
   useEffect(() => {
@@ -59,6 +63,13 @@ export default function MardaniScoreboard() {
       <p className="text-lg mb-8 text-center">
         Track scores and time for a dynamic match experience
       </p>
+
+      {/* Display Participant Name */}
+      {participant && (
+        <p className="text-xl mb-6 text-center">
+          Participant: <strong>{participant}</strong>
+        </p>
+      )}
 
       {/* Timer */}
       <div className="flex items-center justify-center bg-white text-indigo-600 rounded-full px-6 py-3 shadow-lg mb-8">
