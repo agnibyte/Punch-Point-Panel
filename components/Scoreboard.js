@@ -222,3 +222,5 @@ export default function Scoreboard() {
     </div>
   );
 }
+
+// in this coponent logic will slightly change for states redScore and blueScore i want to take
