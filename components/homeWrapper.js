@@ -14,6 +14,7 @@ export default function HomeWrapper() {
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [participantName, setParticipantName] = useState("");
+  const [pendingMatches, setPendingMatches] = useState([]);
   const router = useRouter();
 
   const onClickSetup = () => {
@@ -48,7 +49,7 @@ export default function HomeWrapper() {
     }
   };
 
-  const pendingMatches = [
+  const pendingMatches1 = [
     { id: "1", label: "Match 1", value: "1" },
     { id: "2", label: "Match 2", value: "2" },
     { id: "3", label: "Match 3", value: "3" },
@@ -70,6 +71,23 @@ export default function HomeWrapper() {
     { id: "19", label: "Match 19", value: "19" },
     { id: "20", label: "Match 20", value: "20" },
   ];
+
+  const getAvailableMatches = async () => {
+    try {
+      const response = await postApiData("GET_AVAILABLE_MATCHES");
+      console.log("response GET_AVAILABLE_MATCHES", response);
+      if (response.status && response.data.length > 0) {
+        setPendingMatches(response.data);
+      } else {
+      }
+    } catch (error) {
+      console.error("Error occurred during form submission:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAvailableMatches();
+  }, []);
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">

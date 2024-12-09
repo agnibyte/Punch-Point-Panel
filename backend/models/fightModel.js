@@ -34,3 +34,28 @@ export function addNewFightMatchModel(request) {
       });
   });
 }
+
+export function getAvailableMatches() {
+  return new Promise((resolve, reject) => {
+    const selectQuery = `SELECT matchNo AS id, CONCAT('Match ', matchNo) AS label, matchNo AS value FROM ${FIGHT_MASTER} `;
+
+    executeQuery(selectQuery)
+      .then((result) => {
+        if (result && result.length > 0) {
+          // Map the result to match the required format
+          const pendingMatches = result.map((match) => ({
+            id: match.id.toString(),
+            label: match.label,
+            value: match.value.toString(),
+          }));
+          resolve(pendingMatches);
+        } else {
+          resolve([]); // No pending matches found
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching available matches:", error);
+        reject(error);
+      });
+  });
+}
