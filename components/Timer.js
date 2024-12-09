@@ -106,7 +106,7 @@ export default function Timer({
                 onClick={onclickShowResult}
                 className="bg-transparent border-2 border-yellow-500 text-yellow-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-yellow-500 hover:text-white transition"
               >
-                Result
+                Show Result
               </button>
             </div>
           )}
