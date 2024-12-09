@@ -35,7 +35,6 @@ export function getAvailableMatchesController(request) {
 
     getAvailableMatches()
       .then((result) => {
-        console.log("result", result);
         if (result.length > 0) {
           response.status = true;
           response.data = result;

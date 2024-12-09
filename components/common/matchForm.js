@@ -69,6 +69,8 @@ export default function MatchForm({ setSetUpMatchModal }) {
       // matchNo: matchNumber,
     };
     setApiLoading(true);
+    setShowSuccessMsg(false);
+
     setApiError("");
     console.log("payload ADD_FIGHT_MATCH", payload);
     try {

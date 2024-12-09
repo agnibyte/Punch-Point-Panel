@@ -11,6 +11,7 @@ export default function Timer({
   intervalId,
   setIntervalId,
   setIsMatchStart,
+  onclickShowResult = () => {},
 }) {
   useEffect(() => {
     // Effect to start the timer when isRunning changes to true
@@ -89,27 +90,21 @@ export default function Timer({
               Pause
             </button>
           ) : (
-            <div className="flex space-x-4 mt-6">
+            <div className="flex space-x-4 mt-6 justify-center">
               {/* Resume Button */}
-              <button
-                onClick={handleResume}
-                className="bg-transparent border-2 border-blue-500 text-blue-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-500 hover:text-white transition"
-              >
-                Resume
-              </button>
-
-              {/* New Button 1 
-              <button
-                // onClick={handleNewAction1}
-                className="bg-transparent border-2 border-green-500 text-green-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-green-500 hover:text-white transition"
-              >
-                Action 1
-              </button>*/}
+              {progress != "0" && (
+                <button
+                  onClick={handleResume}
+                  className="bg-transparent border-2 border-blue-500 text-blue-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-500 hover:text-white transition"
+                >
+                  Resume
+                </button>
+              )}
 
               {/* New Button 2 */}
               <button
-                // onClick={handleNewAction2}
-                className="bg-transparent border-2 border-red-500 text-red-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-red-500 hover:text-white transition"
+                onClick={onclickShowResult}
+                className="bg-transparent border-2 border-yellow-500 text-yellow-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-yellow-500 hover:text-white transition"
               >
                 Result
               </button>

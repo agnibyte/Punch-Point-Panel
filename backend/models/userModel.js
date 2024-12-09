@@ -72,7 +72,6 @@ export function verifyUserModel(user_id, password) {
         executeQuery(checkPasswordSql, [user_id, hashedPassword])
           .then((checkPasswordResult) => {
             if (checkPasswordResult.length > 0) {
-              console.log("checkPasswordResult", checkPasswordResult);
               // Password matches
               response.status = true;
               response.user = checkPasswordResult[0].role;

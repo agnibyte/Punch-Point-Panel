@@ -25,6 +25,7 @@ export default function Scoreboard() {
 
   const [resetModal, setResetModal] = useState(false);
   const [matchFinshModal, setMatchFinshModal] = useState(false);
+  const [winnerOfMatch, setWinnerOfMatch] = useState("");
   const totalRounds = 5;
   const winScore = 5;
   const [roundScores, setRoundScores] = useState(
@@ -81,7 +82,7 @@ export default function Scoreboard() {
   };
 
   const handleTimerEnd = () => {
-    setIsMatchStart(false);
+    // setIsMatchStart(false);
     // setMatchFinshModal(true);
     setResetModal(false);
   };
@@ -99,6 +100,18 @@ export default function Scoreboard() {
     setIsRunning(false); // Stop the timer
     clearInterval(intervalId);
     setIsMatchStart(false); //
+    setWinnerOfMatch("");
+  };
+  const onclickShowResult = () => {
+    setIsMatchStart(false);
+
+    if (redScore > blueScore) {
+      setWinnerOfMatch("red");
+    } else if (redScore < blueScore) {
+      setWinnerOfMatch("blue");
+    } else {
+      setWinnerOfMatch("tie");
+    }
   };
 
   return (
@@ -144,6 +157,7 @@ export default function Scoreboard() {
             handleReset={handleReset}
             setIsMatchStart={setIsMatchStart}
             setRoundScores={setRoundScores}
+            onclickShowResult={onclickShowResult}
           />
         </div>
         {/* Scores Section */}
@@ -164,6 +178,9 @@ export default function Scoreboard() {
                 Add Point +1
               </button>
             )}
+            {winnerOfMatch == "red" && (
+              <div className="text-white text-3xl">Winner</div>
+            )}
           </div>
 
           {/* Blue Score */}
@@ -182,8 +199,14 @@ export default function Scoreboard() {
                 Add Point +1
               </button>
             )}
+            {winnerOfMatch == "blue" && (
+              <div className="text-white text-3xl">Winner</div>
+            )}
           </div>
         </div>
+        {winnerOfMatch == "tie" && (
+          <div className="text-white text-3xl">Match is Tie</div>
+        )}
       </div>
 
       {/* Reset Modal */}
