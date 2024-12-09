@@ -35,6 +35,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
   const [apiLoading, setApiLoading] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
+  const [CreatedMatchNo, setCreatedMatchNo] = useState("");
 
   const filteredMatches =
     query === ""
@@ -64,15 +65,17 @@ export default function MatchForm({ setSetUpMatchModal }) {
 
     const payload = {
       ...updatedData,
-      matchName: formData.matchName,
-      matchNo: matchNumber,
+      // matchName: formData.matchName,
+      // matchNo: matchNumber,
     };
     setApiLoading(true);
     setApiError("");
     console.log("payload ADD_FIGHT_MATCH", payload);
     try {
       const response = await postApiData("ADD_FIGHT_MATCH", payload);
+      console.log("response", response);
       if (response.status) {
+        setCreatedMatchNo(response.matchNo);
         reset();
         setFormData(defaultFormData);
         setShowSuccessMsg(true);
@@ -91,10 +94,8 @@ export default function MatchForm({ setSetUpMatchModal }) {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-h-[75vh] overflow-y-auto rounded-lg space-y-8"
       >
-        <div className="m-4 md:m-8">
-          {/* <p className="text-center text-gray-600">
-            Please fill out the match and player details below.
-          </p> */}
+        {/* <div className="m-4 md:m-8">
+         
           <label className="block text-lg font-semibold text-gray-700 mb-2">
             Match Number
           </label>
@@ -153,7 +154,7 @@ export default function MatchForm({ setSetUpMatchModal }) {
               {errors.matchName.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 m-4 md:m-8">
           {/* Red Corner */}
@@ -358,9 +359,10 @@ export default function MatchForm({ setSetUpMatchModal }) {
               {getConstant("SOMETHING_WRONG_TRY_LATER")}
             </div>
           )}
-          {showSuccessMsg && (
-            <div className=" text-green-700 text-lg mt-3">
-              Match data added sucsesfully
+          {showSuccessMsg && CreatedMatchNo && (
+            <div className=" text-green-700 text-2xl my-6">
+              You have successfully created the match. The match number is:{" "}
+              {CreatedMatchNo}
             </div>
           )}
         </div>

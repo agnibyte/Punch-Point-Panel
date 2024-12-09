@@ -11,8 +11,7 @@ export function addNewFightMatchModel(request) {
       category: request.category,
       age: request.age,
       weight: request.weight,
-      matchNo: request.matchNo,
-      matchName: request.matchName,
+      // matchName: request.matchName,
     };
 
     const insertQuery = `INSERT INTO ${FIGHT_MASTER} SET ?`;
@@ -20,14 +19,17 @@ export function addNewFightMatchModel(request) {
     executeQuery(insertQuery, [tempObj])
       .then((insertResult) => {
         if (insertResult.affectedRows > 0) {
-          // console.log("Insert successful", insertResult);
-          resolve(true);
+          const matchNo = insertResult.insertId;
+          resolve({
+            success: true,
+            matchNo,
+          });
         } else {
           reject(new Error("Insertion failed"));
         }
       })
       .catch((error) => {
-        console.log("Error inserting fight match:", error);
+        console.error("Error inserting fight match:", error);
         reject(error);
       });
   });

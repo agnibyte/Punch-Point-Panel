@@ -10,6 +10,7 @@ export function addNewFightMatch(request) {
       .then((result) => {
         if (result) {
           response.status = true;
+          response.matchNo = result.matchNo;
           response.message = "Match added successfully";
           resolve(response);
         } else {
