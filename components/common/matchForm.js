@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 
 const matchNumbers = Array.from({ length: 50 }, (_, i) => `Match ${i + 1}`);
 
-export default function MatchForm({ setSetUpMatchModal }) {
+export default function MatchForm({ setSetUpMatchModal, setPendingMatches }) {
   const {
     register,
     handleSubmit,
@@ -77,7 +77,15 @@ export default function MatchForm({ setSetUpMatchModal }) {
       const response = await postApiData("ADD_FIGHT_MATCH", payload);
       console.log("response", response);
       if (response.status) {
-        setCreatedMatchNo(response.matchNo);
+        const { matchNo } = response;
+        setCreatedMatchNo(matchNo);
+        const newMatch = {
+          id: matchNo.toString(),
+          label: `Match ${matchNo}`,
+          value: matchNo.toString(),
+        };
+
+        setPendingMatches((prevMatches) => [...prevMatches, newMatch]);
         reset();
         setFormData(defaultFormData);
         setShowSuccessMsg(true);

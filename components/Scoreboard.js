@@ -7,9 +7,10 @@ import ResetConfirmation from "./common/resetConfirmation";
 import FinalResultModal from "./common/finalResultModal";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { postApiData } from "@/utils/services/apiService";
 
 export default function Scoreboard() {
-  const duration = 5;
+  const duration = 10;
   const router = useRouter();
 
   const [redScore, setRedScore] = useState(0);
@@ -113,6 +114,48 @@ export default function Scoreboard() {
       setWinnerOfMatch("tie");
     }
   };
+
+  useEffect(() => {
+    const fetchRefereeScores = async () => {
+      const payload = {
+        matchId: currentMatchNo,
+      };
+      console.log("payload GET_MATCH_SCORES", payload);
+      const response = await postApiData("GET_MATCH_SCORES", payload);
+      console.log("response", response);
+      const { data } = response;
+      if (response.status) {
+        let totalRed = 0;
+        let totalBlue = 0;
+
+        data.forEach((score) => {
+          totalRed +=
+            parseInt(score.referee1_score || 0) +
+            parseInt(score.referee3_score || 0) +
+            parseInt(score.referee5_red_score || 0);
+
+          totalBlue +=
+            parseInt(score.referee2_score || 0) +
+            parseInt(score.referee4_score || 0) +
+            parseInt(score.referee5_blue_score || 0);
+        });
+        console.log("totalRed", "totalBlue", totalRed, totalBlue);
+        setRedScore(totalRed);
+        setBlueScore(totalBlue);
+      } else {
+      }
+    };
+
+    let interval;
+    if (isMatchStart) {
+      fetchRefereeScores(); // Initial fetch
+      interval = setInterval(fetchRefereeScores, 10000); // Fetch every 10 seconds
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isMatchStart, currentMatchNo]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
@@ -245,4 +288,26 @@ export default function Scoreboard() {
   );
 }
 
-// in this coponent logic will slightly change for states redScore and blueScore i want to take
+// this is my scoreboard
+// CREATE TABLE `match_scores` (
+//   `id` int NOT NULL AUTO_INCREMENT,
+//   `match_id` int NOT NULL,
+//   `round_number` int NOT NULL,
+//   `red_score` int DEFAULT '0',
+//   `blue_score` int DEFAULT '0',
+//   `round_winner` enum('red','blue','none') DEFAULT 'none',
+//   `start_time` datetime DEFAULT NULL,
+//   `end_time` datetime DEFAULT NULL,
+//   `status` enum('active','completed') DEFAULT 'active',
+//   `referee1_score` varchar(20) DEFAULT NULL,
+//   `referee2_score` varchar(20) DEFAULT NULL,
+//   `referee3_score` varchar(20) DEFAULT NULL,
+//   `referee4_score` varchar(20) DEFAULT NULL,
+//   `referee5_red_score` varchar(20) DEFAULT NULL,
+//   `referee5_blue_score` varchar(20) DEFAULT NULL,
+//   PRIMARY KEY (`id`)
+// )
+// this is my table
+
+// like previous give me query function which will give me values of referee1_score referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score  that can wrap in api function  call that api for every 10 sec if match is started until timer is zero
+// also in this coponent logic change for states redScore and blueScore, red and blue scores are the totals of  referee1_score referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score

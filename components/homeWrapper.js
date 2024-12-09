@@ -11,6 +11,7 @@ export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const [sportsMardaniMatchModal, setSportsMardaniMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [participantName, setParticipantName] = useState("");
@@ -31,6 +32,8 @@ export default function HomeWrapper() {
 
   useEffect(() => {
     const isLoginCheck = getCookie("temp_auth");
+    const userCheck = getCookie("auth_role");
+    setIsAdmin(userCheck == "fight_admin");
 
     if (isLoginCheck != "true") {
       router.push("/login");
@@ -175,7 +178,10 @@ export default function HomeWrapper() {
         modalTitle="Sports Match Details Form"
         modalSize="w-[95%] md:w-3/4"
       >
-        <MatchForm setSetUpMatchModal={setSetUpMatchModal} />
+        <MatchForm
+          setSetUpMatchModal={setSetUpMatchModal}
+          setPendingMatches={setPendingMatches}
+        />
       </CommonModal>
 
       {/* Footer */}
@@ -205,7 +211,10 @@ export default function HomeWrapper() {
         modalTitle="Select Match No."
         // modalSize="w-[95%] md:w-3/4"
       >
-        <StartMardaniMatchModal pendingMatches={pendingMatches} />
+        <StartMardaniMatchModal
+          pendingMatches={pendingMatches}
+          isAdmin={isAdmin}
+        />
       </CommonModal>
     </div>
   );

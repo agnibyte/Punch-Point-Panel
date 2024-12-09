@@ -75,6 +75,7 @@ export function verifyUserModel(user_id, password) {
               // Password matches
               response.status = true;
               response.user = checkPasswordResult[0].role;
+              response.userId = checkPasswordResult[0].user_id ;
               resolve(response);
             } else {
               // Password doesn't match

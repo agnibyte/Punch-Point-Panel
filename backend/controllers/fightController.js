@@ -1,6 +1,8 @@
 import {
   addNewFightMatchModel,
   getAvailableMatches,
+  getRefereeScoresModel,
+  updateMatchScores,
 } from "../models/fightModel";
 
 export function addNewFightMatch(request) {
@@ -27,6 +29,7 @@ export function addNewFightMatch(request) {
       });
   });
 }
+
 export function getAvailableMatchesController(request) {
   return new Promise((resolve, reject) => {
     const response = {
@@ -41,6 +44,57 @@ export function getAvailableMatchesController(request) {
           resolve(response);
         } else {
           response.data = [];
+          response.message = "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getRefereeScoresController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+    const matchId = request.matchId;
+    console.log("matchId in getRefereeScoresController===", matchId);
+    getRefereeScoresModel(matchId)
+      .then((result) => {
+        console.log("result in getRefereeScoresController", result);
+        if (result.length > 0) {
+          response.status = true;
+          response.data = result;
+          resolve(response);
+        } else {
+          response.data = [];
+          response.message = "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function giveScoreforMatchController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+    
+    const matchId = request.matchId;
+    console.log("matchId in giveScoreforMatchController===", matchId);
+    updateMatchScores(matchId, request)
+      .then((result) => {
+        console.log("result in giveScoreforMatchController", result);
+        if (result.success) {
+          response.status = true;
+          resolve(response);
+        } else {
           response.message = "No matches were found";
           resolve(response);
         }

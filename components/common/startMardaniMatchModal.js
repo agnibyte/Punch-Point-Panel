@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import CustomSearch from "./customSearch";
 import { useRouter } from "next/router";
 
-export default function StartMardaniMatchModal({ pendingMatches }) {
+export default function StartMardaniMatchModal({ pendingMatches, isAdmin }) {
   // Initialize the React Hook Form
   const {
     control,
@@ -26,7 +26,7 @@ export default function StartMardaniMatchModal({ pendingMatches }) {
   const onClickContinue = () => {
     console.log("selectedMatch", selectedMatch);
     localStorage.setItem("currentMatch", selectedMatch.value);
-    router.push("/scoreboard");
+    router.push(isAdmin ? "/scoreboard" : "/referee");
   };
 
   return (

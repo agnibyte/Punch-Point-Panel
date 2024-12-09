@@ -29,6 +29,7 @@ const Login = ({ test }) => {
       if (response.status) {
         setCookie("temp_auth", true);
         setCookie("auth_role", response.user);
+        setCookie("auth_user", response.userId);
         router.push("/");
       } else {
         setLoginError(response.message);

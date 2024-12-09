@@ -1,0 +1,143 @@
+import { useEffect, useState } from "react";
+
+export default function Scoreboard() {
+  const [redScore, setRedScore] = useState(0);
+  const [blueScore, setBlueScore] = useState(0);
+  const [currentMatchNo, setCurrentMatchNo] = useState("");
+  const [isMatchStart, setIsMatchStart] = useState(false); // Track if the match is running
+
+  useEffect(() => {
+    const fetchRefereeScores = async () => {
+      try {
+        const response = await fetch(`/api/get-referee-scores?matchId=${currentMatchNo}`);
+        const { success, data } = await response.json();
+        if (success) {
+          let totalRed = 0;
+          let totalBlue = 0;
+
+          data.forEach((score) => {
+            totalRed += parseInt(score.referee1_score || 0) +
+                        parseInt(score.referee2_score || 0) +
+                        parseInt(score.referee3_score || 0) +
+                        parseInt(score.referee4_score || 0) +
+                        parseInt(score.referee5_red_score || 0);
+
+            totalBlue += parseInt(score.referee5_blue_score || 0);
+          });
+
+          setRedScore(totalRed);
+          setBlueScore(totalBlue);
+        }
+      } catch (error) {
+        console.error("Error fetching referee scores:", error);
+      }
+    };
+
+    let interval;
+    if (isMatchStart) {
+      fetchRefereeScores(); // Initial fetch
+      interval = setInterval(fetchRefereeScores, 10000); // Fetch every 10 seconds
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isMatchStart, currentMatchNo]);
+}
+
+
+like that api query  function give me for 
+CREATE TABLE `match_scores` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `match_id` int NOT NULL,
+  `round_number` int NOT NULL,
+  `red_score` int DEFAULT '0',
+  `blue_score` int DEFAULT '0',
+  `round_winner` enum('red','blue','none') DEFAULT 'none',
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `status` enum('active','completed') DEFAULT 'active',
+  `referee1_score` varchar(20) DEFAULT NULL,
+  `referee2_score` varchar(20) DEFAULT NULL,
+  `referee3_score` varchar(20) DEFAULT NULL,
+  `referee4_score` varchar(20) DEFAULT NULL,
+  `referee5_red_score` varchar(20) DEFAULT NULL,
+  `referee5_blue_score` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+this is my table to update the scores columns, iwill pass in payload which columns should be update with value
+
+
+
+ const payload = {
+      user_id: "fightadmin",
+      hash_password: "fightadmin@m1",
+      role: "fight_admin",
+    };
+
+
+  const payload = {
+      user_id: "fightreferee1",
+      hash_password: "fightreferee@m1",
+      role: "red_referee",
+    };
+
+ const payload = {
+      user_id: "fightreferee2",
+      hash_password: "fightreferee@m2",
+      role: "blue_referee",
+    };
+
+ const payload = {
+      user_id: "fightreferee3",
+      hash_password: "fightreferee@m3",
+      role: "red_referee",
+    };
+const payload = {
+      user_id: "fightreferee4",
+      hash_password: "fightreferee@m4",
+      role: "blue_referee",
+    };
+
+
+    CREATE TABLE `fight_master` (
+  `matchNo` int NOT NULL AUTO_INCREMENT,
+  `playerRed` varchar(60) NOT NULL,
+  `stateRed` varchar(60) NOT NULL,
+  `playerBlue` varchar(60) NOT NULL,
+  `stateBlue` varchar(60) NOT NULL,
+  `category` varchar(60) NOT NULL,
+  `age` varchar(60) NOT NULL,
+  `weight` varchar(60) NOT NULL,
+  `matchName` varchar(60) DEFAULT NULL,
+  `matchNoDetails` varchar(60) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`matchNo`)
+) 
+i have this two table  and 
+CREATE TABLE `match_scores` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `match_id` int NOT NULL,
+  `round_number` int NOT NULL,
+  `red_score` int DEFAULT '0',
+  `blue_score` int DEFAULT '0',
+  `round_winner` enum('red','blue','none') DEFAULT 'none',
+  `start_time` datetime DEFAULT NULL,
+  `end_time` datetime DEFAULT NULL,
+  `status` enum('active','completed') DEFAULT 'active',
+  `referee1_score` varchar(20) DEFAULT NULL,
+  `referee2_score` varchar(20) DEFAULT NULL,
+  `referee3_score` varchar(20) DEFAULT NULL,
+  `referee4_score` varchar(20) DEFAULT NULL,
+  `referee5_red_score` varchar(20) DEFAULT NULL,
+  `referee5_blue_score` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+
+when new entry in fight master i want crete entry for that match id in match_scores table 
+while creating entry in match_scores store referee1_score
+referee2_score
+referee3_score
+referee4_score
+referee5_red_score
+referee5_blue_score this values as 0

@@ -1,25 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCookie } from "@/utils/utils";
+import { postApiData } from "@/utils/services/apiService";
 
 export default function RefreeWrapper() {
   const router = useRouter();
   const [animation, setAnimation] = useState({ player: null, show: false });
   const [userRole, setUserRole] = useState();
+  const [userId, setUserId] = useState();
+  const [refereeRedScore, setRefereeRedScore] = useState(0);
+  const [refereeBlueScore, setRefereeBlueScore] = useState(0);
+  const [currentMatchNo, setCurrentMatchNo] = useState("");
+
   console.log("userRole", userRole);
 
   useEffect(() => {
-    const user = getCookie("auth_role");
-    setUserRole(user);
+    const userRole = getCookie("auth_role");
+    const user = getCookie("auth_user");
+    setUserRole(userRole);
+    setUserId(user);
+    const localMatchNo = localStorage.getItem("currentMatch");
+    if (localMatchNo) {
+      setCurrentMatchNo(localMatchNo);
+    } else {
+    }
   }, []);
 
   const handleGivePoint = (player) => {
+    if (player == "red") {
+      setRefereeRedScore((p) => p + 1);
+    } else {
+      setRefereeBlueScore((p) => p + 1);
+    }
+    fetchRefereeScores();
     setAnimation({ player, show: true });
 
     setTimeout(() => setAnimation({ player: null, show: false }), 1000);
 
     window.localStorage.setItem("lastPointPlayer", player);
-    window.dispatchEvent(new Event("storage")); 
+    window.dispatchEvent(new Event("storage"));
+  };
+
+  const fetchRefereeScores = async () => {
+    const payload = {
+      matchId: currentMatchNo,
+    };
+    if (userId == "fightreferee1") payload.referee1_score = 1;
+    if (userId == "fightreferee2") payload.referee2_score = 1;
+    if (userId == "fightreferee3") payload.referee3_score = 1;
+    if (userId == "fightreferee4") payload.referee4_score = 1;
+
+    console.log("payload UPDATED_MATCH_SCORES", payload);
+
+    console.log("payload UPDATED_MATCH_SCORES", payload);
+    const response = await postApiData("UPDATED_MATCH_SCORES", payload);
+    console.log("response", response);
+    const { data } = response;
+    if (response.status) {
+    } else {
+    }
   };
 
   return (

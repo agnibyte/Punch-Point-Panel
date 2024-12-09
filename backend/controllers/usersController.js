@@ -59,6 +59,7 @@ export function verifyUserController(request) {
         if (result.status) {
           response.status = true;
           response.user = result.user;
+          response.userId = result.userId;
           response.message = "User login successfully";
           resolve(response);
         } else {
