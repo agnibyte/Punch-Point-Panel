@@ -52,29 +52,6 @@ export default function HomeWrapper() {
     }
   };
 
-  const pendingMatches1 = [
-    { id: "1", label: "Match 1", value: "1" },
-    { id: "2", label: "Match 2", value: "2" },
-    { id: "3", label: "Match 3", value: "3" },
-    { id: "4", label: "Match 4", value: "4" },
-    { id: "5", label: "Match 5", value: "5" },
-    { id: "6", label: "Match 6", value: "6" },
-    { id: "7", label: "Match 7", value: "7" },
-    { id: "8", label: "Match 8", value: "8" },
-    { id: "9", label: "Match 9", value: "9" },
-    { id: "10", label: "Match 10", value: "10" },
-    { id: "11", label: "Match 11", value: "11" },
-    { id: "12", label: "Match 12", value: "12" },
-    { id: "13", label: "Match 13", value: "13" },
-    { id: "14", label: "Match 14", value: "14" },
-    { id: "15", label: "Match 15", value: "15" },
-    { id: "16", label: "Match 16", value: "16" },
-    { id: "17", label: "Match 17", value: "17" },
-    { id: "18", label: "Match 18", value: "18" },
-    { id: "19", label: "Match 19", value: "19" },
-    { id: "20", label: "Match 20", value: "20" },
-  ];
-
   const getAvailableMatches = async () => {
     try {
       const response = await postApiData("GET_AVAILABLE_MATCHES");
@@ -95,36 +72,35 @@ export default function HomeWrapper() {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">
       {/* Header */}
-<header className="w-full bg-white shadow-sm sticky top-0 z-10">
-  <div className="flex items-center justify-between px-6 py-4">
-    {/* Logo and Name */}
-    <div className="flex items-center space-x-4">
-      <img
-        src="/images/image.png"
-        alt="Logo"
-        className="h-8"
-      />
-      <span className="text-xl font-bold text-gray-800">
-        Sports Mardani Club Championship
-      </span>
-    </div>
+      <header className="w-full bg-white shadow-sm sticky top-0 z-10">
+        <div className="flex items-center justify-between px-6 py-4">
+          {/* Logo and Name */}
+          <div className="flex items-center space-x-4">
+            <img
+              src="/images/image.png"
+              alt="Logo"
+              className="h-8"
+            />
+            <span className="text-xl font-bold text-gray-800">
+              Sports Mardani Club Championship
+            </span>
+          </div>
 
-    {/* Logout Button */}
-    <div className="flex items-center space-x-4">
-      <button
-        onClick={() => {
-          document.cookie = "temp_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          router.push("/login");
-        }}
-        className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md transition hover:bg-red-600"
-      >
-        Logout
-      </button>
-    </div>
-  </div>
-</header>
-
-
+          {/* Logout Button */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => {
+                document.cookie =
+                  "temp_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                router.push("/login");
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md transition hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </header>
 
       {/* Main Content */}
       <main className="flex flex-col items-center w-full max-w-md mt-8">
@@ -151,23 +127,23 @@ export default function HomeWrapper() {
             Start Sports Mardani Fight
           </button>
           <Link
-            href="/results"
+            href="/matches"
             className="block w-full bg-yellow-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-600"
           >
-            View Results
+            View All Matches
           </Link>
-          <Link
+          {/* <Link
             href="/matches"
             className="block w-full bg-pink-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-red-600"
           >
             View Matches Score List
-          </Link>
-          <button
+          </Link> */}
+          {/* <button
             onClick={onClickSetupMardaniMatch}
             className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
           >
             Setup Traditional Mardani Match
-          </button>
+          </button> */}
         </nav>
       </main>
 

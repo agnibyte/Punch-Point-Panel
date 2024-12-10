@@ -96,7 +96,7 @@ export function updateMatchScores(matchId, payload) {
     // Start building the update query dynamically
     let updateQuery = "UPDATE match_scores SET ";
 
-    console.log('matchId, payload', matchId, payload)
+    console.log("matchId, payload", matchId, payload);
 
     const updateValues = [];
 
@@ -162,6 +162,25 @@ export function updateMatchScores(matchId, payload) {
       .catch((error) => {
         console.error("Error updating match scores:", error);
         reject(error);
+      });
+  });
+}
+
+export function getFightMasterData() {
+  return new Promise((resolve, reject) => {
+    const selectQuery = "SELECT * FROM fight_master";
+
+    executeQuery(selectQuery)
+      .then((result) => {
+        if (result && result.length > 0) {
+          resolve(result); // Resolve with the fetched data
+        } else {
+          resolve([]); // No data found, return an empty array
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching fight master data:", error);
+        reject(error); // Reject with the error
       });
   });
 }

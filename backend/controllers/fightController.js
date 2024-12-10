@@ -1,6 +1,7 @@
 import {
   addNewFightMatchModel,
   getAvailableMatches,
+  getFightMasterData,
   getRefereeScoresModel,
   updateMatchScores,
 } from "../models/fightModel";
@@ -85,7 +86,7 @@ export function giveScoreforMatchController(request) {
     const response = {
       status: false,
     };
-    
+
     const matchId = request.matchId;
     console.log("matchId in giveScoreforMatchController===", matchId);
     updateMatchScores(matchId, request)
@@ -95,6 +96,30 @@ export function giveScoreforMatchController(request) {
           response.status = true;
           resolve(response);
         } else {
+          response.message = "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getAllMatchesController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+
+    getFightMasterData()
+      .then((result) => {
+        if (result.length > 0) {
+          response.status = true;
+          response.data = result;
+          resolve(response);
+        } else {
+          response.data = [];
           response.message = "No matches were found";
           resolve(response);
         }
