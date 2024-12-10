@@ -94,14 +94,22 @@ export default function HomeWrapper() {
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">
-{/* Header */}
+      {/* Header */}
 <header className="w-full bg-white shadow-sm sticky top-0 z-10">
   <div className="flex items-center justify-between px-6 py-4">
-    <img
-      src="/images/image.png"
-      alt="Logo"
-      className="h-8"
-    />
+    {/* Logo and Name */}
+    <div className="flex items-center space-x-4">
+      <img
+        src="/images/image.png"
+        alt="Logo"
+        className="h-8"
+      />
+      <span className="text-xl font-bold text-gray-800">
+        Sports Mardani Club Championship
+      </span>
+    </div>
+
+    {/* Logout Button */}
     <div className="flex items-center space-x-4">
       <button
         onClick={() => {
@@ -115,6 +123,7 @@ export default function HomeWrapper() {
     </div>
   </div>
 </header>
+
 
 
       {/* Main Content */}
