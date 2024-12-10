@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { postApiData } from "@/utils/services/apiService";
+import Link from "next/link";
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -29,12 +30,34 @@ export default function AllMatchesWrapper() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <div className="min-h-screen bg-white p-4 sm:p-6 lg:p-0">
+      {/* Header Section */}
+      <header className="w-full bg-white shadow-md sticky top-0 z-10">
+        <div className="flex items-center justify-between px-6 py-4">
+          {/* Logo and Name */}
+          <div className="flex items-center space-x-4">
+            <img
+              src="/images/image.png"
+              alt="Logo"
+              className="h-10"
+            />
+            <Link
+              href={"/"}
+              className="text-2xl font-bold text-gray-800"
+            >
+              Sports Mardani Club Championship
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto bg-white  rounded-lg p-6">
         <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
           Match List
         </h1>
 
+        {/* Loading / Error State */}
         {loading ? (
           <div className="flex justify-center items-center">
             <div className="text-indigo-600 font-bold text-xl">
@@ -50,22 +73,22 @@ export default function AllMatchesWrapper() {
             <table className="table-auto w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-gray-700 text-gray-100">
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Match No
                   </th>
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Red Corner
                   </th>
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Blue Corner
                   </th>
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Category
                   </th>
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Age
                   </th>
-                  <th className="border border-gray-400 px-8 py-4 text-left text-lg font-bold">
+                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-extrabold">
                     Weight (kg)
                   </th>
                 </tr>
@@ -80,22 +103,22 @@ export default function AllMatchesWrapper() {
                         : "bg-white hover:bg-gray-100"
                     }
                   >
-                    <td className="border border-gray-400 px-8 py-4 text-gray-800 font-bold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-extrabold text-lg">
                       {match.matchNo}
                     </td>
-                    <td className="border border-gray-400 px-8 py-4 text-red-600 font-semibold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-red-600 font-extrabold text-lg">
                       {match.playerRed} ({match.stateRed})
                     </td>
-                    <td className="border border-gray-400 px-8 py-4 text-blue-600 font-semibold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-blue-600 font-extrabold text-lg">
                       {match.playerBlue} ({match.stateBlue})
                     </td>
-                    <td className="border border-gray-400 px-8 py-4 text-gray-800 font-semibold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-bold text-base">
                       {match.category}
                     </td>
-                    <td className="border border-gray-400 px-8 py-4 text-gray-800 font-semibold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-bold text-base">
                       {match.age}
                     </td>
-                    <td className="border border-gray-400 px-8 py-4 text-gray-800 font-semibold text-base">
+                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-bold text-base">
                       {match.weight}
                     </td>
                   </tr>
