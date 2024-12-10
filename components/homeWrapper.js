@@ -94,17 +94,28 @@ export default function HomeWrapper() {
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">
-      {/* Header */}
-      <header className="w-full bg-white shadow-sm sticky top-0 z-10">
-        <div className="flex items-center justify-between px-6 py-4">
-          <img
-            src="/images/image.png"
-            alt="Logo"
-            className="h-8"
-          />
-          <div className="flex items-center space-x-4"></div>
-        </div>
-      </header>
+{/* Header */}
+<header className="w-full bg-white shadow-sm sticky top-0 z-10">
+  <div className="flex items-center justify-between px-6 py-4">
+    <img
+      src="/images/image.png"
+      alt="Logo"
+      className="h-8"
+    />
+    <div className="flex items-center space-x-4">
+      <button
+        onClick={() => {
+          document.cookie = "temp_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          router.push("/login");
+        }}
+        className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md transition hover:bg-red-600"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+</header>
+
 
       {/* Main Content */}
       <main className="flex flex-col items-center w-full max-w-md mt-8">
