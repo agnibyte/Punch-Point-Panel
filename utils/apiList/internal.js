@@ -6,4 +6,5 @@ export const internalList = {
   UPDATED_MATCH_SCORES: "/api/fight/updated-match-scores",
   REGISTER_NEW_USER: "/api/user/add-new-user",
   VERIFY_USER: "/api/user/verify-user",
+  GET_AVAILABLE_MATCHES: "api/matches/view-all-matches"
 };

@@ -120,7 +120,7 @@ export default function HomeWrapper() {
         <nav className="flex flex-col space-y-4">
           <button
             onClick={onClickSetup}
-            className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="px-6 py-3 bg-green-500 text-black-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
             Setup Match
           </button>
@@ -135,6 +135,12 @@ export default function HomeWrapper() {
             className="block w-full bg-yellow-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-600"
           >
             View Results
+          </Link>
+          <Link
+            href="/matches"
+            className="block w-full bg-pink-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-red-600"
+          >
+            View Matches Score List
           </Link>
           <button
             onClick={onClickSetupMardaniMatch}
