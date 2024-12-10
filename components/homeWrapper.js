@@ -3,9 +3,10 @@ import Link from "next/link";
 import CommonModal from "./common/commonModal";
 import MatchForm from "./common/matchForm";
 import { postApiData } from "@/utils/services/apiService";
-import { getCookie } from "@/utils/utils";
+import { deleteCookie, getCookie } from "@/utils/utils";
 import { useRouter } from "next/router";
 import StartMardaniMatchModal from "./common/startMardaniMatchModal";
+import ProfileButton from "./common/profileButton";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
@@ -69,11 +70,16 @@ export default function HomeWrapper() {
     getAvailableMatches();
   }, []);
 
+  const onclickLogOut = () => {
+    deleteCookie("temp_auth");
+    router.push("/login");
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">
       {/* Header */}
       <header className="w-full bg-white shadow-sm sticky top-0 z-10">
-        <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center justify-between px-6 py-3">
           {/* Logo and Name */}
           <div className="flex items-center space-x-4">
             <img
@@ -86,19 +92,10 @@ export default function HomeWrapper() {
             </span>
           </div>
 
-          {/* Logout Button */}
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => {
-                document.cookie =
-                  "temp_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                router.push("/login");
-              }}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md transition hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </div>
+          <ProfileButton
+            username={"gixgk"}
+            onclickLogOut={onclickLogOut}
+          />
         </div>
       </header>
 

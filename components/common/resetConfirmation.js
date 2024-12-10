@@ -5,12 +5,11 @@ const ResetConfirmation = ({
   onCancel,
   confirmText = "Yes",
   cancelText = "No",
+  title = "",
 }) => {
   return (
     <div className="p-4">
-      <p className="text-black m-5">
-        Are You Sure Want To Reset Current Match?
-      </p>
+      {title !== "" && <p className="text-black m-5">{title}</p>}
 
       <div className="flex justify-end">
         <div className="flex space-x-4 my-3 ">

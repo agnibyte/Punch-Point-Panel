@@ -12,22 +12,35 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       animation: {
-        textGlow: 'textGlow 3s ease-in-out infinite',
+        textGlow: "textGlow 3s ease-in-out infinite",
       },
       keyframes: {
         textGlow: {
-          '0%': {
-            textShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 18px rgba(255, 255, 255, 0.7)',
-            color: '#ffffff',
+          "0%": {
+            textShadow:
+              "0 0 8px rgba(255, 255, 255, 0.8), 0 0 18px rgba(255, 255, 255, 0.7)",
+            color: "#ffffff",
           },
-          '50%': {
-            textShadow: '0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px #ffeb3b',
-            color: '#ffeb3b',
+          "50%": {
+            textShadow:
+              "0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.7), 0 0 40px #ffeb3b",
+            color: "#ffeb3b",
           },
-          '100%': {
-            textShadow: '0 0 8px rgba(255, 255, 255, 0.8), 0 0 18px rgba(255, 255, 255, 0.7)',
-            color: '#ffffff',
+          "100%": {
+            textShadow:
+              "0 0 8px rgba(255, 255, 255, 0.8), 0 0 18px rgba(255, 255, 255, 0.7)",
+            color: "#ffffff",
           },
+        },
+      },
+
+      animation: {
+        dropdown: "dropdown 0.3s ease-out forwards",
+      },
+      keyframes: {
+        dropdown: {
+          "0%": { transform: "scale(0.9)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
     },

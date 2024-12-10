@@ -46,3 +46,15 @@ export const getUniqueKey = (length = 12) => {
   }
   return result;
 };
+
+export const convertFirstLetterCapital = (text) => {
+  if (typeof text == "undefined" || typeof text == "null" || text == null)
+    return "";
+
+  try {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  } catch (error) {
+    console.log("catch", error);
+    return "";
+  }
+};
