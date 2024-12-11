@@ -37,7 +37,8 @@ export function addNewFightMatchModel(request) {
 
 export function getAvailableMatches() {
   return new Promise((resolve, reject) => {
-    const selectQuery = `SELECT matchNo AS id, CONCAT('Match ', matchNo) AS label, matchNo AS value FROM ${FIGHT_MASTER} `;
+    // const selectQuery = `SELECT matchNo AS id, CONCAT('Match ', matchNo) AS label, matchNo AS value FROM ${FIGHT_MASTER} `;
+    const selectQuery = `SELECT  ms.match_id AS id,  CONCAT('Match ', ms.match_id) AS label,  ms.match_id AS value FROM ${MATCH_SCORES} AS ms WHERE ms.status = 'active'`;
 
     executeQuery(selectQuery)
       .then((result) => {
@@ -63,7 +64,7 @@ export function getAvailableMatches() {
 export function getRefereeScoresModel(matchId) {
   return new Promise((resolve, reject) => {
     const query = `
-    SELECT referee1_score, referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score FROM ${MATCH_SCORES} WHERE match_id = ? ; `;
+    SELECT referee1_score, referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score FROM ${MATCH_SCORES} WHERE match_id = ? AND status = 'active' ; `;
     // AND status = 'active'
     console.log("matchId in model===", matchId);
 
@@ -94,7 +95,7 @@ export async function getRefereeScores(matchId) {
 export function updateMatchScores(matchId, payload) {
   return new Promise((resolve, reject) => {
     // Start building the update query dynamically
-    let updateQuery = "UPDATE match_scores SET ";
+    let updateQuery = `UPDATE ${MATCH_SCORES} SET `;
 
     console.log("matchId, payload", matchId, payload);
 
@@ -146,7 +147,7 @@ export function updateMatchScores(matchId, payload) {
     updateQuery = updateQuery.slice(0, -2);
 
     // Add the WHERE condition
-    updateQuery += " WHERE match_id = ? ";
+    updateQuery += " WHERE match_id = ? AND status = 'active' ";
     updateValues.push(matchId);
 
     // Execute the query
@@ -156,7 +157,11 @@ export function updateMatchScores(matchId, payload) {
         if (result.affectedRows > 0) {
           resolve({ success: true, message: "Scores updated successfully" });
         } else {
-          resolve({ success: false, message: "No match found to update" });
+          resolve({
+            success: false,
+            message:
+              "No active match found with the provided match ID. Scores could not be updated.",
+          });
         }
       })
       .catch((error) => {

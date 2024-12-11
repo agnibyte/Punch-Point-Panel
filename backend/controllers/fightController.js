@@ -96,7 +96,7 @@ export function giveScoreforMatchController(request) {
           response.status = true;
           resolve(response);
         } else {
-          response.message = "No matches were found";
+          response.message = result.message || "No matches were found";
           resolve(response);
         }
       })

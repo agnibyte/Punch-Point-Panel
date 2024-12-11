@@ -65,7 +65,7 @@ export default function Scoreboard() {
     handleRoundScoreChange(currentRound);
   }, [redScore, blueScore]);
 
-  const fetchRefereeScores = async (team, value) => {
+  const fetchRefereeScores = async (team = "", value = 0, finalObj = {}) => {
     const payload = {
       matchId: parseInt(currentMatchNo),
     };
@@ -74,8 +74,9 @@ export default function Scoreboard() {
       payload.referee5_red_score = 1;
     if (userId == "fightadmin" && team === "blue")
       payload.referee5_blue_score = 1;
-
-    console.log("payload UPDATED_MATCH_SCORES", payload);
+    if (Object.keys(finalObj).length > 0) {
+      Object.assign(payload, finalObj);
+    }
 
     console.log("payload UPDATED_MATCH_SCORES", payload);
     const response = await postApiData("UPDATED_MATCH_SCORES", payload);
@@ -83,7 +84,8 @@ export default function Scoreboard() {
     if (response.status) {
       if (team === "red") {
         setRedScore((prev) => Math.max(0, prev + value));
-      } else {
+      }
+      if (team === "blue") {
         setBlueScore((prev) => Math.max(0, prev + value));
       }
     } else {
@@ -137,14 +139,21 @@ export default function Scoreboard() {
   };
   const onclickShowResult = () => {
     setIsMatchStart(false);
-
+    let tempWinner = "";
     if (redScore > blueScore) {
-      setWinnerOfMatch("red");
+      tempWinner = "red";
     } else if (redScore < blueScore) {
-      setWinnerOfMatch("blue");
+      tempWinner = "blue";
     } else {
-      setWinnerOfMatch("tie");
+      tempWinner = "none";
     }
+    const tempPaylod = {
+      red_score: redScore,
+      blue_score: blueScore,
+      temp_winner: tempWinner,
+      status: "completed",
+    };
+    fetchRefereeScores("", 0, tempPaylod);
   };
 
   useEffect(() => {
@@ -280,7 +289,7 @@ export default function Scoreboard() {
             )}
           </div>
         </div>
-        {winnerOfMatch == "tie" && (
+        {winnerOfMatch == "none" && (
           <div className="text-white text-3xl">Match is Tie</div>
         )}
       </div>

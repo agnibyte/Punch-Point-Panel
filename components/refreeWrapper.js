@@ -11,6 +11,7 @@ export default function RefreeWrapper() {
   const [refereeRedScore, setRefereeRedScore] = useState(0);
   const [refereeBlueScore, setRefereeBlueScore] = useState(0);
   const [currentMatchNo, setCurrentMatchNo] = useState("");
+  const [apiError, setApiError] = useState("");
 
   console.log("userRole", userRole);
 
@@ -58,6 +59,7 @@ export default function RefreeWrapper() {
     const { data } = response;
     if (response.status) {
     } else {
+      setApiError(response.message);
     }
   };
 
@@ -67,37 +69,43 @@ export default function RefreeWrapper() {
         Referee Panel
       </h1>
 
-      <div className="flex flex-wrap justify-center items-center w-full gap-10">
-        {/* Player 1 Button */}
-        {(userRole == "fight_admin" || userRole == "red_referee") && (
-          <button
-            onClick={() => handleGivePoint("red")}
-            className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
-          >
-            Player 1
-            {animation.show && animation.player === "red" && (
-              <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                +1
-              </div>
-            )}
-          </button>
-        )}
+      {apiError ? (
+        <div className="flex justify-center items-center w-full text-red-600 text-lg font-semibold">
+          {apiError}
+        </div>
+      ) : (
+        <div className="flex flex-wrap justify-center items-center w-full gap-10">
+          {/* Player 1 Button */}
+          {(userRole == "fight_admin" || userRole == "red_referee") && (
+            <button
+              onClick={() => handleGivePoint("red")}
+              className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+            >
+              Player 1
+              {animation.show && animation.player === "red" && (
+                <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                  +1
+                </div>
+              )}
+            </button>
+          )}
 
-        {/* Player 2 Button */}
-        {(userRole == "fight_admin" || userRole == "blue_referee") && (
-          <button
-            onClick={() => handleGivePoint("blue")}
-            className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
-          >
-            Player 2
-            {animation.show && animation.player === "blue" && (
-              <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
-                +1
-              </div>
-            )}
-          </button>
-        )}
-      </div>
+          {/* Player 2 Button */}
+          {(userRole == "fight_admin" || userRole == "blue_referee") && (
+            <button
+              onClick={() => handleGivePoint("blue")}
+              className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+            >
+              Player 2
+              {animation.show && animation.player === "blue" && (
+                <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
+                  +1
+                </div>
+              )}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
