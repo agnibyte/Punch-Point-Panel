@@ -13,6 +13,8 @@ export default function HomeWrapper() {
   const [sportsMardaniMatchModal, setSportsMardaniMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userId, setUserId] = useState("");
+
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [participantName, setParticipantName] = useState("");
@@ -34,8 +36,9 @@ export default function HomeWrapper() {
   useEffect(() => {
     const isLoginCheck = getCookie("temp_auth");
     const userCheck = getCookie("auth_role");
+    const user = getCookie("auth_user");
     setIsAdmin(userCheck == "fight_admin");
-
+    setUserId(user)
     if (isLoginCheck != "true") {
       router.push("/login");
       setIsLogin(false);
@@ -93,7 +96,7 @@ export default function HomeWrapper() {
           </div>
 
           <ProfileButton
-            username={"gixgk"}
+            username={userId}
             onclickLogOut={onclickLogOut}
           />
         </div>
