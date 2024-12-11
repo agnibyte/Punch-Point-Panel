@@ -91,7 +91,7 @@ export default function HomeWrapper() {
               className="h-8"
             />
             <span className="text-xl font-bold text-gray-800">
-              Sports Mardani Club Championship
+              Mardani Sports Federation India Championship 2024
             </span>
           </div>
 
