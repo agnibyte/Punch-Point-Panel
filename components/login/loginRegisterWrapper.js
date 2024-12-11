@@ -147,7 +147,7 @@ const Login = ({ test }) => {
         <div className="mt-6 text-center text-sm text-gray-500">
           <p>
             All rights are reserved to{" "}
-            <span className="font-semibold text-gray-700">Sports Mardani</span>{" "}
+            <span className="font-semibold text-gray-700">Mardani Sports Federation India</span>{" "}
             and{" "}
             <a
               href="https://www.agni-byte.com"
