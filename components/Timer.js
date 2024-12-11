@@ -12,6 +12,7 @@ export default function Timer({
   setIntervalId,
   setIsMatchStart,
   onclickShowResult = () => {},
+  winnerOfMatch,
 }) {
   useEffect(() => {
     // Effect to start the timer when isRunning changes to true
@@ -92,7 +93,7 @@ export default function Timer({
           ) : (
             <div className="flex space-x-4 mt-6 justify-center">
               {/* Resume Button */}
-              {progress != "0" && (
+              {progress != "0" && winnerOfMatch == "" && (
                 <button
                   onClick={handleResume}
                   className="bg-transparent border-2 border-blue-500 text-blue-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-blue-500 hover:text-white transition"

@@ -8,6 +8,7 @@ import FinalResultModal from "./common/finalResultModal";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService";
+import { getCookie } from "@/utils/utils";
 
 export default function Scoreboard() {
   const duration = 10;
@@ -27,6 +28,8 @@ export default function Scoreboard() {
   const [resetModal, setResetModal] = useState(false);
   const [matchFinshModal, setMatchFinshModal] = useState(false);
   const [winnerOfMatch, setWinnerOfMatch] = useState("");
+  const [userId, setUserId] = useState("");
+
   const totalRounds = 5;
   const winScore = 5;
   const [roundScores, setRoundScores] = useState(
@@ -38,6 +41,9 @@ export default function Scoreboard() {
   );
 
   useEffect(() => {
+    const user = getCookie("auth_user");
+    setUserId(user);
+
     const localMatchNo = localStorage.getItem("currentMatch");
     if (localMatchNo) {
       setCurrentMatchNo(localMatchNo);
@@ -47,16 +53,42 @@ export default function Scoreboard() {
   }, []);
 
   const handleScoreChange = (team, value) => {
-    if (team === "red") {
-      setRedScore((prev) => Math.max(0, prev + value));
-    } else {
-      setBlueScore((prev) => Math.max(0, prev + value));
-    }
+    fetchRefereeScores(team, value);
+    // if (team === "red") {
+    //   setRedScore((prev) => Math.max(0, prev + value));
+    // } else {
+    //   setBlueScore((prev) => Math.max(0, prev + value));
+    // }
   };
 
   useEffect(() => {
     handleRoundScoreChange(currentRound);
   }, [redScore, blueScore]);
+
+  const fetchRefereeScores = async (team, value) => {
+    const payload = {
+      matchId: parseInt(currentMatchNo),
+    };
+
+    if (userId == "fightadmin" && team === "red")
+      payload.referee5_red_score = 1;
+    if (userId == "fightadmin" && team === "blue")
+      payload.referee5_blue_score = 1;
+
+    console.log("payload UPDATED_MATCH_SCORES", payload);
+
+    console.log("payload UPDATED_MATCH_SCORES", payload);
+    const response = await postApiData("UPDATED_MATCH_SCORES", payload);
+    console.log("response after upadte", response);
+    if (response.status) {
+      if (team === "red") {
+        setRedScore((prev) => Math.max(0, prev + value));
+      } else {
+        setBlueScore((prev) => Math.max(0, prev + value));
+      }
+    } else {
+    }
+  };
 
   const handleRoundScoreChange = (round) => {
     const newRoundScores = [...roundScores];
@@ -149,7 +181,7 @@ export default function Scoreboard() {
     let interval;
     if (isMatchStart) {
       fetchRefereeScores(); // Initial fetch
-      interval = setInterval(fetchRefereeScores, 10000); // Fetch every 10 seconds
+      interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
     }
 
     return () => {
@@ -201,6 +233,7 @@ export default function Scoreboard() {
             setIsMatchStart={setIsMatchStart}
             setRoundScores={setRoundScores}
             onclickShowResult={onclickShowResult}
+            winnerOfMatch={winnerOfMatch}
           />
         </div>
         {/* Scores Section */}
