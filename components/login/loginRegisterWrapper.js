@@ -162,7 +162,7 @@ const Login = ({ test }) => {
                 className="absolute right-3 top-3 text-gray-500 focus:outline-none"
                 aria-label="Toggle Password Visibility"
               >
-                {showPassword ? "👁" : "👁‍🗨"}
+                {showPassword ? "👀" : "🙈"}
               </button>
             </div>
             {errors.password && (

@@ -108,7 +108,7 @@ const CreateUser = () => {
                 onClick={togglePasswordVisibility}
                 className="absolute right-3 top-3 text-gray-500"
               >
-                {showPassword ? "Hide" : "Show"}
+                {showPassword ? "👀" : "🙈"}
               </button>
             </div>
             {errors.password && (
