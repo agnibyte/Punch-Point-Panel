@@ -85,7 +85,7 @@ export default function HomeWrapper() {
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo and Name */}
           <div className="flex items-center space-x-4">
-            <image
+            <img
               src="/images/image.png"
               alt="Logo"
               className="h-8"

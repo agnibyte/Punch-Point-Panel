@@ -44,7 +44,7 @@ const Login = ({ test }) => {
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <image
+          <img
             src="/images/image.png"
             alt="Logo"
             className="w-32 h-auto"
