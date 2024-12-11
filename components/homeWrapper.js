@@ -104,7 +104,7 @@ export default function HomeWrapper() {
 
       {/* Main Content */}
       <main className="flex flex-col items-center w-full max-w-md mt-8">
-        <image
+        <img
           src="/images/image.png"
           alt="Karate Logo"
           className="rounded-full border w-40 h-40 mb-4"
