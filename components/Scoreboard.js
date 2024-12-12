@@ -229,7 +229,7 @@ export default function Scoreboard() {
           href={"/"}
           className=" text-sm md:text-2xl font-bold text-white tracking-wide uppercase"
         >
-          Punch Point Panel
+          Mardani Sports Scoreboard
         </Link>
         <div className="flex-1 flex justify-center items-center">
           {" "}
@@ -308,7 +308,7 @@ export default function Scoreboard() {
               </button>
             )}
             {winnerOfMatch == "blue" && (
-              <div className="text-white text-3xl">Winner</div>
+              <div className="text-white text-5xl">Winner</div>
             )}
           </div>
         </div>

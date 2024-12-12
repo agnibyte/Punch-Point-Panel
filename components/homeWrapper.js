@@ -91,7 +91,7 @@ export default function HomeWrapper() {
               className="h-8"
             />
             <span className="text-xl font-bold text-gray-800">
-              Mardani Sports Federation India Championship 2024
+              3rd National Mardani Sports Championship 2024
             </span>
           </div>
 
@@ -110,7 +110,7 @@ export default function HomeWrapper() {
           className="rounded-full border w-40 h-40 mb-4"
         />
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Punch Point Panel
+        Mardani Sports 
         </h1>
 
         <nav className="flex flex-col space-y-4">

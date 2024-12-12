@@ -93,7 +93,7 @@ export default function MardaniScoreboard() {
     <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white">
       {/* Header */}
       <h1 className="text-5xl font-extrabold mb-4 text-center">
-        Mardani Match Scoreboard
+        Traditional Mardani  Scoreboard
       </h1>
 
       {/* Display Participant Name */}
@@ -145,7 +145,7 @@ export default function MardaniScoreboard() {
             key={index}
             className="bg-white text-gray-900 p-6 rounded-lg shadow-lg hover:shadow-xl transition-transform transform hover:scale-105"
           >
-            <h2 className="text-xl font-bold mb-2">Referee {index + 1}</h2>
+            <h2 className="text-3xl font-bold mb-2">पंच {index + 1}</h2>
             {!isMatchOver ? (
               <div className="overflow-auto max-h-36">
                 <input
@@ -154,7 +154,7 @@ export default function MardaniScoreboard() {
                   max="10" // Limit input to 10 digits
                   value={score}
                   onChange={(e) => handleScoreChange(index, parseInt(e.target.value) || 0)}
-                  className="mt-4 w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                  className="mt-4 text-3xl w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
                   placeholder="Enter Score"
                 />
               </div>
