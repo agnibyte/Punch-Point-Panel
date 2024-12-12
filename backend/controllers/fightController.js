@@ -2,6 +2,7 @@ import {
   addNewFightMatchModel,
   getAvailableMatches,
   getFightMasterData,
+  getRedAndBluePlayers,
   getRefereeScoresModel,
   updateMatchScores,
 } from "../models/fightModel";
@@ -121,6 +122,30 @@ export function getAllMatchesController(request) {
         } else {
           response.data = [];
           response.message = "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+
+export function getRedAndBluePlayersController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+
+    getRedAndBluePlayers(request.matchId)
+      .then((result) => {
+        if (result.length > 0) {
+          response.status = true;
+          response.data = result;
+          resolve(response);
+        } else {
+          response.data = [];
+          response.message = "No matches data found";
           resolve(response);
         }
       })

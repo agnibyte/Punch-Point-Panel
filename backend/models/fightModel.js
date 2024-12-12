@@ -190,3 +190,24 @@ export function getFightMasterData() {
       });
   });
 }
+
+export function getRedAndBluePlayers(matchId) {
+  return new Promise((resolve, reject) => {
+    const selectQuery =
+      "SELECT playerRed, playerBlue FROM fight_master WHERE matchNo =? ";
+
+    executeQuery(selectQuery, [matchId])
+      .then((result) => {
+        if (result && result.length > 0) {
+          resolve(result);
+        } else {
+          resolve([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching red and blue player names:", error);
+
+        reject(error);
+      });
+  });
+}

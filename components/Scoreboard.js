@@ -29,6 +29,9 @@ export default function Scoreboard() {
   const [matchFinshModal, setMatchFinshModal] = useState(false);
   const [winnerOfMatch, setWinnerOfMatch] = useState("");
   const [userId, setUserId] = useState("");
+  const [redPlayer, setRedPlayer] = useState("");
+  const [bluePlayer, setBluePlayer] = useState("");
+  const [updateScoreError, setUpdateScoreError] = useState("");
 
   const totalRounds = 5;
   const winScore = 5;
@@ -50,6 +53,20 @@ export default function Scoreboard() {
     } else {
       // router.push("/");
     }
+
+    const getDataFunction = async () => {
+      const response = await postApiData("GET_CURRENT_MATCH_DATA", {
+        matchId: parseInt(localMatchNo),
+      });
+      console.log("match Data", response);
+      if (response.status && response.data.length > 0) {
+        setRedPlayer(response.data[0].playerRed);
+        setBluePlayer(response.data[0].playerBlue);
+      } else {
+        setUpdateScoreError(response.message);
+      }
+    };
+    getDataFunction();
   }, []);
 
   const handleScoreChange = (team, value) => {
@@ -77,6 +94,7 @@ export default function Scoreboard() {
     if (Object.keys(finalObj).length > 0) {
       Object.assign(payload, finalObj);
     }
+    setUpdateScoreError("");
 
     console.log("payload UPDATED_MATCH_SCORES", payload);
     const response = await postApiData("UPDATED_MATCH_SCORES", payload);
@@ -89,6 +107,7 @@ export default function Scoreboard() {
         setBlueScore((prev) => Math.max(0, prev + value));
       }
     } else {
+      setUpdateScoreError(response.message);
     }
   };
 
@@ -156,47 +175,47 @@ export default function Scoreboard() {
     fetchRefereeScores("", 0, tempPaylod);
   };
 
-  useEffect(() => {
-    const fetchRefereeScores = async () => {
-      const payload = {
-        matchId: currentMatchNo,
-      };
-      console.log("payload GET_MATCH_SCORES", payload);
-      const response = await postApiData("GET_MATCH_SCORES", payload);
-      console.log("response", response);
-      const { data } = response;
-      if (response.status) {
-        let totalRed = 0;
-        let totalBlue = 0;
+  // useEffect(() => {
+  //   const fetchRefereeScores = async () => {
+  //     const payload = {
+  //       matchId: currentMatchNo,
+  //     };
+  //     console.log("payload GET_MATCH_SCORES", payload);
+  //     const response = await postApiData("GET_MATCH_SCORES", payload);
+  //     console.log("response", response);
+  //     const { data } = response;
+  //     if (response.status) {
+  //       let totalRed = 0;
+  //       let totalBlue = 0;
 
-        data.forEach((score) => {
-          totalRed +=
-            parseInt(score.referee1_score || 0) +
-            parseInt(score.referee3_score || 0) +
-            parseInt(score.referee5_red_score || 0);
+  //       data.forEach((score) => {
+  //         totalRed +=
+  //           parseInt(score.referee1_score || 0) +
+  //           parseInt(score.referee3_score || 0) +
+  //           parseInt(score.referee5_red_score || 0);
 
-          totalBlue +=
-            parseInt(score.referee2_score || 0) +
-            parseInt(score.referee4_score || 0) +
-            parseInt(score.referee5_blue_score || 0);
-        });
-        console.log("totalRed", "totalBlue", totalRed, totalBlue);
-        setRedScore(totalRed);
-        setBlueScore(totalBlue);
-      } else {
-      }
-    };
+  //         totalBlue +=
+  //           parseInt(score.referee2_score || 0) +
+  //           parseInt(score.referee4_score || 0) +
+  //           parseInt(score.referee5_blue_score || 0);
+  //       });
+  //       console.log("totalRed", "totalBlue", totalRed, totalBlue);
+  //       setRedScore(totalRed);
+  //       setBlueScore(totalBlue);
+  //     } else {
+  //     }
+  //   };
 
-    let interval;
-    if (isMatchStart) {
-      fetchRefereeScores(); // Initial fetch
-      interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
-    }
+  //   let interval;
+  //   if (isMatchStart) {
+  //     fetchRefereeScores(); // Initial fetch
+  //     interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
+  //   }
 
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isMatchStart, currentMatchNo]);
+  //   return () => {
+  //     if (interval) clearInterval(interval);
+  //   };
+  // }, [isMatchStart, currentMatchNo]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
@@ -250,7 +269,7 @@ export default function Scoreboard() {
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
-              Player 1
+              {redPlayer || "please wait"}
             </div>
             <div className="bg-red-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {redScore}
@@ -271,7 +290,7 @@ export default function Scoreboard() {
           {/* Blue Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-blue-200 text-center uppercase mb-3">
-              Player 2
+              {bluePlayer || "please wait"}
             </div>
             <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {blueScore}
@@ -291,6 +310,9 @@ export default function Scoreboard() {
         </div>
         {winnerOfMatch == "none" && (
           <div className="text-white text-3xl">Match is Tie</div>
+        )}
+        {updateScoreError != "" && (
+          <div className="text-white text-3xl">{updateScoreError}</div>
         )}
       </div>
 
