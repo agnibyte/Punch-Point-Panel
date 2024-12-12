@@ -94,6 +94,10 @@ export default function Scoreboard() {
     if (Object.keys(finalObj).length > 0) {
       Object.assign(payload, finalObj);
     }
+    if (finalObj.temp_winner) {
+      setWinnerOfMatch(finalObj.temp_winner)
+      
+    }
     setUpdateScoreError("");
 
     console.log("payload UPDATED_MATCH_SCORES", payload);
@@ -175,47 +179,47 @@ export default function Scoreboard() {
     fetchRefereeScores("", 0, tempPaylod);
   };
 
-  // useEffect(() => {
-  //   const fetchRefereeScores = async () => {
-  //     const payload = {
-  //       matchId: currentMatchNo,
-  //     };
-  //     console.log("payload GET_MATCH_SCORES", payload);
-  //     const response = await postApiData("GET_MATCH_SCORES", payload);
-  //     console.log("response", response);
-  //     const { data } = response;
-  //     if (response.status) {
-  //       let totalRed = 0;
-  //       let totalBlue = 0;
+  useEffect(() => {
+    const fetchRefereeScores = async () => {
+      const payload = {
+        matchId: currentMatchNo,
+      };
+      console.log("payload GET_MATCH_SCORES", payload);
+      const response = await postApiData("GET_MATCH_SCORES", payload);
+      console.log("response", response);
+      const { data } = response;
+      if (response.status) {
+        let totalRed = 0;
+        let totalBlue = 0;
 
-  //       data.forEach((score) => {
-  //         totalRed +=
-  //           parseInt(score.referee1_score || 0) +
-  //           parseInt(score.referee3_score || 0) +
-  //           parseInt(score.referee5_red_score || 0);
+        data.forEach((score) => {
+          totalRed +=
+            parseInt(score.referee1_score || 0) +
+            parseInt(score.referee3_score || 0) +
+            parseInt(score.referee5_red_score || 0);
 
-  //         totalBlue +=
-  //           parseInt(score.referee2_score || 0) +
-  //           parseInt(score.referee4_score || 0) +
-  //           parseInt(score.referee5_blue_score || 0);
-  //       });
-  //       console.log("totalRed", "totalBlue", totalRed, totalBlue);
-  //       setRedScore(totalRed);
-  //       setBlueScore(totalBlue);
-  //     } else {
-  //     }
-  //   };
+          totalBlue +=
+            parseInt(score.referee2_score || 0) +
+            parseInt(score.referee4_score || 0) +
+            parseInt(score.referee5_blue_score || 0);
+        });
+        console.log("totalRed", "totalBlue", totalRed, totalBlue);
+        setRedScore(totalRed);
+        setBlueScore(totalBlue);
+      } else {
+      }
+    };
 
-  //   let interval;
-  //   if (isMatchStart) {
-  //     fetchRefereeScores(); // Initial fetch
-  //     interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
-  //   }
+    let interval;
+    if (isMatchStart) {
+      fetchRefereeScores(); // Initial fetch
+      interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
+    }
 
-  //   return () => {
-  //     if (interval) clearInterval(interval);
-  //   };
-  // }, [isMatchStart, currentMatchNo]);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isMatchStart, currentMatchNo]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
