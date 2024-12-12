@@ -90,11 +90,18 @@ export default function MardaniScoreboard() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-r from-purple-600 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white">
+    <div className="p-6 bg-gradient-to-r from-pink-600 to-indigo-600 min-h-screen flex flex-col items-center justify-center text-white">
       {/* Header */}
-      <h1 className="text-5xl font-extrabold mb-4 text-center">
-        Traditional Mardani  Scoreboard
-      </h1>
+      <header className="w-full flex items-center justify-between bg-white text-indigo-600 p-4 shadow-md">
+        <div className="flex items-center gap-4">
+          <img
+            src="/images/image.png" // Replace with the actual logo path
+            alt="Mardani Logo"
+            className="h-12 w-12 object-cover"
+          />
+          <h1 className="text-3xl items-center font-extrabold">Traditional Mardani Sports</h1>
+        </div>
+      </header>
 
       {/* Display Participant Name */}
       {participant && (
