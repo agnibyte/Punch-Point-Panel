@@ -7,7 +7,9 @@ export default function EnhancedScoreboard() {
   const router = useRouter();
   const { participant } = router.query;
 
-  const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
+  const initialScores = [0,0,0,0];
+
+  const [refereeScores, setRefereeScores] = useState(initialScores);
   const [timer, setTimer] = useState(120);
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -39,6 +41,7 @@ export default function EnhancedScoreboard() {
     setTimer(120);
     setIsTimerRunning(false);
     setIsMatchOver(false);
+    setRefereeScores(initialScores); // Reset referee scores
   };
 
   const downloadPDF = () => {
@@ -65,7 +68,7 @@ export default function EnhancedScoreboard() {
         <h1 className="text-4xl md:text-6xl font-bold flex items-center gap-4">
           <FaTrophy className="text-yellow-400" size={48} /> Traditional Mardani Sports Scoreboard
         </h1>
-        <button onClick={() => router.back()} className="flex items-center gap-4 text-xl md:text-2xl">
+        <button onClick={() => router.back()} className="flex items-center gap-4 text-xl md:text-xl">
           <FaArrowLeft size={24} /> Back
         </button>
       </header>
@@ -112,7 +115,7 @@ export default function EnhancedScoreboard() {
             onClick={resetTimer}
             className="px-8 py-4 text-2xl font-bold rounded-lg bg-blue-600 hover:bg-blue-700"
           >
-            Reset Timer
+            Reset Timer & Scores
           </button>
           <button
             onClick={downloadPDF}
@@ -138,10 +141,10 @@ export default function EnhancedScoreboard() {
               <input
                 type="number"
                 max={10}
-                min={0}
+                min={5}
                 value={score}
                 onChange={(e) => {
-                  const value = Math.min(Math.max(parseInt(e.target.value) || 0, 0), 10);
+                  const value = Math.min(Math.max(parseInt(e.target.value) || 5, 5), 10);
                   setRefereeScores((prev) => {
                     const updatedScores = [...prev];
                     updatedScores[index] = value;
