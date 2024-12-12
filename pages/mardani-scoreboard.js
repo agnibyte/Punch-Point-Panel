@@ -141,10 +141,10 @@ export default function EnhancedScoreboard() {
               <input
                 type="number"
                 max={10}
-                min={5}
+                min={0}
                 value={score}
                 onChange={(e) => {
-                  const value = Math.min(Math.max(parseInt(e.target.value) || 5, 5), 10);
+                  const value = Math.min(Math.max(parseInt(e.target.value) || 0, 0), 10);
                   setRefereeScores((prev) => {
                     const updatedScores = [...prev];
                     updatedScores[index] = value;
