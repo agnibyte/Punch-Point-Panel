@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import { useRouter } from "next/router";
-import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
+import { FaStopwatch, FaTrophy, FaArrowLeft, FaSun, FaMoon } from "react-icons/fa";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
   const { participant } = router.query;
 
-  const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
+  const [refereeScores, setRefereeScores] = useState([5, 5, 5, 5]); // Default scores start at 5
   const [timer, setTimer] = useState(120);
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   useEffect(() => {
     let interval;
@@ -24,7 +25,11 @@ export default function EnhancedScoreboard() {
   }, [isTimerRunning, timer]);
 
   const handleScoreChange = (refereeIndex, score) => {
-    if (!isTimerRunning || isMatchOver) return;
+    if (score < 5 || score > 10) {
+      alert("The score must be between 5 and 10.");
+      return;
+    }
+
     setRefereeScores((prev) => {
       const updatedScores = [...prev];
       updatedScores[refereeIndex] = score;
@@ -66,24 +71,52 @@ export default function EnhancedScoreboard() {
     doc.save(`${participant}_scoreboard.pdf`);
   };
 
+  const toggleTheme = () => setIsDarkTheme((prev) => !prev);
+
+  const themeClasses = isDarkTheme
+    ? "bg-gradient-to-br from-pink-500 to-blue-700 text-white"
+    : "bg-white text-black";
+
+  const refereeColors = ["bg-orange-500", "bg-red-500", "bg-green-500", "bg-blue-500 text-white"];
+
+  // Function to handle keyboard input for changing scores
+  const handleKeyDown = (e, refereeIndex) => {
+    const value = parseInt(e.target.value, 10);
+    if (value >= 5 && value <= 10) {
+      handleScoreChange(refereeIndex, value);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black to-gray-800 text-white flex flex-col items-center justify-center p-6">
+    <div className={`min-h-screen ${themeClasses} flex flex-col items-center justify-center p-6`}>
       {/* Header */}
-      <header className="w-full bg-black bg-opacity-80 p-4 flex items-center justify-between shadow-md">
-        <h1 className="text-4xl font-bold text-yellow-400 flex items-center gap-2">
+      <header className="w-full bg-opacity-80 p-4 flex items-center justify-between shadow-md">
+        <h1 className="text-4xl font-bold flex items-center gap-2 text-yellow-400">
           <FaTrophy /> Mardani Sports
         </h1>
-        <button onClick={() => router.back()} className="text-white text-lg flex items-center gap-2">
-          <FaArrowLeft /> Back
-        </button>
+        <div className="flex gap-4">
+          <button onClick={() => router.back()} className="text-lg flex items-center gap-2">
+            <FaArrowLeft /> Back
+          </button>
+          <button
+            onClick={toggleTheme}
+            className={`p-2 rounded-full ${isDarkTheme ? "bg-yellow-400 text-black" : "bg-gray-800 text-white"}`}
+          >
+            {isDarkTheme ? <FaSun /> : <FaMoon />}
+          </button>
+        </div>
       </header>
 
       {/* Main Scoreboard */}
       <div className="mt-8 text-center">
-        {participant && <h2 className="text-2xl font-semibold bg-yellow-400 text-black p-3 rounded-md">Participant: {participant}</h2>}
+        {participant && (
+          <h2 className={`text-2xl font-semibold p-3 rounded-md ${isDarkTheme ? "bg-yellow-400 text-black" : "bg-black text-white"}`}>
+            Participant: {participant}
+          </h2>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 items-center">
           {/* Timer */}
-          <div className="bg-black text-green-400 p-8 rounded-xl shadow-xl">
+          <div className="p-8 rounded-xl shadow-xl bg-gray-900 text-green-400">
             <h3 className="text-4xl font-bold flex items-center gap-2">
               <FaStopwatch /> {isMatchOver ? "Match Over" : "Time Remaining"}
             </h3>
@@ -91,7 +124,7 @@ export default function EnhancedScoreboard() {
           </div>
 
           {/* Total Score */}
-          <div className="bg-black text-yellow-400 p-8 rounded-xl shadow-xl">
+          <div className="p-8 rounded-xl shadow-xl bg-gray-900 text-yellow-400">
             <h3 className="text-4xl font-bold">Total Score</h3>
             <p className="text-6xl mt-4 font-extrabold">{totalScore}</p>
           </div>
@@ -101,18 +134,23 @@ export default function EnhancedScoreboard() {
       {/* Referee Scores */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
         {refereeScores.map((score, index) => (
-          <div key={index} className="bg-gray-900 p-6 rounded-lg shadow-lg text-center">
-            <h4 className="text-2xl font-bold text-yellow-400">Referee {index + 1}</h4>
-            {!isMatchOver ? (
-              <input
-                type="number"
-                value={score}
-                onChange={(e) => handleScoreChange(index, parseInt(e.target.value) || 0)}
-                className="w-full mt-4 text-center text-xl bg-black text-white border border-yellow-400 rounded-lg p-2 focus:ring-2 focus:ring-yellow-500"
-              />
-            ) : (
-              <p className="mt-4 text-2xl font-bold text-green-400">Final Score: {score}</p>
-            )}
+          <div
+            key={index}
+            className={`p-6 rounded-lg shadow-lg text-center ${refereeColors[index]} transform hover:scale-105`}
+          >
+            <h4 className="text-2xl font-bold">Referee {index + 1}</h4>
+            <input
+              type="number"
+              value={score}
+              onChange={(e) => {
+                const value = parseInt(e.target.value, 10) || 5; // Default to 5 if input is invalid
+                handleScoreChange(index, value);
+              }}
+              onKeyDown={(e) => handleKeyDown(e, index)}
+              className="w-full mt-4 text-center text-xl bg-white text-black border border-gray-400 rounded-lg p-2 focus:ring-2 focus:ring-yellow-500"
+              min="5"
+              max="10"
+            />
           </div>
         ))}
       </div>
@@ -122,7 +160,7 @@ export default function EnhancedScoreboard() {
         {!isMatchOver && (
           <button
             onClick={toggleTimer}
-            className={`px-6 py-3 rounded-lg text-white font-bold transition ${
+            className={`px-6 py-3 rounded-lg font-bold transition ${
               isTimerRunning ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
             }`}
           >
