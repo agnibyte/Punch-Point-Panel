@@ -138,12 +138,12 @@ export default function HomeWrapper() {
           >
             View Matches Score List
           </Link> */}
-          {/* <button
+          { <button
             onClick={onClickSetupMardaniMatch}
             className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
           >
             Setup Traditional Mardani Match
-          </button> */}
+          </button> }
         </nav>
       </main>
 
