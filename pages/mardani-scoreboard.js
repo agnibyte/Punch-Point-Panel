@@ -91,8 +91,8 @@ export default function EnhancedScoreboard() {
     <div className={`min-h-screen ${themeClasses} flex flex-col items-center justify-center p-6`}>
       {/* Header */}
       <header className="w-full bg-opacity-80 p-4 flex items-center justify-between shadow-md">
-        <h1 className="text-4xl font-bold flex items-center gap-2 text-yellow-400">
-          <FaTrophy /> Mardani Sports
+        <h1 className="text-4xl font-bold flex items-center gap-2 text-white-400">
+          <FaTrophy /> Traditional Mardani Sports
         </h1>
         <div className="flex gap-4">
           <button onClick={() => router.back()} className="text-lg flex items-center gap-2">
