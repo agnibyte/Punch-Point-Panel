@@ -103,12 +103,20 @@ export default function MardaniScoreboard() {
         </div>
       </header>
 
-      {/* Display Participant Name */}
-      {participant && (
-        <div className="text-xl font-semibold mt-4">
-          <span>Participant: {participant}</span>
-        </div>
-      )}
+        {/* Display Participant Name */}
+{participant && (
+  <div className="relative group text-center mt-4">
+    <div className="bg-white text-indigo-600 text-2xl font-semibold px-6 py-4 rounded-lg shadow-md inline-block cursor-pointer">
+      Participant: {participant}
+    </div>
+    <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-72 p-4 bg-gray-800 text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+      <p className="font-medium">Participant Info</p>
+      <p>{participant}</p>
+    </div>
+  </div>
+)}
+
+
 
       {/* Score and Timer Boxes - Horizontally Aligned */}
       <div className="flex space-x-12 mt-12">
