@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import StartMardaniMatchModal from "./common/startMardaniMatchModal";
 import ProfileButton from "./common/profileButton";
 import TraditionalMardaniSetUpForm from "./common/traditionalMardaniSetUpForm";
+import HomeFooter from "./common/homeFooter";
+import HomeHeader from "./common/homeHeader";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
@@ -15,6 +17,7 @@ export default function HomeWrapper() {
   const [isLogin, setIsLogin] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState("");
+  const [refereePath, setRefereePath] = useState("/");
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [pendingMatches, setPendingMatches] = useState([]);
@@ -24,8 +27,9 @@ export default function HomeWrapper() {
     setSetUpMatchModal(true);
   };
 
-  const onClickSportsMardaniFight = () => {
+  const onClickSportsMardaniFight = (destination) => {
     setSportsMardaniMatchModal(true);
+    setRefereePath(destination);
   };
 
   const onClickSetupMardaniMatch = () => {
@@ -69,26 +73,10 @@ export default function HomeWrapper() {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center">
       {/* Header */}
-      <header className="w-full bg-white shadow-sm sticky top-0 z-10">
-        <div className="flex items-center justify-between px-6 py-3">
-          {/* Logo and Name */}
-          <div className="flex items-center space-x-4">
-            <img
-              src="/images/image.png"
-              alt="Logo"
-              className="h-8"
-            />
-            <span className="text-xl font-bold text-gray-800">
-              3rd National Mardani Sports Championship 2024
-            </span>
-          </div>
-
-          <ProfileButton
-            username={userId}
-            onclickLogOut={onclickLogOut}
-          />
-        </div>
-      </header>
+      <HomeHeader
+        userId={userId}
+        onclickLogOut={onclickLogOut}
+      />
 
       {/* Main Content */}
       <main className="flex flex-col items-center w-full max-w-md mt-8">
@@ -109,10 +97,16 @@ export default function HomeWrapper() {
             Setup Match
           </button>
           <button
-            onClick={onClickSportsMardaniFight}
+            onClick={() => onClickSportsMardaniFight("/scoreboard")}
             className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
           >
-            Start Sports Mardani Fight
+            Start Sports Mardani Fight - ScoreBoard
+          </button>
+          <button
+            onClick={() => onClickSportsMardaniFight("referee")}
+            className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+          >
+            Start Sports Mardani Fight - Referee
           </button>
           <Link
             href="/matches"
@@ -165,27 +159,7 @@ export default function HomeWrapper() {
       </CommonModal>
 
       {/* Footer */}
-      <footer className="w-full bg-white py-6 mt-auto">
-        <div className="text-center text-sm text-gray-500">
-          <p>
-            All rights are reserved to{" "}
-            <span className="font-semibold text-gray-700">
-              {" "}
-              Mardani Sports Federation India{" "}
-            </span>{" "}
-            and{" "}
-            <a
-              href="https://www.agni-byte.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700"
-            >
-              AgniByte Private Limited
-            </a>{" "}
-            2024.
-          </p>
-        </div>
-      </footer>
+      <HomeFooter />
 
       <CommonModal
         modalOpen={sportsMardaniMatchModal}
@@ -196,7 +170,7 @@ export default function HomeWrapper() {
       >
         <StartMardaniMatchModal
           pendingMatches={pendingMatches}
-          isAdmin={isAdmin}
+          refereePath={refereePath}
         />
       </CommonModal>
     </div>
