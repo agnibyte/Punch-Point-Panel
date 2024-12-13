@@ -29,8 +29,8 @@ export default function Scoreboard() {
   const [matchFinshModal, setMatchFinshModal] = useState(false);
   const [winnerOfMatch, setWinnerOfMatch] = useState("");
   const [userId, setUserId] = useState("");
-  const [redPlayer, setRedPlayer] = useState("");
-  const [bluePlayer, setBluePlayer] = useState("");
+  const [redPlayer, setRedPlayer] = useState({ name: "", state: "" });
+  const [bluePlayer, setBluePlayer] = useState({ name: "", state: "" });
   const [updateScoreError, setUpdateScoreError] = useState("");
 
   const totalRounds = 5;
@@ -60,8 +60,14 @@ export default function Scoreboard() {
       });
       console.log("match Data", response);
       if (response.status && response.data.length > 0) {
-        setRedPlayer(response.data[0].playerRed);
-        setBluePlayer(response.data[0].playerBlue);
+        setRedPlayer({
+          name: response.data[0].playerRed,
+          state: response.data[0].stateRed,
+        });
+        setBluePlayer({
+          name: response.data[0].playerBlue,
+          state: response.data[0].stateBlue,
+        });
       } else {
         setUpdateScoreError(response.message);
       }
@@ -145,11 +151,7 @@ export default function Scoreboard() {
   };
 
   const handleResetMatch = () => {
-    setRedScore(0);
-    setBlueScore(0);
-    setCurrentRound(1);
-    setRoundScores(Array(5).fill({ red: 0, blue: 0 })); // Reset round scores
-    handleReset();
+    router.push("/");
   };
 
   const handleReset = () => {
@@ -158,6 +160,9 @@ export default function Scoreboard() {
     clearInterval(intervalId);
     setIsMatchStart(false); //
     setWinnerOfMatch("");
+    setRedScore(0);
+    setBlueScore(0);
+    setCurrentRound(1);
   };
   const onclickShowResult = () => {
     setIsMatchStart(false);
@@ -177,6 +182,8 @@ export default function Scoreboard() {
     };
     fetchRefereeScores("", 0, tempPaylod);
   };
+
+  const progress = (timeLeft.asSeconds() / duration) * 100;
 
   useEffect(() => {
     const fetchRefereeScores = async () => {
@@ -210,7 +217,7 @@ export default function Scoreboard() {
     };
 
     let interval;
-    if (isMatchStart) {
+    if (isMatchStart && progress != "0") {
       fetchRefereeScores(); // Initial fetch
       interval = setInterval(fetchRefereeScores, 5000); // Fetch every 10 seconds
     }
@@ -236,9 +243,9 @@ export default function Scoreboard() {
         </div>
         <button
           onClick={() => setResetModal(true)}
-          className="bg-gradient-to-r from-red-600 via-red-500 to-red-400 hover:from-red-800 hover:to-red-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+          className="bg-gradient-to-r from-red-600 via-red-500 to-red-400 hover:from-red-800 hover:to-red-600 text-white font-bold p-3 rounded-lg transition duration-300"
         >
-          Reset Match
+          Start New Match
         </button>
       </header>
 
@@ -260,11 +267,11 @@ export default function Scoreboard() {
             setIsRunning={setIsRunning}
             intervalId={intervalId}
             setIntervalId={setIntervalId}
-            handleReset={handleReset}
             setIsMatchStart={setIsMatchStart}
             setRoundScores={setRoundScores}
             onclickShowResult={onclickShowResult}
             winnerOfMatch={winnerOfMatch}
+            progress={progress}
           />
         </div>
         {/* Scores Section */}
@@ -272,7 +279,9 @@ export default function Scoreboard() {
           {/* Red Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
-              {redPlayer || "please wait"}
+              {redPlayer.name
+                ? `${redPlayer.name} (${redPlayer.state})`
+                : "please wait"}
             </div>
             <div className="bg-red-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {redScore}
@@ -301,7 +310,9 @@ export default function Scoreboard() {
           {/* Blue Score */}
           <div className="flex flex-col items-center w-5/12 md:w-1/3">
             <div className="text-3xl font-bold text-blue-200 text-center uppercase mb-3">
-              {bluePlayer || "please wait"}
+              {bluePlayer.name
+                ? `${bluePlayer.name} (${bluePlayer.state})`
+                : "please wait"}
             </div>
             <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
               {blueScore}
@@ -349,7 +360,7 @@ export default function Scoreboard() {
         backDrop={false}
       >
         <ResetConfirmation
-          title={"Are You Sure Want To Reset Current Match?"}
+          title={"Are You Sure Want To Start New Match?"}
           onConfirm={() => {
             handleResetMatch();
             setResetModal(false);
@@ -368,7 +379,6 @@ export default function Scoreboard() {
         <FinalResultModal
           onExit={() => {
             setMatchFinshModal(false);
-            handleResetMatch();
           }}
           redScore={redScore}
           blueScore={blueScore}

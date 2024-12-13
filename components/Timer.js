@@ -13,6 +13,7 @@ export default function Timer({
   setIsMatchStart,
   onclickShowResult = () => {},
   winnerOfMatch,
+  progress,
 }) {
   useEffect(() => {
     // Effect to start the timer when isRunning changes to true
@@ -60,7 +61,6 @@ export default function Timer({
     .padStart(2, "0")}`;
 
   // Calculate progress percentage for the loading bar
-  const progress = (timeLeft.asSeconds() / duration) * 100;
 
   return (
     <div className="text-center bg-gray-900 text-white py-5 md:py-8 px-24 rounded-lg shadow-lg">
@@ -103,12 +103,14 @@ export default function Timer({
               )}
 
               {/* New Button 2 */}
-              <button
-                onClick={onclickShowResult}
-                className="bg-transparent border-2 border-yellow-500 text-yellow-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-yellow-500 hover:text-white transition"
-              >
-                Show Result
-              </button>
+              {winnerOfMatch == "" && (
+                <button
+                  onClick={onclickShowResult}
+                  className="bg-transparent border-2 border-yellow-500 text-yellow-500 font-bold py-3 px-6 rounded-lg text-lg hover:bg-yellow-500 hover:text-white transition"
+                >
+                  Show Result
+                </button>
+              )}
             </div>
           )}
           {/*} <div className="mt-4 flex justify-center gap-4">

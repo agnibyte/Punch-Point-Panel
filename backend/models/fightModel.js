@@ -194,7 +194,7 @@ export function getFightMasterData() {
 export function getRedAndBluePlayers(matchId) {
   return new Promise((resolve, reject) => {
     const selectQuery =
-      "SELECT playerRed, playerBlue FROM fight_master WHERE matchNo =? ";
+      "SELECT playerRed, playerBlue, stateBlue, stateRed FROM fight_master WHERE matchNo =? ";
 
     executeQuery(selectQuery, [matchId])
       .then((result) => {
