@@ -32,6 +32,8 @@ export default function Scoreboard() {
   const [redPlayer, setRedPlayer] = useState({ name: "", state: "" });
   const [bluePlayer, setBluePlayer] = useState({ name: "", state: "" });
   const [updateScoreError, setUpdateScoreError] = useState("");
+  const [redScoreLoading, setRedScoreLoading] = useState(false);
+  const [blueScoreLoading, setBlueScoreLoading] = useState(false);
 
   const totalRounds = 5;
   const winScore = 5;
@@ -93,10 +95,14 @@ export default function Scoreboard() {
       matchId: parseInt(currentMatchNo),
     };
 
-    if (userId == "fightadmin" && team === "red")
+    if (userId == "fightadmin" && team === "red") {
+      setRedScoreLoading(true);
       payload.referee5_red_score = 1;
-    if (userId == "fightadmin" && team === "blue")
+    }
+    if (userId == "fightadmin" && team === "blue") {
+      setBlueScoreLoading(true);
       payload.referee5_blue_score = 1;
+    }
     if (Object.keys(finalObj).length > 0) {
       Object.assign(payload, finalObj);
     }
@@ -111,9 +117,11 @@ export default function Scoreboard() {
     if (response.status) {
       if (team === "red") {
         setRedScore((prev) => Math.max(0, prev + value));
+        setRedScoreLoading(false);
       }
       if (team === "blue") {
         setBlueScore((prev) => Math.max(0, prev + value));
+        setBlueScoreLoading(false);
       }
     } else {
       setUpdateScoreError(response.message);
@@ -289,9 +297,10 @@ export default function Scoreboard() {
             {isMatchStart && (
               <button
                 onClick={() => handleScoreChange("red", 1)}
+                disabled={redScoreLoading}
                 className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
               >
-                Add Point +1
+                {redScoreLoading ? "Please wait" : "Add Point +1"}
               </button>
             )}
             {winnerOfMatch === "red" && (
@@ -320,9 +329,10 @@ export default function Scoreboard() {
             {isMatchStart && (
               <button
                 onClick={() => handleScoreChange("blue", 1)}
+                disabled={blueScoreLoading}
                 className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
               >
-                Add Point +1
+                {blueScoreLoading ? "Please wait" : "Add Point +1"}
               </button>
             )}
             {winnerOfMatch === "blue" && (
