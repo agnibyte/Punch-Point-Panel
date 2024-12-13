@@ -55,7 +55,7 @@ export default function AllMatchesWrapper() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto bg-white  rounded-lg p-6">
+      <div className="max-w-7xl mx-auto bg-white rounded-lg p-6">
         <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
           Match List
         </h1>
@@ -76,24 +76,25 @@ export default function AllMatchesWrapper() {
             <table className="table-auto w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-gray-700 text-gray-100">
-                  <th className="border border-gray-400 px-2 py-4 text-left text-lg font-bold">
-                    Match No
-                  </th>
-                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-bold">
-                    Red Corner
-                  </th>
-                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-bold">
-                    Blue Corner
-                  </th>
-                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-bold">
-                    Category
-                  </th>
-                  <th className="border border-gray-400 px-6 py-4 text-left text-lg font-bold">
-                    Age
-                  </th>
-                  <th className="border border-gray-400 px-3 py-4 text-left text-lg font-bold">
-                    Weight (kg)
-                  </th>
+                  {[
+                    "Match No",
+                    "Red Corner",
+                    "Blue Corner",
+                    "Category",
+                    "Age",
+                    "Weight (kg)",
+                    "Red Score",
+                    "Blue Score",
+                    "Winner",
+                    "Status",
+                  ].map((header, index) => (
+                    <th
+                      key={index}
+                      className="border border-gray-400 px-6 py-4 text-left text-lg font-bold"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -106,24 +107,55 @@ export default function AllMatchesWrapper() {
                         : "bg-white hover:bg-gray-100"
                     }
                   >
-                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-serif text-lg">
-                      {match.matchNo}
-                    </td>
-                    <td className="border border-gray-400 px-6 py-4 text-red-600 font-bold text-lg">
-                      {match.playerRed} ({match.stateRed})
-                    </td>
-                    <td className="border border-gray-400 px-6 py-4 text-blue-600 font-bold text-lg">
-                      {match.playerBlue} ({match.stateBlue})
-                    </td>
-                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-medium text-base">
-                      {match.category}
-                    </td>
-                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-medium text-base">
-                      {match.age}
-                    </td>
-                    <td className="border border-gray-400 px-6 py-4 text-gray-800 font-medium text-base">
-                      {match.weight}
-                    </td>
+                    {[
+                      {
+                        value: match.matchNo,
+                        className: "text-gray-800 font-serif text-lg",
+                      },
+                      {
+                        value: `${match.playerRed} (${match.stateRed})`,
+                        className: "text-red-600 font-bold text-lg",
+                      },
+                      {
+                        value: `${match.playerBlue} (${match.stateBlue})`,
+                        className: "text-blue-600 font-bold text-lg",
+                      },
+                      {
+                        value: match.category,
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.age,
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.weight,
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.red_score > 0 ? match.red_score : "-",
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.blue_score > 0 ? match.blue_score : "-",
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.winner || "-",
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                      {
+                        value: match.status || "-",
+                        className: "text-gray-800 font-medium text-base",
+                      },
+                    ].map((cell, i) => (
+                      <td
+                        key={i}
+                        className={`border border-gray-400 px-6 py-4 ${cell.className}`}
+                      >
+                        {cell.value}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

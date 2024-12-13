@@ -185,7 +185,7 @@ export default function Scoreboard() {
     const tempPaylod = {
       red_score: redScore,
       blue_score: blueScore,
-      temp_winner: tempWinner,
+      round_winner: tempWinner,
       status: "completed",
     };
     fetchRefereeScores("", 0, tempPaylod);
