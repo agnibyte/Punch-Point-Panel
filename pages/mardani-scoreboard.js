@@ -10,7 +10,7 @@ export default function EnhancedScoreboard() {
   const { participant } = router.query;
 
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
-  const [timer, setTimer] = useState(4); // Set to 120 seconds for a 2-minute match
+  const [timer, setTimer] = useState(120); // Set to 120 seconds for a 2-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
@@ -154,7 +154,7 @@ export default function EnhancedScoreboard() {
       {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl">
         {/* Timer Section */}
-        <div className="relative bg-gradient-to-tr from-white-800 to-white-900 text-green-400 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
+        <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
             <FaStopwatch className="mr-4" size={36} />
             {isMatchOver ? "Match Over" : "Time Remaining"}
@@ -175,7 +175,7 @@ export default function EnhancedScoreboard() {
           {!isMatchOver && (
             <button
               onClick={toggleTimer}
-              className={`rounded-full px-8 py-4 text-2xl font-bold transition duration-200 ${
+              className={`rounded-full px-8 py-4 text-2xl font-bold  transition duration-200 ${
                 isTimerRunning ? "bg-red-600 hover:bg-red-500" : "bg-green-600 hover:bg-green-700"
               }`}
             >
@@ -204,9 +204,9 @@ export default function EnhancedScoreboard() {
         {refereeScores.map((score, index) => (
           <div
             key={index}
-            className="bg-gradient-to-t from-gray-700 to-gray-900 p-8 rounded-lg shadow-2xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
+            className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
           >
-            <h4 className="text-2xl md:text-3xl font-bold text-yellow-400">पंच {index + 1}</h4>
+            <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">पंच {index + 1}</h4>
             {!isMatchOver ? (
               <input
                 type="number"
