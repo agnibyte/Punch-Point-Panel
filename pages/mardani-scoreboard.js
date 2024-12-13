@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 // Import jsPDF autoTable plugin
 import "jspdf-autotable";
+import Image from "next/image";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -44,83 +45,101 @@ export default function EnhancedScoreboard() {
   };
 
   const downloadPDF = () => {
-    if (!participant) return alert("Participant name is required to download the PDF.");
-    
+    if (!participant)
+      return alert("Participant name is required to download the PDF.");
+
     const doc = new jsPDF();
-    
+
     // Certificate Title
     doc.setFont("Times", "B", 20);
     doc.text("Mardani Sports Championship", 105, 40, { align: "center" });
     doc.setFont("Times", "B", 18);
     doc.text("Score Certificate", 105, 60, { align: "center" });
-  
+
     // Participant Information
     doc.setFont("Times", "B", 14);
     doc.text(`This is to certify that`, 105, 70, { align: "center" });
-    
+
     doc.setFont("Times", "B", 16);
     doc.text(`${participant}`, 105, 80, { align: "center" });
-  
+
     doc.setFont("Times", "B", 14);
-    doc.text(`has participated in the Mardani Sports Championship`, 105, 90, { align: "center" });
-    
+    doc.text(`has participated in the Mardani Sports Championship`, 105, 90, {
+      align: "center",
+    });
+
     doc.setFont("Times", "B", 14);
     doc.text(`and achieved the following score`, 105, 100, { align: "center" });
 
     doc.setFont("Times", "B", 20);
     doc.text(`Total Score: ${totalScore}`, 105, 110, { align: "center" });
-  
+
     // Date
     doc.setFont("Times", "normal", 14);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 130, { align: "center" });
-  
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 130, {
+      align: "center",
+    });
+
     // Referee Scores Section
     doc.setFont("Times", "B", 14);
     doc.text(`Referee Scores:`, 20, 150);
-  
+
     // Add referee scores table
     const tableStartY = 155;
     doc.autoTable({
       startY: tableStartY,
       head: [["Referee", "Score"]],
-      body: refereeScores.map((score, index) => [`Referee ${index + 1}`, score]),
+      body: refereeScores.map((score, index) => [
+        `Referee ${index + 1}`,
+        score,
+      ]),
       theme: "grid",
       styles: {
         fontSize: 16,
         cellPadding: 5,
         valign: "middle",
         halign: "center",
-        font: "Times"
+        font: "Times",
       },
     });
-  
+
     // // Instructor's Signature (Placeholders for signature)
     // doc.setFont("Times", "normal", 12);
     // doc.text(`Signed by: [Instructor's Name]`, 20, tableStartY + 50);
     // doc.text(`Instructor's Signature`, 20, tableStartY + 60);
-  
+
     // Footer
     doc.setFont("Arial", "I", 10);
-    doc.text(`Mardani Sports Championship 2024`, 105, doc.internal.pageSize.height - 10, { align: "center" });
-  
+    doc.text(
+      `Mardani Sports Championship 2024`,
+      105,
+      doc.internal.pageSize.height - 10,
+      { align: "center" }
+    );
+
     // Save the PDF
     doc.save(`${participant}_certificate.pdf`);
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center p-8">
       {/* Header */}
       <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-8 flex items-center justify-between shadow-2xl rounded-lg">
         {/* Left Logo */}
-        <img
+        <Image
           src="/images/image.png"
           alt="Logo"
           className="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"96"}
+          height={"96"}
         />
 
         {/* Title */}
         <h1 className="text-4xl md:text-6xl font-bold flex items-center gap-4">
-          <FaTrophy className="text-yellow-400 animate-bounce" size={48} />
+          <FaTrophy
+            className="text-yellow-400 animate-bounce"
+            size={48}
+          />
           Traditional Mardani Scoreboard
         </h1>
 
@@ -136,10 +155,12 @@ export default function EnhancedScoreboard() {
           </button>
 
           {/* Right Logo */}
-          <img
+          <Image
             src="/images/flag.png"
             alt="Right Logo"
             className="w-24 h-24 rounded-full border-4 border-black-450 shadow-lg"
+            width={"96"}
+            height={"96"}
           />
         </div>
       </header>
@@ -156,7 +177,10 @@ export default function EnhancedScoreboard() {
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch className="mr-4" size={36} />
+            <FaStopwatch
+              className="mr-4"
+              size={36}
+            />
             {isMatchOver ? "Match Over" : "Time Remaining"}
           </h3>
           <p className="text-8xl font-mono">{formatTime(timer)}</p>
@@ -176,7 +200,9 @@ export default function EnhancedScoreboard() {
             <button
               onClick={toggleTimer}
               className={`rounded-full px-8 py-4 text-2xl font-bold  transition duration-200 ${
-                isTimerRunning ? "bg-red-600 hover:bg-red-500" : "bg-green-600 hover:bg-green-700"
+                isTimerRunning
+                  ? "bg-red-600 hover:bg-red-500"
+                  : "bg-green-600 hover:bg-green-700"
               }`}
             >
               {isTimerRunning ? "Stop Timer" : "Start Timer"}
@@ -206,7 +232,9 @@ export default function EnhancedScoreboard() {
             key={index}
             className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
           >
-            <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">पंच {index + 1}</h4>
+            <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
+              पंच {index + 1}
+            </h4>
             {!isMatchOver ? (
               <input
                 type="number"
@@ -214,7 +242,10 @@ export default function EnhancedScoreboard() {
                 min={0}
                 value={score}
                 onChange={(e) => {
-                  const value = Math.min(Math.max(parseInt(e.target.value) || 0, 0), 10);
+                  const value = Math.min(
+                    Math.max(parseInt(e.target.value) || 0, 0),
+                    10
+                  );
                   setRefereeScores((prev) => {
                     const updatedScores = [...prev];
                     updatedScores[index] = value;
@@ -224,7 +255,9 @@ export default function EnhancedScoreboard() {
                 className="mt-8 w-full text-center text-4xl bg-gray-800 text-yellow-400 border border-gray-600 rounded-lg p-4"
               />
             ) : (
-              <p className="mt-8 text-3xl font-bold text-green-400">Final Score: {score}</p>
+              <p className="mt-8 text-3xl font-bold text-green-400">
+                Final Score: {score}
+              </p>
             )}
           </div>
         ))}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { postApiData } from "@/utils/services/apiService";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -36,10 +37,12 @@ export default function AllMatchesWrapper() {
         <div className="flex items-center justify-between px-6 py-4">
           {/* Logo and Name */}
           <div className="flex items-center space-x-4">
-            <img
+            <Image
               src="/images/image.png"
               alt="Logo"
               className="h-8"
+              width={"32"}
+              height={"32"}
             />
             <Link
               href={"/"}

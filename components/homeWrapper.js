@@ -10,6 +10,7 @@ import ProfileButton from "./common/profileButton";
 import TraditionalMardaniSetUpForm from "./common/traditionalMardaniSetUpForm";
 import HomeFooter from "./common/homeFooter";
 import HomeHeader from "./common/homeHeader";
+import Image from "next/image";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
@@ -80,10 +81,12 @@ export default function HomeWrapper() {
 
       {/* Main Content */}
       <main className="flex flex-col items-center w-full max-w-md mt-8">
-        <img
+        <Image
           src="/images/image.png"
           alt="Karate Logo"
           className="rounded-full border w-40 h-40 mb-4"
+          width={"160"}
+          height={"160"}
         />
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Mardani Sports
@@ -104,30 +107,23 @@ export default function HomeWrapper() {
           </button>
           <button
             onClick={() => onClickSportsMardaniFight("referee")}
-            className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+            className="px-6 py-3 bg-purple-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-purple-600 hover:scale-105"
           >
             Start Sports Mardani Fight - Referee
           </button>
+
+          <button
+            onClick={onClickSetupMardaniMatch}
+            className="w-full bg-red-500 font-semibold text-white py-3 rounded-lg shadow-md transition hover:bg-red-600 hover:scale-105"
+          >
+            Start Traditional Mardani Match
+          </button>
           <Link
             href="/matches"
-            className="block w-full bg-yellow-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-600"
+            className="block w-full bg-yellow-300 font-semibold text-teal-700 py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-500 hover:scale-105"
           >
             View All Matches
           </Link>
-          {/* <Link
-            href="/matches"
-            className="block w-full bg-pink-500 text-white py-3 rounded-lg text-center shadow-md transition hover:bg-red-600"
-          >
-            View Matches Score List
-          </Link> */}
-          {
-            <button
-              onClick={onClickSetupMardaniMatch}
-              className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
-            >
-              Setup Traditional Mardani Match
-            </button>
-          }
         </nav>
       </main>
 

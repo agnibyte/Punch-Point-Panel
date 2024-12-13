@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import ProfileButton from "./profileButton";
+import Image from "next/image";
 
 export default function HomeHeader({ userId, onclickLogOut = () => {} }) {
   return (
@@ -9,10 +10,12 @@ export default function HomeHeader({ userId, onclickLogOut = () => {} }) {
         <div className="flex items-center justify-between px-6 py-3">
           {/* Logo and Name */}
           <div className="flex items-center space-x-4">
-            <img
+            <Image
               src="/images/image.png"
               alt="Logo"
               className="h-8"
+              width={"32"}
+              height={"32"}
             />
             <span className="text-xl font-bold text-gray-800">
               3rd National Mardani Sports Championship 2024

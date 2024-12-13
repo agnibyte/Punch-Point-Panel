@@ -1,5 +1,6 @@
 import { postApiData } from "@/utils/services/apiService";
 import { setCookie } from "@/utils/utils";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -110,10 +111,12 @@ const Login = ({ test }) => {
       />
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl z-10">
         <div className="flex justify-center mb-6">
-          <img
+          <Image
             src="/images/image.png"
             alt="Logo"
             className="w-32 h-auto"
+            width={"128"}
+            height={"128"}
           />
         </div>
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
@@ -184,7 +187,9 @@ const Login = ({ test }) => {
         <div className="mt-6 text-center text-sm text-gray-500">
           <p>
             All rights are reserved to{" "}
-            <span className="font-semibold text-gray-700">Mardani Sports Federation India</span>{" "}
+            <span className="font-semibold text-gray-700">
+              Mardani Sports Federation India
+            </span>{" "}
             and{" "}
             <a
               href="https://www.agni-byte.com"

@@ -1,4 +1,5 @@
 import { postApiData } from "@/utils/services/apiService";
+import Image from "next/image";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -55,10 +56,12 @@ const CreateUser = () => {
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <img
+          <Image
             src="/images/image.png"
             alt="Logo"
             className="w-32 h-auto"
+            width={"128"}
+            height={"128"}
           />
         </div>
 
@@ -66,7 +69,10 @@ const CreateUser = () => {
           Create User
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-4"
+        >
           {/* User ID Input */}
           <div>
             <label
@@ -156,7 +162,10 @@ const CreateUser = () => {
               {...register("role", { required: "Role is required" })}
               className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled>
+              <option
+                value=""
+                disabled
+              >
                 Select a role
               </option>
               <option value="fight_admin">Fight Admin</option>
