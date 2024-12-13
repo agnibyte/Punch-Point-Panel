@@ -286,9 +286,17 @@ export default function Scoreboard() {
                 Add Point +1
               </button>
             )}
-            {winnerOfMatch == "red" && (
-              <div className="text-white text-3xl">Winner</div>
-            )}
+{winnerOfMatch === "red" && (
+  <div className="flex flex-col items-center justify-center mt-10">
+    <div className="text-6xl font-extrabold text-red-500 animate-pulse">
+      Red player Wins!
+    </div>
+    <div className="mt-4 text-2xl text-white bg-gradient-to-r from-red-500 to-pink-500 py-2 px-6 rounded-lg shadow-lg">
+      Congratulations to the Red player!
+    </div>
+    <div className="mt-4 w-20 h-20 bg-red-400 rounded-full animate-spin-slow shadow-xl"></div>
+  </div>
+)}
           </div>
 
           {/* Blue Score */}
@@ -307,14 +315,29 @@ export default function Scoreboard() {
                 Add Point +1
               </button>
             )}
-            {winnerOfMatch == "blue" && (
-              <div className="text-white text-5xl">Winner</div>
-            )}
-          </div>
+            {winnerOfMatch === "blue" && (
+  <div className="flex flex-col items-center justify-center mt-10">
+    <div className="text-6xl font-extrabold text-blue-500 animate-pulse">
+      Blue Player Wins!
+    </div>
+    <div className="mt-4 text-2xl text-white bg-gradient-to-r from-blue-500 to-teal-500 py-2 px-6 rounded-lg shadow-lg">
+      Congratulations to the Blue Player!
+    </div>
+    <div className="mt-4 w-20 h-20 bg-blue-400 rounded-full animate-spin-slow shadow-xl"></div>
+  </div>
+)}    </div>
         </div>
         {winnerOfMatch == "none" && (
-          <div className="text-white text-3xl">Match is Tie</div>
-        )}
+  <div className="flex flex-col items-center justify-center mt-10">
+    <div className="text-6xl font-extrabold text-yellow-400 animate-bounce">
+      Match is a Tie!
+    </div>
+    <div className="mt-4 text-2xl text-white bg-gradient-to-r from-yellow-400 to-orange-400 py-2 px-6 rounded-lg shadow-lg">
+      Both teams played exceptionally well!
+    </div>
+  </div>
+)}
+
         {updateScoreError != "" && (
           <div className="text-white text-3xl">{updateScoreError}</div>
         )}
