@@ -13,6 +13,9 @@ export default function RefreeWrapper() {
   const [currentMatchNo, setCurrentMatchNo] = useState("");
   const [apiError, setApiError] = useState("");
 
+  const [redScoreLoading, setRedScoreLoading] = useState(false);
+  const [blueScoreLoading, setBlueScoreLoading] = useState(false);
+
   console.log("userRole", userRole);
 
   useEffect(() => {
@@ -30,19 +33,16 @@ export default function RefreeWrapper() {
   const handleGivePoint = (player) => {
     if (player == "red") {
       setRefereeRedScore((p) => p + 1);
-    } else {
-      setRefereeBlueScore((p) => p + 1);
+      setRedScoreLoading(true);
     }
-    fetchRefereeScores();
-    setAnimation({ player, show: true });
-
-    setTimeout(() => setAnimation({ player: null, show: false }), 1000);
-
-    window.localStorage.setItem("lastPointPlayer", player);
-    window.dispatchEvent(new Event("storage"));
+    if (player == "blue") {
+      setRefereeBlueScore((p) => p + 1);
+      setBlueScoreLoading(true);
+    }
+    fetchRefereeScores(player);
   };
 
-  const fetchRefereeScores = async () => {
+  const fetchRefereeScores = async (player) => {
     const payload = {
       matchId: currentMatchNo,
     };
@@ -50,6 +50,10 @@ export default function RefreeWrapper() {
     if (userId == "fightreferee2") payload.referee2_score = 1;
     if (userId == "fightreferee3") payload.referee3_score = 1;
     if (userId == "fightreferee4") payload.referee4_score = 1;
+    if (userId == "fightadmin") {
+      if (player == "red") payload.referee5_red_score = 1;
+      if (player == "blue") payload.referee5_blue_score = 1;
+    }
 
     console.log("payload UPDATED_MATCH_SCORES", payload);
 
@@ -58,6 +62,14 @@ export default function RefreeWrapper() {
     console.log("response", response);
     const { data } = response;
     if (response.status) {
+      setAnimation({ player, show: true });
+
+      setTimeout(() => setAnimation({ player: null, show: false }), 1000);
+
+      window.localStorage.setItem("lastPointPlayer", player);
+      window.dispatchEvent(new Event("storage"));
+      setRedScoreLoading(false);
+      setBlueScoreLoading(false);
     } else {
       setApiError(response.message);
     }
@@ -80,8 +92,9 @@ export default function RefreeWrapper() {
             <button
               onClick={() => handleGivePoint("red")}
               className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+              disabled={redScoreLoading}
             >
-              Player 1
+              {redScoreLoading ? "Please wait" : "Give a Ponit"}
               {animation.show && animation.player === "red" && (
                 <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   +1
@@ -95,8 +108,9 @@ export default function RefreeWrapper() {
             <button
               onClick={() => handleGivePoint("blue")}
               className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+              disabled={blueScoreLoading}
             >
-              Player 2
+              {blueScoreLoading ? "Please wait" : "Give a Ponit"}
               {animation.show && animation.player === "blue" && (
                 <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   +1
