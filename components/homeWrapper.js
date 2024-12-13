@@ -7,6 +7,7 @@ import { deleteCookie, getCookie } from "@/utils/utils";
 import { useRouter } from "next/router";
 import StartMardaniMatchModal from "./common/startMardaniMatchModal";
 import ProfileButton from "./common/profileButton";
+import TraditionalMardaniSetUpForm from "./common/traditionalMardaniSetUpForm";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
@@ -15,9 +16,7 @@ export default function HomeWrapper() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userId, setUserId] = useState("");
 
-
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
-  const [participantName, setParticipantName] = useState("");
   const [pendingMatches, setPendingMatches] = useState([]);
   const router = useRouter();
 
@@ -38,23 +37,12 @@ export default function HomeWrapper() {
     const userCheck = getCookie("auth_role");
     const user = getCookie("auth_user");
     setIsAdmin(userCheck == "fight_admin");
-    setUserId(user)
+    setUserId(user);
     if (isLoginCheck != "true") {
       router.push("/login");
       setIsLogin(false);
     }
   }, []);
-
-  const handleMardaniMatchSubmit = () => {
-    if (participantName) {
-      router.push(
-        `/mardani-scoreboard?participant=${encodeURIComponent(participantName)}`
-      );
-      setTraditionalMatchModal(false); // Close the modal
-    } else {
-      alert("Please enter a participant name!");
-    }
-  };
 
   const getAvailableMatches = async () => {
     try {
@@ -110,7 +98,7 @@ export default function HomeWrapper() {
           className="rounded-full border w-40 h-40 mb-4"
         />
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
-        Mardani Sports 
+          Mardani Sports
         </h1>
 
         <nav className="flex flex-col space-y-4">
@@ -138,12 +126,14 @@ export default function HomeWrapper() {
           >
             View Matches Score List
           </Link> */}
-          { <button
-            onClick={onClickSetupMardaniMatch}
-            className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
-          >
-            Setup Traditional Mardani Match
-          </button> }
+          {
+            <button
+              onClick={onClickSetupMardaniMatch}
+              className="w-full bg-red-500 text-white py-3 rounded-lg shadow-md transition hover:bg-red-600"
+            >
+              Setup Traditional Mardani Match
+            </button>
+          }
         </nav>
       </main>
 
@@ -152,24 +142,12 @@ export default function HomeWrapper() {
         modalOpen={traditionalMatchModal}
         setModalOpen={setTraditionalMatchModal}
         backDrop={false}
-        modalTitle="Enter Participant Name"
-        modalSize="w-[95%] md:w-3/4"
+        modalTitle="Setup Traditional Mardani Match"
+        modalSize="w-[95%] md:w-[40%]"
       >
-        <div className="flex flex-col items-center">
-          <input
-            type="text"
-            value={participantName}
-            onChange={(e) => setParticipantName(e.target.value)}
-            placeholder="Enter Participant Name"
-            className="px-4 py-2 mb-4 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button
-            onClick={handleMardaniMatchSubmit}
-            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-green-600"
-          >
-            Submit
-          </button>
-        </div>
+        <TraditionalMardaniSetUpForm
+          setTraditionalMatchModal={setTraditionalMatchModal}
+        />
       </CommonModal>
 
       {/* Modal for Setup Match */}
@@ -191,7 +169,10 @@ export default function HomeWrapper() {
         <div className="text-center text-sm text-gray-500">
           <p>
             All rights are reserved to{" "}
-            <span className="font-semibold text-gray-700"> Mardani Sports Federation India </span>{" "}
+            <span className="font-semibold text-gray-700">
+              {" "}
+              Mardani Sports Federation India{" "}
+            </span>{" "}
             and{" "}
             <a
               href="https://www.agni-byte.com"
