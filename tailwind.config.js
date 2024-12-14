@@ -43,6 +43,15 @@ module.exports = {
           "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
+      animation: {
+        'spin-3d': 'spin-3d 4s linear infinite', // Adjust speed here
+      },
+      keyframes: {
+        'spin-3d': {
+          '0%': { transform: 'rotateY(0deg)' }, // Start at 0 degrees
+          '100%': { transform: 'rotateY(360deg)' }, // End at 360 degrees
+        },
+      },
     },
   },
   plugins: [],

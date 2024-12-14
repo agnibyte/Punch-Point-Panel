@@ -119,7 +119,8 @@ export default function EnhancedScoreboard() {
         body: refereeScores.map((score, index) => [
           `Referee ${index + 1}`,
           score,
-        ]), theme: "grid",
+        ]),
+        theme: "grid",
         styles: {
           fontSize: 16,
           cellPadding: 5,
@@ -174,40 +175,32 @@ export default function EnhancedScoreboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center p-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-10 flex items-center justify-between shadow-2xl rounded-lg">
+      <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-3 flex items-center justify-between shadow-2xl rounded-lg">
         {/* Left Logo */}
         <Image
           src="/images/image.png"
           alt="Logo"
-          className="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-lg"
-          width={"96"}
-          height={"96"}
+          className="rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"75"}
+          height={"75"}
         />
 
         {/* Title */}
-        <h1 className="text-4xl md:text-3xl font-bold flex items-center gap-4">
-          <FaTrophy className="text-yellow-400 animate-bounce" size={36} />
+        <h1 className="text-xl md:text-3xl font-bold flex items-center gap-4">
+          {/* <FaTrophy
+            className="text-yellow-400 animate-bounce"
+            size={36}
+          /> */}
           Traditional Mardani Scoreboard
         </h1>
 
-        {/* Right Section */}
         <div className="flex items-center gap-6">
-          {/* Start New Match Button */}
-          <button
-            onClick={() => router.push("/")} // Navigate to the home page
-            className="flex items-center gap-4 px-6 py-3 text-xl md:text-2xl text-yellow-300 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 hover:text-yellow-400 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            <FaArrowLeft size={24} />
-            Start New Match
-          </button>
-
-          {/* Right Logo */}
           <Image
             src="/images/flag.png"
             alt="Right Logo"
-            className="w-24 h-24 rounded-full border-4 border-black-450 shadow-lg"
+            className="rounded-full border-4 border-black-450 shadow-lg"
             width={"96"}
             height={"96"}
           />
@@ -216,17 +209,40 @@ export default function EnhancedScoreboard() {
 
       {/* Participant Section */}
       {participant && (
-        <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
-          Participant: {participant}
-        </h2>
+        <div className="flex flex-col md:flex-row items-center justify-between w-full ">
+          {/* Participant Title */}
+          <FaTrophy
+            className="text-yellow-400 animate-spin-3d"
+            size={40}
+          />
+
+          <h2 className=" text-2xl  font-semibold text-blue-300 md:text-left">
+            Participant: {participant}
+          </h2>
+
+          {/* Start New Match Button */}
+          <button
+            onClick={() => router.push("/")}
+            className=" text-xl md:text-2xl text-yellow-300 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 hover:text-yellow-400 transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Start New Match
+          </button>
+        </div>
+
+        // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
+        //   Participant: {participant}
+        // </h2>
       )}
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch className="mr-4" size={36} />
+            <FaStopwatch
+              className="mr-4"
+              size={36}
+            />
             {isMatchOver ? "Match Over" : "Time Remaining"}
           </h3>
           <p className="text-8xl font-mono">{formatTime(timer)}</p>
