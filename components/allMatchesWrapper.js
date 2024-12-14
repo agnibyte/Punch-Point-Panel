@@ -45,7 +45,7 @@ export default function AllMatchesWrapper() {
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
-    doc.text("CERTIFICATE OF PARTICIPATION", 105, 40, { align: "center" });
+    doc.text(`REPORT CARD MATCH : ${match.matchNo}`, 105, 40, { align: "center" }); //`${matchNo}`
   
     // Add Logo Below the Title
     const logoUrl = "/images/image.png"; // Replace with the actual path to the logo image
@@ -58,7 +58,7 @@ export default function AllMatchesWrapper() {
     // Subtitle
     doc.setFont("helvetica", "italic");
     doc.setFontSize(14);
-    doc.text("This is to certify that", 105, 90, { align: "center" });
+    doc.text("This is to report that", 105, 90, { align: "center" });
   
     // Player Names (Winner Highlighted if available)
     doc.setFont("helvetica", "bold");
@@ -102,7 +102,7 @@ export default function AllMatchesWrapper() {
     });
   
     // Save the PDF
-    doc.save(`Certificate_Match_${match.matchNo}.pdf`);
+    doc.save(`Report_of_the_match${match.matchNo}.pdf`);
   };
   
 
