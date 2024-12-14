@@ -45,6 +45,8 @@ body {
   .animate-spin-slow {
     animation: spin-slow 3s linear infinite;
   }
+
+  
 }
 
 .no-spinner::-webkit-outer-spin-button,
