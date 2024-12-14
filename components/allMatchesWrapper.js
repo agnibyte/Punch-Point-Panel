@@ -31,7 +31,7 @@ export default function AllMatchesWrapper() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white p-4 sm:p-6 lg:p-0">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header Section */}
       <header className="w-full bg-white shadow-md sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
@@ -44,10 +44,7 @@ export default function AllMatchesWrapper() {
               width={"32"}
               height={"32"}
             />
-            <Link
-              href={"/"}
-              className="text-xl font-bold text-gray-800"
-            >
+            <Link href="/" className="text-xl font-bold text-gray-800">
               Sports Mardani Club Championship
             </Link>
           </div>
@@ -55,29 +52,70 @@ export default function AllMatchesWrapper() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto bg-white rounded-lg p-6">
+      <div className="flex-1 overflow-hidden bg-white p-6">
         <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
           Match List
         </h1>
 
         {/* Loading / Error State */}
         {loading ? (
-          <div className="flex justify-center items-center">
-            <div className="text-indigo-600 font-bold text-xl">
-              Loading matches...
-            </div>
+          <div className="relative border border-gray-300 h-[80vh] overflow-hidden">
+            <table className="table-auto w-full border-collapse">
+              <thead className="sticky top-0 bg-gray-700 z-10">
+                <tr className="text-gray-100">
+                  {[
+                    "Match No",
+                    "Red Corner",
+                    "Blue Corner",
+                    "Category",
+                    "Age",
+                    "Weight (kg)",
+                    "Red Score",
+                    "Blue Score",
+                    "Winner",
+                    "Status",
+                  ].map((header, index) => (
+                    <th
+                      key={index}
+                      className="border border-gray-400 px-4 py-2 text-left text-lg font-bold"
+                    >
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {/* Skeleton Rows */}
+                {[...Array(6)].map((_, rowIndex) => (
+                  <tr
+                    key={rowIndex}
+                    className="animate-pulse bg-gray-100 hover:bg-gray-200"
+                  >
+                    {Array(10)
+                      .fill("")
+                      .map((_, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="border border-gray-400 px-4 py-2"
+                        >
+                          <div className="h-5 bg-gray-300 rounded"></div>
+                        </td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : error ? (
           <div className="text-red-600 font-bold text-xl text-center">
             {error}
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <div className="relative border border-gray-300">
-              {/* Table Header - Fixed */}
-              <table className="table-auto w-full">
-                <thead>
-                  <tr className="bg-gray-700 text-gray-100">
+          <div className="relative overflow-hidden">
+            <div className="relative border border-gray-300 h-[80vh] overflow-auto">
+              <table className="table-auto w-full border-collapse">
+                <thead className="sticky top-0 bg-gray-700 z-10">
+                  <tr className="text-gray-100">
                     {[
                       "Match No",
                       "Red Corner",
@@ -92,82 +130,58 @@ export default function AllMatchesWrapper() {
                     ].map((header, index) => (
                       <th
                         key={index}
-                        className="border border-gray-400 px-6 py-4 text-left text-lg font-bold sticky top-0 bg-gray-700"
+                        className="border border-gray-400 px-4 py-2 text-left text-lg font-bold"
                       >
                         {header}
                       </th>
                     ))}
                   </tr>
                 </thead>
+                <tbody className="bg-white divide-y divide-gray-300">
+                  {allMatchesData.map((match, index) => (
+                    <tr
+                      key={index}
+                      className={
+                        index % 2 === 0
+                          ? "bg-gray-100 hover:bg-gray-200"
+                          : "bg-white hover:bg-gray-100"
+                      }
+                    >
+                      {[
+                        { value: match.matchNo, className: "text-gray-800" },
+                        {
+                          value: `${match.playerRed} (${match.stateRed})`,
+                          className: "text-red-600 font-bold",
+                        },
+                        {
+                          value: `${match.playerBlue} (${match.stateBlue})`,
+                          className: "text-blue-600 font-bold",
+                        },
+                        { value: match.category, className: "text-gray-800" },
+                        { value: match.age, className: "text-gray-800" },
+                        { value: match.weight, className: "text-gray-800" },
+                        {
+                          value: match.red_score > 0 ? match.red_score : "-",
+                          className: "text-gray-800",
+                        },
+                        {
+                          value: match.blue_score > 0 ? match.blue_score : "-",
+                          className: "text-gray-800",
+                        },
+                        { value: match.winner || "-", className: "text-gray-800" },
+                        { value: match.status || "-", className: "text-gray-800" },
+                      ].map((cell, i) => (
+                        <td
+                          key={i}
+                          className={`border border-gray-400 px-4 py-2 ${cell.className}`}
+                        >
+                          {cell.value}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
               </table>
-
-              {/* Scrollable Table Body */}
-              <div className="max-h-[500px] overflow-y-auto">
-                <table className="table-auto w-full border-collapse">
-                  <tbody>
-                    {allMatchesData.map((match, index) => (
-                      <tr
-                        key={index}
-                        className={
-                          index % 2 === 0
-                            ? "bg-gray-100 hover:bg-gray-200"
-                            : "bg-white hover:bg-gray-100"
-                        }
-                      >
-                        {[
-                          {
-                            value: match.matchNo,
-                            className: "text-gray-800 font-serif text-lg",
-                          },
-                          {
-                            value: `${match.playerRed} (${match.stateRed})`,
-                            className: "text-red-600 font-bold text-lg",
-                          },
-                          {
-                            value: `${match.playerBlue} (${match.stateBlue})`,
-                            className: "text-blue-600 font-bold text-lg",
-                          },
-                          {
-                            value: match.category,
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.age,
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.weight,
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.red_score > 0 ? match.red_score : "-",
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.blue_score > 0 ? match.blue_score : "-",
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.winner || "-",
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                          {
-                            value: match.status || "-",
-                            className: "text-gray-800 font-medium text-base",
-                          },
-                        ].map((cell, i) => (
-                          <td
-                            key={i}
-                            className={`border border-gray-400 px-6 py-4 ${cell.className}`}
-                          >
-                            {cell.value}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
             </div>
           </div>
         )}
