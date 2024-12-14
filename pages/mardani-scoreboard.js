@@ -5,6 +5,7 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 // Import jsPDF autoTable plugin
 import "jspdf-autotable";
 import Image from "next/image";
+import { AiOutlineFilePdf } from "react-icons/ai";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -245,9 +246,10 @@ export default function EnhancedScoreboard() {
           {isMatchOver && (
             <button
               onClick={downloadPDF}
-              className="rounded-full px-8 py-4 text-2xl font-bold bg-yellow-500 hover:bg-yellow-600"
+              className="rounded-full px-8 py-4 text-2xl font-bold bg-pink-500 hover:bg-red-600 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-105"
             >
-              Download PDF
+              <AiOutlineFilePdf size={24} />
+              <span>Download PDF</span>
             </button>
           )}
         </div>
