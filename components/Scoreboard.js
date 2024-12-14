@@ -108,8 +108,8 @@ export default function Scoreboard() {
     if (Object.keys(finalObj).length > 0) {
       Object.assign(payload, finalObj);
     }
-    if (finalObj.temp_winner) {
-      setWinnerOfMatch(finalObj.temp_winner);
+    if (finalObj.round_winner) {
+      setWinnerOfMatch(finalObj.round_winner);
     }
     setUpdateScoreError("");
 
