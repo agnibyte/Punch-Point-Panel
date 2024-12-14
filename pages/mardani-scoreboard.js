@@ -11,7 +11,7 @@ export default function EnhancedScoreboard() {
   const { participant } = router.query;
 
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
-  const [timer, setTimer] = useState(120); // Set to 120 seconds for a 2-minute match
+  const [timer, setTimer] = useState(5); // Set to 120 seconds for a 2-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
 
@@ -44,87 +44,127 @@ export default function EnhancedScoreboard() {
     setIsMatchOver(false);
   };
 
-  const downloadPDF = () => {
-    if (!participant)
+  const downloadPDF = async () => {
+    if (!participant) {
       return alert("Participant name is required to download the PDF.");
+    }
 
     const doc = new jsPDF();
 
-    // Certificate Title
-    doc.setFont("Times", "B", 20);
-    doc.text("Mardani Sports Championship", 105, 40, { align: "center" });
-    doc.setFont("Times", "B", 18);
-    doc.text("Score Certificate", 105, 60, { align: "center" });
+    const loadImage = (url) =>
+      new Promise((resolve, reject) => {
+        const img = new window.Image(); // Use the native JavaScript Image object
+        img.crossOrigin = "anonymous"; // Enable CORS for cross-origin images
+        img.onload = () => resolve(img);
+        img.onerror = (err) => reject(err);
+        img.src = url;
+      });
 
-    // Participant Information
-    doc.setFont("Times", "B", 14);
-    doc.text(`This is to certify that`, 105, 70, { align: "center" });
+    try {
+      const logo = await loadImage("/images/image.png"); // Replace with your logo path
+      const watermark = await loadImage("/images/image.png"); // Replace with your watermark path
 
-    doc.setFont("Times", "B", 16);
-    doc.text(`${participant}`, 105, 80, { align: "center" });
+      // Certificate Title
+      doc.setFont("Times", "B", 20);
+      doc.text("Mardani Sports Championship", 105, 40, { align: "center" });
 
-    doc.setFont("Times", "B", 14);
-    doc.text(`has participated in the Mardani Sports Championship`, 105, 90, {
-      align: "center",
-    });
+      // Add Logo in Header Center
+      const pageWidth = doc.internal.pageSize.getWidth(); // Get the PDF page width
+      const logoWidth = 20; // Set the width of the logo
+      const logoHeight = 20; // Set the height of the logo
+      const centerX = (pageWidth - logoWidth) / 2; // Calculate the x-coordinate for centering
 
-    doc.setFont("Times", "B", 14);
-    doc.text(`and achieved the following score`, 105, 100, { align: "center" });
+      doc.addImage(logo, "PNG", centerX, 10, logoWidth, logoHeight); // Center the logo in the header
 
-    doc.setFont("Times", "B", 20);
-    doc.text(`Total Score: ${totalScore}`, 105, 110, { align: "center" });
+      // Certificate Subtitle
+      doc.setFont("Times", "B", 18);
+      doc.text("Score Certificate", 105, 60, { align: "center" });
 
-    // Date
-    doc.setFont("Times", "normal", 14);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 130, {
-      align: "center",
-    });
+      // Participant Information
+      doc.setFont("Times", "B", 14);
+      doc.text(`This is to certify that`, 105, 70, { align: "center" });
 
-    // Referee Scores Section
-    doc.setFont("Times", "B", 14);
-    doc.text(`Referee Scores:`, 20, 150);
+      doc.setFont("Times", "B", 16);
+      doc.text(`${participant}`, 105, 80, { align: "center" });
 
-    // Add referee scores table
-    const tableStartY = 155;
-    doc.autoTable({
-      startY: tableStartY,
-      head: [["Referee", "Score"]],
-      body: refereeScores.map((score, index) => [
-        `Referee ${index + 1}`,
-        score,
-      ]),
-      theme: "grid",
-      styles: {
-        fontSize: 16,
-        cellPadding: 5,
-        valign: "middle",
-        halign: "center",
-        font: "Times",
-      },
-    });
+      doc.setFont("Times", "B", 14);
+      doc.text(`has participated in the Mardani Sports Championship`, 105, 90, {
+        align: "center",
+      });
 
-    // // Instructor's Signature (Placeholders for signature)
-    // doc.setFont("Times", "normal", 12);
-    // doc.text(`Signed by: [Instructor's Name]`, 20, tableStartY + 50);
-    // doc.text(`Instructor's Signature`, 20, tableStartY + 60);
+      doc.setFont("Times", "B", 14);
+      doc.text(`and achieved the following score`, 105, 100, {
+        align: "center",
+      });
 
-    // Footer
-    doc.setFont("Arial", "I", 10);
-    doc.text(
-      `Mardani Sports Championship 2024`,
-      105,
-      doc.internal.pageSize.height - 10,
-      { align: "center" }
-    );
+      doc.setFont("Times", "B", 20);
+      doc.text(`Total Score: ${totalScore}`, 105, 110, { align: "center" });
 
-    // Save the PDF
-    doc.save(`${participant}_certificate.pdf`);
+      // Date
+      doc.setFont("Times", "normal", 14);
+      doc.text(`Date: ${new Date().toLocaleDateString()}`, 105, 130, {
+        align: "center",
+      });
+
+      // Referee Scores Section
+      doc.setFont("Times", "B", 14);
+      doc.text(`Referee Scores:`, 20, 150);
+
+      // Add Referee Scores Table
+      const tableStartY = 155;
+      doc.autoTable({
+        startY: tableStartY,
+        head: [["Referee", "Score"]],
+        body: refereeScores.map((score, index) => [
+          `Referee ${index + 1}`,
+          score,
+        ]),
+        theme: "grid",
+        styles: {
+          fontSize: 16,
+          cellPadding: 5,
+          valign: "middle",
+          halign: "center",
+          font: "Times",
+        },
+      });
+
+      // // Add Watermark in the Background
+      // const watermarkWidth = 150; // Adjust the size of the watermark
+      // const watermarkHeight = 150;
+      // doc.addImage(
+      //   watermark,
+      //   "PNG",
+      //   30, // x-coordinate
+      //   100, // y-coordinate
+      //   watermarkWidth,
+      //   watermarkHeight,
+      //   undefined,
+      //   "NONE",
+      //   0 // Opacity (0 for fully transparent, 1 for fully opaque)
+      // );
+
+      // Footer
+      doc.setFont("Arial", "I", 10);
+      doc.text(
+        `Mardani Sports Championship 2024`,
+        105,
+        doc.internal.pageSize.height - 10,
+        { align: "center" }
+      );
+
+      // Save the PDF
+      doc.save(`${participant}_certificate.pdf`);
+    } catch (error) {
+      console.error("Error loading images: ", error);
+      alert("Failed to load images. Please check the image paths.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center p-8">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-8 flex items-center justify-between shadow-2xl rounded-lg">
+      <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-10 flex items-center justify-between shadow-2xl rounded-lg">
         {/* Left Logo */}
         <Image
           src="/images/image.png"
@@ -135,11 +175,8 @@ export default function EnhancedScoreboard() {
         />
 
         {/* Title */}
-        <h1 className="text-4xl md:text-6xl font-bold flex items-center gap-4">
-          <FaTrophy
-            className="text-yellow-400 animate-bounce"
-            size={48}
-          />
+        <h1 className="text-4xl md:text-3xl font-bold flex items-center gap-4">
+          <FaTrophy className="text-yellow-400 animate-bounce" size={36} />
           Traditional Mardani Scoreboard
         </h1>
 
@@ -177,10 +214,7 @@ export default function EnhancedScoreboard() {
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch
-              className="mr-4"
-              size={36}
-            />
+            <FaStopwatch className="mr-4" size={36} />
             {isMatchOver ? "Match Over" : "Time Remaining"}
           </h3>
           <p className="text-8xl font-mono">{formatTime(timer)}</p>
