@@ -15,13 +15,13 @@ export default function EnhancedScoreboard() {
   const [timer, setTimer] = useState(5); // Set to 120 seconds for a 2-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [matchStarted, setMatchStarted] = useState(false);
 
   useEffect(() => {
     let interval;
     if (isTimerRunning && timer > 0) {
       interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
     } else if (timer === 0) {
-      setIsMatchOver(true);
       setIsTimerRunning(false);
     }
     return () => clearInterval(interval);
@@ -35,8 +35,23 @@ export default function EnhancedScoreboard() {
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
+  const startMatch = () => {
+    setMatchStarted(true);
+    setIsTimerRunning(true); // Automatically starts the timer when the match starts
+  };
+
+  // Function to toggle the timer (pause/resume)
   const toggleTimer = () => {
-    if (timer > 0) setIsTimerRunning((prev) => !prev);
+    if (timer > 0) {
+      setIsTimerRunning((prev) => !prev);
+    }
+  };
+
+  // Function to end the match
+  const endMatch = () => {
+    setIsMatchOver(true);
+    setIsTimerRunning(false);
+    setMatchStarted(false); // Reset match state
   };
 
   const resetTimer = () => {
@@ -173,6 +188,7 @@ export default function EnhancedScoreboard() {
       alert("Failed to load images. Please check the image paths.");
     }
   };
+  console.log("timer", timer);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
@@ -209,24 +225,12 @@ export default function EnhancedScoreboard() {
 
       {/* Participant Section */}
       {participant && (
-        <div className="flex flex-col md:flex-row items-center justify-between w-full ">
+        <div className="flex flex-col md:flex-row items-center justify-center w-full ">
           {/* Participant Title */}
-          <FaTrophy
-            className="text-yellow-400 animate-spin-3d"
-            size={40}
-          />
 
           <h2 className=" text-2xl  font-semibold text-blue-300 md:text-left">
             Participant: {participant}
           </h2>
-
-          {/* Start New Match Button */}
-          <button
-            onClick={() => router.push("/")}
-            className=" text-xl md:text-2xl text-yellow-300 bg-gray-800 rounded-lg shadow-lg hover:bg-gray-700 hover:text-yellow-400 transition duration-300 ease-in-out transform hover:scale-105"
-          >
-            Start New Match
-          </button>
         </div>
 
         // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
@@ -234,10 +238,9 @@ export default function EnhancedScoreboard() {
         // </h2>
       )}
 
-      {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {/* Timer Section */}
-        <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
+        <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
             <FaStopwatch
               className="mr-4"
@@ -256,28 +259,65 @@ export default function EnhancedScoreboard() {
           />
         </div>
 
-        {/* Controls */}
         <div className="flex flex-col gap-8 justify-center">
-          {!isMatchOver && (
+          {/* Start Match Button */}
+          {!matchStarted && !isMatchOver && (
             <button
-              onClick={toggleTimer}
-              className={`rounded-full px-8 py-4 text-2xl font-bold  transition duration-200 ${
-                isTimerRunning
-                  ? "bg-red-600 hover:bg-red-500"
-                  : "bg-green-600 hover:bg-green-700"
-              }`}
+              onClick={startMatch}
+              className="rounded-full px-8 py-4 text-2xl font-bold bg-blue-600 hover:bg-blue-700 transition duration-200"
             >
-              {isTimerRunning ? "Stop Timer" : "Start Timer"}
+              Start Match
             </button>
           )}
-          {isMatchOver && (
+
+          {/* Pause Timer Button */}
+          {matchStarted && !isMatchOver && isTimerRunning && (
             <button
-              onClick={downloadPDF}
-              className="rounded-full px-8 py-4 text-2xl font-bold bg-pink-500 hover:bg-red-600 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-105"
+              onClick={toggleTimer}
+              className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-500 transition duration-200"
             >
-              <AiOutlineFilePdf size={24} />
-              <span>Download PDF</span>
+              Pause Timer
             </button>
+          )}
+
+          {/* Resume Timer Button */}
+          {matchStarted && !isMatchOver && !isTimerRunning && (
+            <div className="flex gap-4">
+              <button
+                onClick={toggleTimer}
+                className="rounded-full px-8 py-4 text-2xl font-bold bg-green-600 hover:bg-green-700 transition duration-200"
+              >
+                Resume Timer
+              </button>
+              <button
+                onClick={endMatch}
+                className="rounded-full px-8 py-4 text-2xl font-bold bg-yellow-600 hover:bg-yellow-700 transition duration-200"
+              >
+                End Match
+              </button>
+            </div>
+          )}
+
+          {/* Download PDF Button */}
+          {isMatchOver && (
+            <div className="flex flex-col gap-4 justify-center items-center">
+              {/* Download PDF Button */}
+              <button
+                onClick={downloadPDF}
+                className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-pink-500 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-105"
+              >
+                <AiOutlineFilePdf size={24} />
+                <span>Download PDF</span>
+              </button>
+
+              {/* Start New Match Button */}
+              <button
+                onClick={() => router.push("/")}
+                className="rounded-full px-8 py-4 text-2xl font-bold bg-green-500 hover:bg-green-600 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out hover:scale-105"
+              >
+                Start New Match
+              </button>
+            </div>
           )}
         </div>
 
@@ -289,7 +329,7 @@ export default function EnhancedScoreboard() {
       </div>
 
       {/* Referee Scores */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {refereeScores.map((score, index) => (
           <div
             key={index}
