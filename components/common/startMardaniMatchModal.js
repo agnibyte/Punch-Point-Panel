@@ -3,7 +3,10 @@ import { useForm, Controller } from "react-hook-form";
 import CustomSearch from "./customSearch";
 import { useRouter } from "next/router";
 
-export default function StartMardaniMatchModal({ pendingMatches, refereePath  }) {
+export default function StartMardaniMatchModal({
+  pendingMatches,
+  refereePath,
+}) {
   // Initialize the React Hook Form
   const {
     control,
@@ -16,6 +19,7 @@ export default function StartMardaniMatchModal({ pendingMatches, refereePath  })
 
   // State to manage the selected match number
   const [selectedMatch, setSelectedMatch] = useState("");
+  const [timerDuration, setTimerDuration] = useState(1.5); // Default is 1.5 minutes
 
   // Function to handle match number selection
   const handleMatchChange = (value) => {
@@ -23,9 +27,17 @@ export default function StartMardaniMatchModal({ pendingMatches, refereePath  })
     setValue("matchNumber", value); // Update form value
     clearErrors("matchNumber"); // Clear any validation errors
   };
+
+  // Toggle between 1.5 and 3 minutes
+  const handleTimerToggle = () => {
+    setTimerDuration(timerDuration === 1.5 ? 3 : 1.5); // Toggle the timer
+  };
+
   const onClickContinue = () => {
+    // Save the selected match number and timer duration in localStorage
     localStorage.setItem("currentMatch", selectedMatch.value);
-    router.push(refereePath);
+    localStorage.setItem("matchTimer", timerDuration);
+    router.push(refereePath); // Redirect to the referee path
   };
 
   return (
@@ -69,6 +81,32 @@ export default function StartMardaniMatchModal({ pendingMatches, refereePath  })
             {errors.matchNumber.message}
           </span>
         )}
+      </div>
+
+      {/* Timer Duration Toggle (On/Off) */}
+      <div className="mb-6">
+        <label className="block text-lg font-semibold text-gray-700 mb-2">
+          Match Timer
+        </label>
+        <div className="flex items-center space-x-4">
+          <div
+            className={`relative inline-block w-10 h-5 cursor-pointer rounded-full transition-colors duration-300 ${
+              timerDuration === 1.5 ? "bg-gray-500" : "bg-yellow-400"
+            }`}
+            onClick={handleTimerToggle}
+          >
+            <div
+              className={`absolute top-[0.2rem] w-3 h-3 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                timerDuration === 1.5
+                  ? "transform translate-x-1"
+                  : "transform translate-x-6"
+              }`}
+            />
+          </div>
+          <span className="text-lg">
+            {timerDuration == 1.5 ? "1:30" : "3:00"}
+          </span>
+        </div>
       </div>
 
       {/* Continue Button */}
