@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService";
 import { getCookie } from "@/utils/utils";
+import { FaTrophy } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Scoreboard() {
   const duration = 10;
@@ -239,6 +241,13 @@ export default function Scoreboard() {
     <div className="min-h-screen bg-gradient-to-r from-purple-800 via-indigo-800 to-blue-00 relative">
       {/* Header Section */}
       <header className="flex items-center justify-between p-4 shadow-md bg-opacity-50 bg-black fixed top-0 w-full z-10">
+        <Image
+          src="/images/image.png"
+          alt="Logo"
+          className="w-12 h-1w-12 mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"96"}
+          height={"96"}
+        />
         <Link
           href={"/"}
           className=" text-sm md:text-2xl font-bold text-white tracking-wide uppercase"
@@ -259,13 +268,11 @@ export default function Scoreboard() {
 
       {/* Main Content */}
       <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
-        <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-2xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 mt-0 md:mt-0 my-3">
+        <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-3xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 mt-0 md:mt-2 my-3">
           Match{" "}
           <span className="ml-2 text-3xl font-extrabold">{currentMatchNo}</span>
         </div>{" "}
-        {/* Added pt-20 to offset the fixed header */}
-        {/* Timer - Responsive and Desktop Placement */}
-        <div className="w-full md:w-1/3 flex justify-center mb-4 md:absolute md:top-[60%] md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
+        <div className="w-full md:w-1/3 flex justify-center items-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
           <Timer
             duration={duration}
             onTimerEnd={handleTimerEnd}
@@ -283,74 +290,85 @@ export default function Scoreboard() {
           />
         </div>
         {/* Scores Section */}
-        <div className="flex  md:flex-row items-center justify-between w-full">
-          {/* Red Score */}
-          <div className="flex flex-col items-center w-5/12 md:w-1/3">
-            <div className="text-3xl font-bold text-red-200 text-center uppercase mb-3">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full gap-8 px-4">
+          {/* Red Player Section */}
+          <div className="flex flex-col items-center w-full md:w-1/3 p-6">
+            <div className="text-2xl font-bold text-red-100 text-center uppercase mb-4">
               {redPlayer.name
                 ? `${redPlayer.name} (${redPlayer.state})`
-                : "please wait"}
+                : "Loading Player Info..."}
             </div>
-            <div className="bg-red-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
+            <div className="bg-red-600 text-white text-[10rem] font-extrabold rounded-lg w-full py-10 text-center shadow-lg">
               {redScore}
             </div>
             {isMatchStart && (
               <button
                 onClick={() => handleScoreChange("red", 1)}
                 disabled={redScoreLoading}
-                className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
+                className="mt-6 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
               >
-                {redScoreLoading ? "Please wait" : "Add Point +1"}
+                {redScoreLoading ? "Updating..." : "Add Point +1"}
               </button>
             )}
+
             {winnerOfMatch === "red" && (
-              <div className="flex flex-col items-center justify-center mt-10">
-                <div className="text-6xl font-extrabold text-red-500 animate-pulse">
-                  Red player Wins!
+              <>
+                <div className="flex flex-col items-center justify-center mt-6 animate-bounce">
+                  <FaTrophy
+                    className="text-yellow-400 "
+                    size={48}
+                  />
+                  <div className="text-3xl font-extrabold text-red-100 ">
+                    Red Player Wins!
+                  </div>
                 </div>
-                <div className="mt-4 text-2xl text-white bg-gradient-to-r from-red-500 to-pink-500 py-2 px-6 rounded-lg shadow-lg">
-                  Congratulations to the Red player!
+                <div className="mt-2 text-lg text-white bg-gradient-to-r from-red-500 to-pink-500 py-2 px-6 rounded-lg shadow-lg">
+                  Congratulations to the Red Player!
                 </div>
-                <div className="mt-4 w-20 h-20 bg-red-400 rounded-full animate-spin-slow shadow-xl"></div>
-              </div>
+              </>
             )}
           </div>
 
-          {/* Blue Score */}
-          <div className="flex flex-col items-center w-5/12 md:w-1/3">
-            <div className="text-3xl font-bold text-blue-200 text-center uppercase mb-3">
+          {/* Blue Player Section */}
+          <div className="flex flex-col items-center w-full md:w-1/3   p-6">
+            <div className="text-2xl font-bold text-blue-100 text-center uppercase mb-4">
               {bluePlayer.name
                 ? `${bluePlayer.name} (${bluePlayer.state})`
-                : "please wait"}
+                : "Loading Player Info..."}
             </div>
-            <div className="bg-blue-600 text-white text-[11rem] font-extrabold rounded-lg w-full py-12 text-center shadow-xl">
+            <div className="bg-blue-600 text-white text-[10rem] font-extrabold rounded-lg w-full py-10 text-center shadow-lg">
               {blueScore}
             </div>
             {isMatchStart && (
               <button
                 onClick={() => handleScoreChange("blue", 1)}
                 disabled={blueScoreLoading}
-                className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
+                className="mt-6 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
               >
-                {blueScoreLoading ? "Please wait" : "Add Point +1"}
+                {blueScoreLoading ? "Updating..." : "Add Point +1"}
               </button>
             )}
             {winnerOfMatch === "blue" && (
-              <div className="flex flex-col items-center justify-center mt-10">
-                <div className="text-6xl font-extrabold text-blue-500 animate-pulse">
-                  Blue Player Wins!
+              <>
+                <div className="flex flex-col items-center justify-center mt-6 animate-bounce">
+                  <FaTrophy
+                    className="text-yellow-400 "
+                    size={48}
+                  />{" "}
+                  <div className="text-3xl font-extrabold text-red-100 ">
+                    Blue Player Wins!
+                  </div>
                 </div>
-                <div className="mt-4 text-2xl text-white bg-gradient-to-r from-blue-500 to-teal-500 py-2 px-6 rounded-lg shadow-lg">
+                <div className="mt-2 text-lg text-white bg-gradient-to-r from-blue-500 to-teal-500 py-2 px-6 rounded-lg shadow-lg">
                   Congratulations to the Blue Player!
                 </div>
-                <div className="mt-4 w-20 h-20 bg-blue-400 rounded-full animate-spin-slow shadow-xl"></div>
-              </div>
-            )}{" "}
+              </>
+            )}
           </div>
         </div>
-        {winnerOfMatch == "none" && (
-          <div className="flex flex-col items-center justify-center mt-10">
-            <div className="text-6xl font-extrabold text-yellow-400 animate-bounce">
+        {winnerOfMatch === "none" && (
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-4xl font-extrabold text-yellow-400 ">
               Match is a Tie!
             </div>
             <div className="mt-4 text-2xl text-white bg-gradient-to-r from-yellow-400 to-orange-400 py-2 px-6 rounded-lg shadow-lg">
@@ -359,7 +377,9 @@ export default function Scoreboard() {
           </div>
         )}
         {updateScoreError != "" && (
-          <div className="text-white text-3xl">{updateScoreError}</div>
+          <div className="text-white text-2xl text-center w-full mt-3">
+            {updateScoreError}
+          </div>
         )}
       </div>
 
