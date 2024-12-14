@@ -6,10 +6,12 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
+import { convertFirstLetterCapital } from "@/utils/utils";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
   const { participant } = router.query;
+  const participantName = convertFirstLetterCapital(participant);
 
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
   const [timer, setTimer] = useState(5); // Set to 120 seconds for a 2-minute match
@@ -61,7 +63,7 @@ export default function EnhancedScoreboard() {
   };
 
   const downloadPDF = async () => {
-    if (!participant) {
+    if (!participantName) {
       return alert("Participant name is required to download the PDF.");
     }
 
@@ -101,7 +103,7 @@ export default function EnhancedScoreboard() {
       doc.text(`This is to certify that`, 105, 70, { align: "center" });
 
       doc.setFont("Times", "B", 16);
-      doc.text(`${participant}`, 105, 80, { align: "center" });
+      doc.text(`${participantName}`, 105, 80, { align: "center" });
 
       doc.setFont("Times", "B", 14);
       doc.text(`has participated in the Mardani Sports Championship`, 105, 90, {
@@ -182,7 +184,7 @@ export default function EnhancedScoreboard() {
       );
 
       // Save the PDF
-      doc.save(`${participant}_certificate.pdf`);
+      doc.save(`${participantName}_certificate.pdf`);
     } catch (error) {
       console.error("Error loading images: ", error);
       alert("Failed to load images. Please check the image paths.");
@@ -230,8 +232,8 @@ export default function EnhancedScoreboard() {
         </div>
       </header>
 
-      {/* Participant Section */}
-      {participant && (
+      {/* participantName Section */}
+      {participantName && (
         <div className="flex flex-col md:flex-row items-center justify-between w-full  backdrop-blur-md p-2 r space-y-6 md:space-y-0 md:space-x-8">
           {/* Trophy Image */}
           <div className="relative flex items-center justify-center">
@@ -245,10 +247,10 @@ export default function EnhancedScoreboard() {
             <div className="absolute w-full h-full rounded-full border-2 border-yellow-300 animate-pulse" />
           </div>
 
-          {/* Participant Details */}
+          {/* participantName Details */}
           <div className="flex flex-col items-center md:items-start">
             <h2 className="text-3xl font-bold text-center text-gray-100 md:text-left">
-              <span className="">Participant:</span> {participant}
+              <span className="">Participant:</span> {participantName}
             </h2>
           </div>
 
@@ -265,7 +267,7 @@ export default function EnhancedScoreboard() {
       )}
 
       {/* // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
-        //   Participant: {participant}
+        //   participantName: {participantName}
         // </h2>
       )} */}
 
@@ -283,7 +285,7 @@ export default function EnhancedScoreboard() {
           <div
             className="absolute bottom-0 left-0 w-full rounded-2xl bg-green-500"
             style={{
-              opacity: 0.2,
+              // opacity: 0.2,
               height: `${(timer / 120) * 100}%`,
               transition: "height 1s linear",
             }}
