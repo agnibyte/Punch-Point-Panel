@@ -119,14 +119,25 @@ export default function EnhancedScoreboard() {
         body: refereeScores.map((score, index) => [
           `Referee ${index + 1}`,
           score,
-        ]),
-        theme: "grid",
+        ]), theme: "grid",
         styles: {
           fontSize: 16,
           cellPadding: 5,
           valign: "middle",
           halign: "center",
           font: "Times",
+        },
+        headStyles: {
+          fillColor: [255, 165, 0], // Orange header background color
+          textColor: [255, 255, 255], // White text for better contrast
+          fontStyle: "bold",
+        },
+        bodyStyles: {
+          fillColor: [255, 235, 204], // Light orange background for body rows
+          textColor: [0, 0, 0], // Black text
+        },
+        alternateRowStyles: {
+          fillColor: [255, 218, 179], // Slightly darker orange for alternate rows
         },
       });
 
