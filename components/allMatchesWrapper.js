@@ -31,7 +31,7 @@ export default function AllMatchesWrapper() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header Section */}
       <header className="w-full bg-white shadow-md sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
@@ -52,17 +52,17 @@ export default function AllMatchesWrapper() {
       </header>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-hidden bg-white p-6">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+      <div className="flex-1 overflow-hidden bg-gray-100 p-6">
+        <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
           Match List
         </h1>
 
         {/* Loading / Error State */}
         {loading ? (
-          <div className="relative border border-gray-300 h-[80vh] overflow-hidden">
+          <div className="relative border border-gray-300 h-[80vh] overflow-hidden rounded-lg bg-white">
             <table className="table-auto w-full border-collapse">
-              <thead className="sticky top-0 bg-gray-700 z-10">
-                <tr className="text-gray-100">
+              <thead className="sticky top-0 bg-indigo-700 z-10">
+                <tr className="text-white">
                   {[
                     "Match No",
                     "Red Corner",
@@ -77,7 +77,7 @@ export default function AllMatchesWrapper() {
                   ].map((header, index) => (
                     <th
                       key={index}
-                      className="border border-gray-400 px-4 py-2 text-left text-lg font-bold"
+                      className="border border-indigo-200 px-4 py-2 text-left text-lg font-semibold"
                     >
                       {header}
                     </th>
@@ -85,18 +85,17 @@ export default function AllMatchesWrapper() {
                 </tr>
               </thead>
               <tbody>
-                {/* Skeleton Rows */}
                 {[...Array(6)].map((_, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className="animate-pulse bg-gray-100 hover:bg-gray-200"
+                    className="animate-pulse bg-gray-50 hover:bg-gray-200"
                   >
                     {Array(10)
                       .fill("")
                       .map((_, colIndex) => (
                         <td
                           key={colIndex}
-                          className="border border-gray-400 px-4 py-2"
+                          className="border border-gray-200 px-4 py-3"
                         >
                           <div className="h-5 bg-gray-300 rounded"></div>
                         </td>
@@ -112,10 +111,10 @@ export default function AllMatchesWrapper() {
           </div>
         ) : (
           <div className="relative overflow-hidden">
-            <div className="relative border border-gray-300 h-[80vh] overflow-auto">
+            <div className="relative border border-gray-300 h-[80vh] overflow-auto rounded-lg bg-white shadow-lg">
               <table className="table-auto w-full border-collapse">
-                <thead className="sticky top-0 bg-gray-700 z-10">
-                  <tr className="text-gray-100">
+                <thead className="sticky top-0 bg-indigo-700 text-white">
+                  <tr>
                     {[
                       "Match No",
                       "Red Corner",
@@ -130,22 +129,20 @@ export default function AllMatchesWrapper() {
                     ].map((header, index) => (
                       <th
                         key={index}
-                        className="border border-gray-400 px-4 py-2 text-left text-lg font-bold"
+                        className="border border-indigo-200 px-4 py-3 text-left text-lg font-semibold"
                       >
                         {header}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-300">
+                <tbody className="bg-white divide-y divide-gray-200">
                   {allMatchesData.map((match, index) => (
                     <tr
                       key={index}
-                      className={
-                        index % 2 === 0
-                          ? "bg-gray-100 hover:bg-gray-200"
-                          : "bg-white hover:bg-gray-100"
-                      }
+                      className={`hover:bg-indigo-50 transition duration-150 ${
+                        index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      }`}
                     >
                       {[
                         { value: match.matchNo, className: "text-gray-800" },
@@ -157,23 +154,23 @@ export default function AllMatchesWrapper() {
                           value: `${match.playerBlue} (${match.stateBlue})`,
                           className: "text-blue-600 font-bold",
                         },
-                        { value: match.category, className: "text-gray-800" },
-                        { value: match.age, className: "text-gray-800" },
-                        { value: match.weight, className: "text-gray-800" },
+                        { value: match.category, className: "text-gray-600" },
+                        { value: match.age, className: "text-gray-600" },
+                        { value: match.weight, className: "text-gray-600" },
                         {
                           value: match.red_score > 0 ? match.red_score : "-",
-                          className: "text-gray-800",
+                          className: "text-gray-600",
                         },
                         {
                           value: match.blue_score > 0 ? match.blue_score : "-",
-                          className: "text-gray-800",
+                          className: "text-gray-600",
                         },
                         { value: match.winner || "-", className: "text-gray-800" },
                         { value: match.status || "-", className: "text-gray-800" },
                       ].map((cell, i) => (
                         <td
                           key={i}
-                          className={`border border-gray-400 px-4 py-2 ${cell.className}`}
+                          className={`border border-gray-200 px-4 py-3 text-sm ${cell.className}`}
                         >
                           {cell.value}
                         </td>
