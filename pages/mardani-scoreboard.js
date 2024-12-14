@@ -272,28 +272,34 @@ export default function EnhancedScoreboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {/* Timer Section */}
-        <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
-          <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch
-              className="mr-4"
-              size={36}
+        <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl flex flex-col items-center justify-between transform transition duration-300 ease-in-out hover:scale-105 ">
+          <div className="flex flex-col items-center justify-center mb-4">
+            <h3 className="text-2xl font-semibold mb-4 flex items-center">
+              <FaStopwatch
+                className="mr-4"
+                size={36}
+              />
+              {isMatchOver ? "Match Over" : "Time Remaining"}
+            </h3>
+
+            <p
+              className="text-9xl font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
+              style={{ fontFamily: 'Orbitron, sans-serif' }}
+            >
+              {formatTime(timer)}
+            </p>
+          </div>
+
+          {/* Progress Bar Container at the bottom */}
+          <div className="w-full h-3 bg-gray-600 rounded-full mt-4 ">
+            <div
+              className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
+              style={{
+                width: `${(timer / 120) * 100}%`, // Dynamically adjust width based on time
+                transition: "width 0.5s ease-in-out",
+              }}
             />
-            {isMatchOver ? "Match Over" : "Time Remaining"}
-          </h3>
-          <p
-            className="text-9xl font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
-            style={{ fontFamily: '"Orbitron", sans-serif' }}
-          >
-            {formatTime(timer)}
-          </p>
-          <div
-            className="absolute bottom-0 left-0 w-full rounded-2xl bg-green-500"
-            style={{
-              // opacity: 0.2,
-              height: `${(timer / 120) * 100}%`,
-              transition: "height 1s linear",
-            }}
-          />
+          </div>
         </div>
 
         <div className="flex flex-col gap-8 justify-center">
