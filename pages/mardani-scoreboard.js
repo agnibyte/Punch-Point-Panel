@@ -190,7 +190,6 @@ export default function EnhancedScoreboard() {
       alert("Failed to load images. Please check the image paths.");
     }
   };
-  console.log("timer", timer);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
