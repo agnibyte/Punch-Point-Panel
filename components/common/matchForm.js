@@ -72,10 +72,8 @@ export default function MatchForm({ setSetUpMatchModal, setPendingMatches }) {
     setShowSuccessMsg(false);
 
     setApiError("");
-    console.log("payload ADD_FIGHT_MATCH", payload);
     try {
       const response = await postApiData("ADD_FIGHT_MATCH", payload);
-      console.log("response", response);
       if (response.status) {
         const { matchNo } = response;
         setCreatedMatchNo(matchNo);

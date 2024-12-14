@@ -64,7 +64,6 @@ export default function Scoreboard() {
       const response = await postApiData("GET_CURRENT_MATCH_DATA", {
         matchId: parseInt(localMatchNo),
       });
-      console.log("match Data", response);
       if (response.status && response.data.length > 0) {
         setRedPlayer({
           name: response.data[0].playerRed,
@@ -115,9 +114,7 @@ export default function Scoreboard() {
     }
     setUpdateScoreError("");
 
-    console.log("payload UPDATED_MATCH_SCORES", payload);
     const response = await postApiData("UPDATED_MATCH_SCORES", payload);
-    console.log("response after upadte", response);
     if (response.status) {
       if (team === "red") {
         setRedScore((prev) => Math.max(0, prev + value));
@@ -151,7 +148,6 @@ export default function Scoreboard() {
     }
 
     setRoundScores(newRoundScores);
-    console.log("Updated Round Scores:", newRoundScores);
   };
 
   const handleRoundChange = (round) => {
@@ -204,9 +200,7 @@ export default function Scoreboard() {
       const payload = {
         matchId: currentMatchNo,
       };
-      console.log("payload GET_MATCH_SCORES", payload);
       const response = await postApiData("GET_MATCH_SCORES", payload);
-      console.log("response", response);
       const { data } = response;
       if (response.status) {
         let totalRed = 0;
@@ -223,7 +217,6 @@ export default function Scoreboard() {
             parseInt(score.referee4_score || 0) +
             parseInt(score.referee5_blue_score || 0);
         });
-        console.log("totalRed", "totalBlue", totalRed, totalBlue);
         setRedScore(totalRed);
         setBlueScore(totalBlue);
       } else {

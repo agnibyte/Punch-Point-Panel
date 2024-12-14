@@ -9,7 +9,6 @@ export default function App() {
   //     mobile_number: "y89ryew",
   //   };
   //   const response = await postApiData("GET_ALL_USERS", payload);
-  //   console.log("response", response);
   //   if (response.status) {
   //   } else {
   //   }

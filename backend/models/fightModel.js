@@ -66,11 +66,9 @@ export function getRefereeScoresModel(matchId) {
     const query = `
     SELECT referee1_score, referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score FROM ${MATCH_SCORES} WHERE match_id = ? AND status = 'active' ; `;
     // AND status = 'active'
-    console.log("matchId in model===", matchId);
 
     executeQuery(query, [matchId])
       .then((result) => {
-        console.log("result in getRefereeScoresModel", result);
         if (result) {
           resolve(result);
         } else {
@@ -96,8 +94,6 @@ export function updateMatchScores(matchId, payload) {
   return new Promise((resolve, reject) => {
     // Start building the update query dynamically
     let updateQuery = `UPDATE ${MATCH_SCORES} SET `;
-
-    console.log("matchId, payload", matchId, payload);
 
     const updateValues = [];
 
@@ -154,13 +150,10 @@ export function updateMatchScores(matchId, payload) {
     updateQuery += " WHERE match_id = ? AND status = 'active' ";
     updateValues.push(matchId);
 
-    console.log("updateQuery", updateQuery);
-    console.log("updateValues", updateValues);
 
     // Execute the query
     executeQuery(updateQuery, updateValues)
       .then((result) => {
-        console.log("result from scores", result);
         if (result.affectedRows > 0) {
           resolve({ success: true, message: "Scores updated successfully" });
         } else {

@@ -6,7 +6,6 @@ export default function MatchResults() {
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
-    console.log("MatchResults component mounted");
     const isLoginCheck = "true"; // Temporarily bypass auth
     if (isLoginCheck !== "true") {
       router.push("/login");
@@ -30,7 +29,6 @@ export default function MatchResults() {
         status: "active",
       },
     ];
-    console.log("Loading dummy data:", dummyData);
     setMatches(dummyData);
   };
 

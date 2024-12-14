@@ -8,11 +8,9 @@ export function getAllUsers() {
   return new Promise((resolve, reject) => {
     const getSql = "SELECT matchNo FROM fight_master";
     // const hashedPassword = hashWithSHA256("fightadmin@m1");
-    // console.log("hashedPassword", hashedPassword);
 
     executeQuery(getSql)
       .then((checkResult) => {
-        console.log("checkResult", checkResult);
         // if (checkResult.length > 0) {
         // } else {
         // }
@@ -33,13 +31,11 @@ export function addNeUserModel(request) {
       hash_password: hashedPassword,
       role: request.role,
     };
-    console.log("tempObj", tempObj);
     const insertQuery = `INSERT INTO ${REFEREE_MASTER} SET ?`;
 
     executeQuery(insertQuery, [tempObj])
       .then((insertResult) => {
         if (insertResult.affectedRows > 0) {
-          console.log("Insert user successful", insertResult);
           resolve(true);
         } else {
           reject(new Error("Insertion failed"));

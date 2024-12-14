@@ -62,10 +62,8 @@ export function getRefereeScoresController(request) {
       status: false,
     };
     const matchId = request.matchId;
-    console.log("matchId in getRefereeScoresController===", matchId);
     getRefereeScoresModel(matchId)
       .then((result) => {
-        // console.log("result in getRefereeScoresController", result);
         if (result.length > 0) {
           response.status = true;
           response.data = result;
@@ -89,10 +87,8 @@ export function giveScoreforMatchController(request) {
     };
 
     const matchId = request.matchId;
-    console.log("matchId in giveScoreforMatchController===", matchId);
     updateMatchScores(matchId, request)
       .then((result) => {
-        console.log("result in giveScoreforMatchController", result);
         if (result.success) {
           response.status = true;
           resolve(response);

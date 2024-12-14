@@ -24,7 +24,6 @@ export default function StartMardaniMatchModal({ pendingMatches, refereePath  })
     clearErrors("matchNumber"); // Clear any validation errors
   };
   const onClickContinue = () => {
-    console.log("selectedMatch", selectedMatch);
     localStorage.setItem("currentMatch", selectedMatch.value);
     router.push(refereePath);
   };

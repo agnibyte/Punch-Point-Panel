@@ -52,7 +52,6 @@ export default function HomeWrapper() {
   const getAvailableMatches = async () => {
     try {
       const response = await postApiData("GET_AVAILABLE_MATCHES");
-      console.log("response GET_AVAILABLE_MATCHES", response);
       if (response.status && response.data.length > 0) {
         setPendingMatches(response.data);
       } else {

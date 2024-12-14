@@ -29,7 +29,6 @@ export function addNeUserController(request) {
     const response = {
       status: false,
     };
-    console.log("request ======a", request);
     addNeUserModel(request)
       .then((result) => {
         if (result) {

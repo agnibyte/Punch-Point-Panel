@@ -6,7 +6,6 @@ export default function handler(req, res) {
     const response = {
       status: false,
     };
-    // console.log("request getAllMatchesController----", request);
 
     getAllMatchesController(request)
       .then((result) => {

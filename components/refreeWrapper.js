@@ -16,8 +16,6 @@ export default function RefreeWrapper() {
   const [redScoreLoading, setRedScoreLoading] = useState(false);
   const [blueScoreLoading, setBlueScoreLoading] = useState(false);
 
-  console.log("userRole", userRole);
-
   useEffect(() => {
     const userRole = getCookie("auth_role");
     const user = getCookie("auth_user");
@@ -55,11 +53,7 @@ export default function RefreeWrapper() {
       if (player == "blue") payload.referee5_blue_score = 1;
     }
 
-    console.log("payload UPDATED_MATCH_SCORES", payload);
-
-    console.log("payload UPDATED_MATCH_SCORES", payload);
     const response = await postApiData("UPDATED_MATCH_SCORES", payload);
-    console.log("response", response);
     const { data } = response;
     if (response.status) {
       setAnimation({ player, show: true });

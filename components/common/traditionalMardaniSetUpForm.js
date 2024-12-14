@@ -10,7 +10,6 @@ export default function TraditionalMardaniSetUpForm({
   const router = useRouter();
 
   const handleMardaniMatchSubmit = () => {
-    console.log('!participantName.trim()', !participantName.trim())
     if (!participantName.trim()) {
       setError("Participant name is required.");
       return;

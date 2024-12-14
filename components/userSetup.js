@@ -9,9 +9,7 @@ export default function UserSetup({}) {
       hash_password: "fightreferee@m1",
       role: "red_referee",
     };
-    console.log("payload REGISTER_NEW_USER", payload);
     const response = await postApiData("REGISTER_NEW_USER", payload);
-    console.log("response ===", response);
     if (response.status) {
     } else {
     }
