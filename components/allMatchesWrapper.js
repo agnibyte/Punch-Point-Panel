@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { postApiData } from "@/utils/services/apiService";
 import Link from "next/link";
 import Image from "next/image";
+import { jsPDF } from "jspdf";
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -29,6 +30,29 @@ export default function AllMatchesWrapper() {
   useEffect(() => {
     getAllMatches();
   }, []);
+
+  const downloadMatchDetails = (match) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(`Match Details`, 105, 20, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+
+    doc.text(`Match No: ${match.matchNo}`, 10, 40);
+    doc.text(`Red Corner: ${match.playerRed} (${match.stateRed})`, 10, 50);
+    doc.text(`Blue Corner: ${match.playerBlue} (${match.stateBlue})`, 10, 60);
+    doc.text(`Category: ${match.category}`, 10, 70);
+    doc.text(`Age: ${match.age}`, 10, 80);
+    doc.text(`Weight: ${match.weight} kg`, 10, 90);
+    doc.text(`Red Score: ${match.red_score > 0 ? match.red_score : "-"}`, 10, 100);
+    doc.text(`Blue Score: ${match.blue_score > 0 ? match.blue_score : "-"}`, 10, 110);
+    doc.text(`Winner: ${match.winner || "-"}`, 10, 120);
+    doc.text(`Status: ${match.status || "-"}`, 10, 130);
+
+    doc.save(`Match_${match.matchNo}_Details.pdf`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -74,6 +98,7 @@ export default function AllMatchesWrapper() {
                     "Blue Score",
                     "Winner",
                     "Status",
+                    "Download",
                   ].map((header, index) => (
                     <th
                       key={index}
@@ -90,7 +115,7 @@ export default function AllMatchesWrapper() {
                     key={rowIndex}
                     className="animate-pulse bg-gray-50 hover:bg-gray-200"
                   >
-                    {Array(10)
+                    {Array(11)
                       .fill("")
                       .map((_, colIndex) => (
                         <td
@@ -126,6 +151,7 @@ export default function AllMatchesWrapper() {
                       "Blue Score",
                       "Winner",
                       "Status",
+                      "Download",
                     ].map((header, index) => (
                       <th
                         key={index}
@@ -165,8 +191,27 @@ export default function AllMatchesWrapper() {
                           value: match.blue_score > 0 ? match.blue_score : "-",
                           className: "text-gray-600",
                         },
-                        { value: match.winner || "-", className: "text-gray-800" },
+                        {
+                          value: match.winner || "-",
+                          className:
+                            match.winner === match.playerRed
+                              ? "text-red-600 font-bold"
+                              : match.winner === match.playerBlue
+                              ? "text-blue-600 font-bold"
+                              : "text-gray-800",
+                        },
                         { value: match.status || "-", className: "text-gray-800" },
+                        {
+                          value: (
+                            <button
+                              onClick={() => downloadMatchDetails(match)}
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              📄
+                            </button>
+                          ),
+                          className: "text-center",
+                        },
                       ].map((cell, i) => (
                         <td
                           key={i}
