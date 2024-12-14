@@ -3,6 +3,8 @@ import { postApiData } from "@/utils/services/apiService";
 import Link from "next/link";
 import Image from "next/image";
 import { jsPDF } from "jspdf";
+import { AiOutlineFilePdf } from 'react-icons/ai';
+
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -98,7 +100,7 @@ export default function AllMatchesWrapper() {
                     "Blue Score",
                     "Winner",
                     "Status",
-                    "Download",
+                    "Report",
                   ].map((header, index) => (
                     <th
                       key={index}
@@ -151,7 +153,7 @@ export default function AllMatchesWrapper() {
                       "Blue Score",
                       "Winner",
                       "Status",
-                      "Download",
+                      "Report",
                     ].map((header, index) => (
                       <th
                         key={index}
@@ -204,11 +206,11 @@ export default function AllMatchesWrapper() {
                         {
                           value: (
                             <button
-                              onClick={() => downloadMatchDetails(match)}
-                              className="text-indigo-600 hover:text-indigo-900"
-                            >
-                              📄
-                            </button>
+                            onClick={() => downloadMatchDetails(match)}
+                            className="text-red-600 hover:text-red-900"
+                          >
+                            <AiOutlineFilePdf size={24} /> PDF
+                          </button>
                           ),
                           className: "text-center",
                         },
