@@ -14,7 +14,7 @@ export default function EnhancedScoreboard() {
   const participantName = convertFirstLetterCapital(participant);
 
   const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
-  const [timer, setTimer] = useState(5); // Set to 120 seconds for a 2-minute match
+  const [timer, setTimer] = useState(120); // Set to 120 seconds for a 2-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
