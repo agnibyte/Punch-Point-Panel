@@ -13,17 +13,40 @@ import { FaTrophy } from "react-icons/fa";
 import Image from "next/image";
 
 export default function Scoreboard() {
-  const duration = 10;
   const router = useRouter();
+
+  const [timeLeft, setTimeLeft] = useState(moment.duration(90, "seconds"));
+  const [isMounted, setIsMounted] = useState(false);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    // Ensure the code runs only in the browser
+    if (typeof window !== "undefined") {
+      const localtime = parseInt(localStorage.getItem("matchTimer"), 10);
+
+      // Set the duration based on localStorage value or default to 90 seconds (1.5 minutes)
+      const durationTemp = localtime === 3 ? 180 : 90;
+      setTimeLeft(moment.duration(durationTemp, "seconds"));
+      setDuration(durationTemp);
+    }
+
+    // This ensures that we update isMounted only after the first render (client-side)
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Optionally, you can save the timeLeft to localStorage
+    if (timeLeft.seconds() === 0 && timeLeft.minutes() === 0) {
+      localStorage.setItem("matchTimer", timeLeft.minutes() === 3 ? 3 : 1.5);
+    }
+  }, [timeLeft]);
 
   const [redScore, setRedScore] = useState(0);
   const [blueScore, setBlueScore] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [currentMatchNo, setCurrentMatchNo] = useState("");
   const [isMatchStart, setIsMatchStart] = useState(false); // Track if the timer is running
-  const [timeLeft, setTimeLeft] = useState(
-    moment.duration(duration, "seconds")
-  );
+
   const [isRunning, setIsRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
