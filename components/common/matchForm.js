@@ -368,8 +368,8 @@ export default function MatchForm({ setSetUpMatchModal, setPendingMatches }) {
             </div>
           )}
           {showSuccessMsg && CreatedMatchNo && (
-            <div className=" text-green-700 text-2xl my-6">
-              You have successfully created the match. The match number is:{" "}
+            <div className="text-green-700 text-2xl my-6 font-bold">
+            You have successfully created the match. The match number is: {" "}
               {CreatedMatchNo}
             </div>
           )}
