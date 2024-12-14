@@ -129,7 +129,7 @@ export default function EnhancedScoreboard() {
         },
       });
 
-      // // Add Watermark in the Background
+      // // // Add Watermark in the Background
       // const watermarkWidth = 150; // Adjust the size of the watermark
       // const watermarkHeight = 150;
       // doc.addImage(
@@ -140,7 +140,7 @@ export default function EnhancedScoreboard() {
       //   watermarkWidth,
       //   watermarkHeight,
       //   undefined,
-      //   "NONE",
+      //   "0",
       //   0 // Opacity (0 for fully transparent, 1 for fully opaque)
       // );
 
