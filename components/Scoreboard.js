@@ -273,7 +273,7 @@ export default function Scoreboard() {
       {/* Main Content */}
       <div className="flex flex-col items-center justify-between w-full h-full px-4 pt-20">
         <div className="flex items-center justify-center bg-gradient-to-r from-purple-500 to-blue-500 text-white text-3xl font-semibold py-2 px-6 rounded-full shadow-lg hover:scale-105 transform transition duration-300 mt-0 md:mt-2 my-3">
-          Match{" "}
+          Match :{" "}
           <span className="ml-2 text-3xl font-extrabold">{currentMatchNo}</span>
         </div>{" "}
         <div className="w-full md:w-1/3 flex justify-center items-center mb-4 md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">

@@ -78,7 +78,7 @@ export default function RefreeWrapper() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-700 via-gray-900 to-black relative overflow-hidden">
       <h1 className="text-5xl md:text-6xl text-white font-extrabold mb-12 tracking-wide shadow-lg">
-        Referee Panel
+        Referee Panel Match : {currentMatchNo}
       </h1>
 
       {apiError ? (
