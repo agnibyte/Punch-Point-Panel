@@ -3,8 +3,7 @@ import { postApiData } from "@/utils/services/apiService";
 import Link from "next/link";
 import Image from "next/image";
 import { jsPDF } from "jspdf";
-import { AiOutlineFilePdf } from 'react-icons/ai';
-
+import { AiOutlineFilePdf } from "react-icons/ai";
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -39,55 +38,74 @@ export default function AllMatchesWrapper() {
     // Decorative Borders (Optional - can be enhanced with images or lines)
     doc.setDrawColor(0, 0, 0);
     doc.setLineWidth(1);
-    doc.rect(10, 10, 190, 277, 'S');
+    doc.rect(10, 10, 190, 277, "S");
     doc.setLineWidth(0.5);
-    doc.rect(15, 15, 180, 267, 'S');
+    doc.rect(15, 15, 180, 267, "S");
   
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
     doc.text("CERTIFICATE OF PARTICIPATION", 105, 40, { align: "center" });
   
+    // Add Logo Below the Title
+    const logoUrl = "/images/image.png"; // Replace with the actual path to the logo image
+    const logoWidth = 32; // Adjust logo width
+    const logoHeight = 32; // Adjust logo height
+    const logoX = 90; // Center the logo horizontally
+    const logoY = 45; // Position below the title
+    doc.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
+  
     // Subtitle
     doc.setFont("helvetica", "italic");
     doc.setFontSize(14);
-    doc.text("This is to certify that", 105, 60, { align: "center" });
+    doc.text("This is to certify that", 105, 90, { align: "center" });
   
     // Player Names (Winner Highlighted if available)
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     if (match.winner) {
-      doc.text(`Winner: ${match.winner}`, 105, 80, { align: "center" });
+      doc.text(`Winner: ${match.winner}`, 105, 110, { align: "center" });
     } else {
-      doc.text(`${match.playerRed} (Red Corner)`, 105, 80, { align: "center" });
-      doc.text("and", 105, 90, { align: "center" });
-      doc.text(`${match.playerBlue} (Blue Corner)`, 105, 100, { align: "center" });
+      doc.text(`${match.playerRed} (Red Corner)`, 105, 110, { align: "center" });
+      doc.text("and", 105, 120, { align: "center" });
+      doc.text(`${match.playerBlue} (Blue Corner)`, 105, 130, { align: "center" });
     }
   
     // Match Details Section
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
-    doc.text(`Match No: ${match.matchNo}`, 105, 120, { align: "center" });
-    doc.text(`Category: ${match.category}`, 105, 130, { align: "center" });
-    doc.text(`Age: ${match.age}`, 105, 140, { align: "center" });
-    doc.text(`Weight: ${match.weight} kg`, 105, 150, { align: "center" });
+    doc.text(`Match No: ${match.matchNo}`, 105, 150, { align: "center" });
+    doc.text(`Category: ${match.category}`, 105, 160, { align: "center" });
+    doc.text(`Age: ${match.age}`, 105, 170, { align: "center" });
+    doc.text(`Weight: ${match.weight} kg`, 105, 180, { align: "center" });
   
     // Scores Section
     doc.setFont("helvetica", "bold");
-    doc.text("Scores", 105, 170, { align: "center" });
+    doc.text("Scores", 105, 200, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.text(`Red Corner: ${match.red_score > 0 ? match.red_score : "-"}`, 70, 180);
-    doc.text(`Blue Corner: ${match.blue_score > 0 ? match.blue_score : "-"}`, 140, 180);
+    doc.text(
+      `Red Corner: ${match.red_score > 0 ? match.red_score : "-"}`,
+      70,
+      210
+    );
+    doc.text(
+      `Blue Corner: ${match.blue_score > 0 ? match.blue_score : "-"}`,
+      140,
+      210
+    );
   
     // Footer
     doc.setFont("helvetica", "italic");
     doc.setFontSize(10);
-    doc.text("Issued by: National Sports Association", 105, 260, { align: "center" });
+    doc.text("Issued by: Mardani Sports Club ", 105, 260, {
+      align: "center",
+    });
   
     // Save the PDF
     doc.save(`Certificate_Match_${match.matchNo}.pdf`);
   };
   
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header Section */}
@@ -103,7 +121,7 @@ export default function AllMatchesWrapper() {
               height={"32"}
             />
             <Link href="/" className="text-xl font-bold text-gray-800">
-              Sports Mardani Club Championship
+              third 3rd Sports Mardani Club Championship 2024
             </Link>
           </div>
         </div>
@@ -234,16 +252,18 @@ export default function AllMatchesWrapper() {
                               ? "text-blue-600 font-bold"
                               : "text-gray-800",
                         },
-                        { value: match.status || "-", className: "text-gray-800" },
+                        {
+                          value: match.status || "-",
+                          className: "text-gray-800",
+                        },
                         {
                           value: (
-<button
-  onClick={() => downloadMatchCertificate(match)} // Corrected function name
-  className="text-red-600 hover:text-red-900"
->
-  <AiOutlineFilePdf size={24} /> PDF
-</button>
-
+                            <button
+                              onClick={() => downloadMatchCertificate(match)} // Corrected function name
+                              className="text-red-600 hover:text-red-900"
+                            >
+                              <AiOutlineFilePdf size={24} /> PDF
+                            </button>
                           ),
                           className: "text-center",
                         },
