@@ -210,12 +210,13 @@ export default function EnhancedScoreboard() {
       {/* Participant Section */}
       {participant && (
         <div className="flex flex-col md:flex-row items-center justify-between w-full ">
-          {/* Participant Title */}
-          <FaTrophy
-            className="text-yellow-400 animate-spin-3d"
-            size={40}
-          />
-
+<Image
+  src="/images/trophy.gif"
+  alt="Trophy Animation"
+  width={80} // Set the width in pixels
+  height={80} // Set the height in pixels
+  className="w-24 h-24"
+/>
           <h2 className=" text-2xl  font-semibold text-blue-300 md:text-left">
             Participant: {participant}
           </h2>
@@ -239,10 +240,7 @@ export default function EnhancedScoreboard() {
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-black-800 to-white-900 text-white-100 p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch
-              className="mr-4"
-              size={36}
-            />
+            <FaStopwatch className="mr-4" size={36} />
             {isMatchOver ? "Match Over" : "Time Remaining"}
           </h3>
           <p className="text-8xl font-mono">{formatTime(timer)}</p>
