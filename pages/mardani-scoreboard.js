@@ -202,6 +202,13 @@ export default function EnhancedScoreboard() {
           width={"75"}
           height={"75"}
         />
+            {/* <Image
+            src="/images/trophy.gif"
+            alt="Trophy Animation"
+            width={80} // Set the width in pixels
+            height={80} // Set the height in pixels
+            className="w-24 h-24"
+          /> */}
 
         {/* Title */}
         <h1 className="text-xl md:text-3xl font-bold flex items-center gap-4">
@@ -223,29 +230,55 @@ export default function EnhancedScoreboard() {
         </div>
       </header>
 
-      {/* Participant Section */}
-      {participant && (
-        <div className="flex flex-col md:flex-row items-center justify-center w-full ">
-          {/* Participant Title */}
+{/* Participant Section */}
+{participant && (
+  <div className="flex flex-col md:flex-row items-center justify-between w-full  backdrop-blur-md p-6 r space-y-6 md:space-y-0 md:space-x-8">
+    {/* Trophy Image */}
+    <div className="relative flex items-center justify-center">
+      <Image
+        src="/images/trophy.gif"
+        alt="Trophy Animation"
+        width={100}
+        height={100}
+        className="w-28 h-28 rounded-full  shadow-lg transition-transform duration-300 hover:scale-110 hover:border-yellow-500"
+      />
+      <div className="absolute w-full h-full rounded-full border-2 border-yellow-300 animate-pulse" />
+    </div>
 
-          <h2 className=" text-2xl  font-semibold text-blue-300 md:text-left">
-            Participant: {participant}
-          </h2>
-        </div>
+    {/* Participant Details */}
+    <div className="flex flex-col items-center md:items-start">
+      <h2 className="text-3xl font-bold text-center text-gray-100 md:text-left">
+        <span className="">
+          Participant:
+        </span>{" "}
+        {participant}
+      </h2>
+    </div>
 
-        // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
+    {/* Start New Match Button */}
+    <div>
+      <button
+        onClick={() => router.push("/")}
+        className="px-8 py-3 text-lg font-semibold text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg shadow-lg hover:from-yellow-500 hover:to-yellow-600 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+      >
+        Start New Match
+      </button>
+    </div>
+  </div>
+)}
+
+
+
+        {/* // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
         //   Participant: {participant}
         // </h2>
-      )}
+      )} */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white p-12 rounded-2xl shadow-2xl flex flex-col items-center justify-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-700 hover:to-gray-800">
           <h3 className="text-2xl font-semibold mb-4 flex items-center">
-            <FaStopwatch
-              className="mr-4"
-              size={36}
-            />
+            <FaStopwatch className="mr-4" size={36} />
             {isMatchOver ? "Match Over" : "Time Remaining"}
           </h3>
           <p className="text-8xl font-mono">{formatTime(timer)}</p>
