@@ -65,7 +65,7 @@ export function getRefereeScoresController(request) {
     console.log("matchId in getRefereeScoresController===", matchId);
     getRefereeScoresModel(matchId)
       .then((result) => {
-        console.log("result in getRefereeScoresController", result);
+        // console.log("result in getRefereeScoresController", result);
         if (result.length > 0) {
           response.status = true;
           response.data = result;

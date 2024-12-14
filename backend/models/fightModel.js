@@ -131,13 +131,17 @@ export function updateMatchScores(matchId, payload) {
       updateValues.push(payload.referee4_score);
     }
     if (payload.referee5_red_score !== undefined) {
+      const scoreChange = payload.referee5_red_score;
       updateQuery += "referee5_red_score = referee5_red_score + ?, ";
-      updateValues.push(payload.referee5_red_score);
+      updateValues.push(scoreChange);
     }
+
     if (payload.referee5_blue_score !== undefined) {
+      const scoreChange = payload.referee5_blue_score;
       updateQuery += "referee5_blue_score = referee5_blue_score + ?, ";
-      updateValues.push(payload.referee5_blue_score);
+      updateValues.push(scoreChange);
     }
+
     if (payload.status !== undefined) {
       updateQuery += "status = ?, ";
       updateValues.push(payload.status);
@@ -149,6 +153,9 @@ export function updateMatchScores(matchId, payload) {
     // Add the WHERE condition
     updateQuery += " WHERE match_id = ? AND status = 'active' ";
     updateValues.push(matchId);
+
+    console.log("updateQuery", updateQuery);
+    console.log("updateValues", updateValues);
 
     // Execute the query
     executeQuery(updateQuery, updateValues)

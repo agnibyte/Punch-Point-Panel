@@ -35,7 +35,9 @@ export default function Scoreboard() {
   const [bluePlayer, setBluePlayer] = useState({ name: "", state: "" });
   const [updateScoreError, setUpdateScoreError] = useState("");
   const [redScoreLoading, setRedScoreLoading] = useState(false);
+  const [redMiniusScoreLoading, setRedMiniusScoreLoading] = useState(false);
   const [blueScoreLoading, setBlueScoreLoading] = useState(false);
+  const [blueMiniusScoreLoading, setBlueMiniusScoreLoading] = useState(false);
 
   const totalRounds = 5;
   const winScore = 5;
@@ -98,12 +100,12 @@ export default function Scoreboard() {
     };
 
     if (userId == "fightadmin" && team === "red") {
-      setRedScoreLoading(true);
-      payload.referee5_red_score = 1;
+      value == 1 ? setRedScoreLoading(true) : setRedMiniusScoreLoading(false);
+      payload.referee5_red_score = value;
     }
     if (userId == "fightadmin" && team === "blue") {
-      setBlueScoreLoading(true);
-      payload.referee5_blue_score = 1;
+      value == 1 ? setBlueScoreLoading(true) : setBlueMiniusScoreLoading(true);
+      payload.referee5_blue_score = value;
     }
     if (Object.keys(finalObj).length > 0) {
       Object.assign(payload, finalObj);
@@ -120,10 +122,12 @@ export default function Scoreboard() {
       if (team === "red") {
         setRedScore((prev) => Math.max(0, prev + value));
         setRedScoreLoading(false);
+        setRedMiniusScoreLoading(false);
       }
       if (team === "blue") {
         setBlueScore((prev) => Math.max(0, prev + value));
         setBlueScoreLoading(false);
+        setBlueMiniusScoreLoading(false);
       }
     } else {
       setUpdateScoreError(response.message);
@@ -301,14 +305,24 @@ export default function Scoreboard() {
             <div className="bg-red-600 text-white text-[10rem] font-extrabold rounded-lg w-full py-10 text-center shadow-lg">
               {redScore}
             </div>
-            {isMatchStart && (
-              <button
-                onClick={() => handleScoreChange("red", 1)}
-                disabled={redScoreLoading}
-                className="mt-6 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
-              >
-                {redScoreLoading ? "Updating..." : "Add Point +1"}
-              </button>
+            {isMatchStart && updateScoreError == "" && (
+              <div className="mt-6 w-full flex gap-4 justify-center">
+                <button
+                  onClick={() => handleScoreChange("red", 1)}
+                  disabled={redScoreLoading}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                >
+                  {redScoreLoading ? "Updating..." : "Add Point +1"}
+                </button>
+
+                <button
+                  onClick={() => handleScoreChange("red", -1)} // Subtract 1 point
+                  disabled={redMiniusScoreLoading}
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                >
+                  {blueMiniusScoreLoading ? "Updating..." : "Subtract Point -1"}
+                </button>
+              </div>
             )}
 
             {winnerOfMatch === "red" && (
@@ -339,14 +353,24 @@ export default function Scoreboard() {
             <div className="bg-blue-600 text-white text-[10rem] font-extrabold rounded-lg w-full py-10 text-center shadow-lg">
               {blueScore}
             </div>
-            {isMatchStart && (
-              <button
-                onClick={() => handleScoreChange("blue", 1)}
-                disabled={blueScoreLoading}
-                className="mt-6 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
-              >
-                {blueScoreLoading ? "Updating..." : "Add Point +1"}
-              </button>
+            {isMatchStart && updateScoreError == "" && (
+              <div className="mt-6 w-full flex gap-4 justify-center">
+                <button
+                  onClick={() => handleScoreChange("blue", 1)}
+                  disabled={blueScoreLoading}
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                >
+                  {blueScoreLoading ? "Updating..." : "Add Point +1"}
+                </button>
+
+                <button
+                  onClick={() => handleScoreChange("blue", -1)} // Subtract 1 point
+                  disabled={blueMiniusScoreLoading}
+                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                >
+                  {blueMiniusScoreLoading ? "Updating..." : "Subtract Point -1"}
+                </button>
+              </div>
             )}
             {winnerOfMatch === "blue" && (
               <>
