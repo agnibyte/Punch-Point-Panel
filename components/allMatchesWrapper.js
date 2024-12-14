@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { postApiData } from "@/utils/services/apiService";
 import Link from "next/link";
 import Image from "next/image";
+import { jsPDF } from "jspdf";
+import { AiOutlineFilePdf } from 'react-icons/ai';
+
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -30,8 +33,31 @@ export default function AllMatchesWrapper() {
     getAllMatches();
   }, []);
 
+  const downloadMatchDetails = (match) => {
+    const doc = new jsPDF();
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(`Match Details`, 105, 20, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+
+    doc.text(`Match No: ${match.matchNo}`, 10, 40);
+    doc.text(`Red Corner: ${match.playerRed} (${match.stateRed})`, 10, 50);
+    doc.text(`Blue Corner: ${match.playerBlue} (${match.stateBlue})`, 10, 60);
+    doc.text(`Category: ${match.category}`, 10, 70);
+    doc.text(`Age: ${match.age}`, 10, 80);
+    doc.text(`Weight: ${match.weight} kg`, 10, 90);
+    doc.text(`Red Score: ${match.red_score > 0 ? match.red_score : "-"}`, 10, 100);
+    doc.text(`Blue Score: ${match.blue_score > 0 ? match.blue_score : "-"}`, 10, 110);
+    doc.text(`Winner: ${match.winner || "-"}`, 10, 120);
+    doc.text(`Status: ${match.status || "-"}`, 10, 130);
+
+    doc.save(`Match_${match.matchNo}_Details.pdf`);
+  };
+
   return (
-    <div className="min-h-screen bg-white p-4 sm:p-6 lg:p-0">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Header Section */}
       <header className="w-full bg-white shadow-md sticky top-0 z-10">
         <div className="flex items-center justify-between px-6 py-4">
@@ -44,10 +70,7 @@ export default function AllMatchesWrapper() {
               width={"32"}
               height={"32"}
             />
-            <Link
-              href={"/"}
-              className="text-xl font-bold text-gray-800"
-            >
+            <Link href="/" className="text-xl font-bold text-gray-800">
               Sports Mardani Club Championship
             </Link>
           </div>
@@ -55,27 +78,17 @@ export default function AllMatchesWrapper() {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto bg-white rounded-lg p-6">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+      <div className="flex-1 overflow-hidden bg-gray-100 p-6">
+        <h1 className="text-4xl font-extrabold text-gray-800 mb-6 text-center">
           Match List
         </h1>
 
         {/* Loading / Error State */}
         {loading ? (
-          <div className="flex justify-center items-center">
-            <div className="text-indigo-600 font-bold text-xl">
-              Loading matches...
-            </div>
-          </div>
-        ) : error ? (
-          <div className="text-red-600 font-bold text-xl text-center">
-            {error}
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-700 text-gray-100">
+          <div className="relative border border-gray-300 h-[80vh] overflow-hidden rounded-lg bg-white">
+            <table className="table-auto w-full border-collapse">
+              <thead className="sticky top-0 bg-indigo-700 z-10">
+                <tr className="text-white">
                   {[
                     "Match No",
                     "Red Corner",
@@ -87,10 +100,11 @@ export default function AllMatchesWrapper() {
                     "Blue Score",
                     "Winner",
                     "Status",
+                    "Report",
                   ].map((header, index) => (
                     <th
                       key={index}
-                      className="border border-gray-400 px-6 py-4 text-left text-lg font-bold"
+                      className="border border-indigo-200 px-4 py-2 text-left text-lg font-semibold"
                     >
                       {header}
                     </th>
@@ -98,68 +112,121 @@ export default function AllMatchesWrapper() {
                 </tr>
               </thead>
               <tbody>
-                {allMatchesData.map((match, index) => (
+                {[...Array(6)].map((_, rowIndex) => (
                   <tr
-                    key={index}
-                    className={
-                      index % 2 === 0
-                        ? "bg-gray-100 hover:bg-gray-200"
-                        : "bg-white hover:bg-gray-100"
-                    }
+                    key={rowIndex}
+                    className="animate-pulse bg-gray-50 hover:bg-gray-200"
                   >
-                    {[
-                      {
-                        value: match.matchNo,
-                        className: "text-gray-800 font-serif text-lg",
-                      },
-                      {
-                        value: `${match.playerRed} (${match.stateRed})`,
-                        className: "text-red-600 font-bold text-lg",
-                      },
-                      {
-                        value: `${match.playerBlue} (${match.stateBlue})`,
-                        className: "text-blue-600 font-bold text-lg",
-                      },
-                      {
-                        value: match.category,
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.age,
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.weight,
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.red_score > 0 ? match.red_score : "-",
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.blue_score > 0 ? match.blue_score : "-",
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.winner || "-",
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                      {
-                        value: match.status || "-",
-                        className: "text-gray-800 font-medium text-base",
-                      },
-                    ].map((cell, i) => (
-                      <td
-                        key={i}
-                        className={`border border-gray-400 px-6 py-4 ${cell.className}`}
-                      >
-                        {cell.value}
-                      </td>
-                    ))}
+                    {Array(11)
+                      .fill("")
+                      .map((_, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="border border-gray-200 px-4 py-3"
+                        >
+                          <div className="h-5 bg-gray-300 rounded"></div>
+                        </td>
+                      ))}
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        ) : error ? (
+          <div className="text-red-600 font-bold text-xl text-center">
+            {error}
+          </div>
+        ) : (
+          <div className="relative overflow-hidden">
+            <div className="relative border border-gray-300 h-[80vh] overflow-auto rounded-lg bg-white shadow-lg">
+              <table className="table-auto w-full border-collapse">
+                <thead className="sticky top-0 bg-indigo-700 text-white">
+                  <tr>
+                    {[
+                      "Match No",
+                      "Red Corner",
+                      "Blue Corner",
+                      "Category",
+                      "Age",
+                      "Weight (kg)",
+                      "Red Score",
+                      "Blue Score",
+                      "Winner",
+                      "Status",
+                      "Report",
+                    ].map((header, index) => (
+                      <th
+                        key={index}
+                        className="border border-indigo-200 px-4 py-3 text-left text-lg font-semibold"
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {allMatchesData.map((match, index) => (
+                    <tr
+                      key={index}
+                      className={`hover:bg-indigo-50 transition duration-150 ${
+                        index % 2 === 0 ? "bg-gray-50" : "bg-white"
+                      }`}
+                    >
+                      {[
+                        { value: match.matchNo, className: "text-gray-800" },
+                        {
+                          value: `${match.playerRed} (${match.stateRed})`,
+                          className: "text-red-600 font-bold",
+                        },
+                        {
+                          value: `${match.playerBlue} (${match.stateBlue})`,
+                          className: "text-blue-600 font-bold",
+                        },
+                        { value: match.category, className: "text-gray-600" },
+                        { value: match.age, className: "text-gray-600" },
+                        { value: match.weight, className: "text-gray-600" },
+                        {
+                          value: match.red_score > 0 ? match.red_score : "-",
+                          className: "text-gray-600",
+                        },
+                        {
+                          value: match.blue_score > 0 ? match.blue_score : "-",
+                          className: "text-gray-600",
+                        },
+                        {
+                          value: match.winner || "-",
+                          className:
+                            match.winner === match.playerRed
+                              ? "text-red-600 font-bold"
+                              : match.winner === match.playerBlue
+                              ? "text-blue-600 font-bold"
+                              : "text-gray-800",
+                        },
+                        { value: match.status || "-", className: "text-gray-800" },
+                        {
+                          value: (
+                            <button
+                            onClick={() => downloadMatchDetails(match)}
+                            className="text-red-600 hover:text-red-900"
+                          >
+                            <AiOutlineFilePdf size={24} /> PDF
+                          </button>
+                          ),
+                          className: "text-center",
+                        },
+                      ].map((cell, i) => (
+                        <td
+                          key={i}
+                          className={`border border-gray-200 px-4 py-3 text-sm ${cell.className}`}
+                        >
+                          {cell.value}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
