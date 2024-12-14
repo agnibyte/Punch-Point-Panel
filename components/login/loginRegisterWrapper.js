@@ -1,5 +1,5 @@
 import { postApiData } from "@/utils/services/apiService";
-import { setCookie } from "@/utils/utils";
+import { getConstant, setCookie } from "@/utils/utils";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, useRef } from "react";
@@ -15,11 +15,13 @@ const Login = ({ test }) => {
 
   const [loginError, setLoginError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const canvasRef = useRef(null);
 
   const onSubmit = async (data) => {
     const { user_id, password } = data;
 
+    setLoading(true);
     try {
       const payload = {
         user_id: user_id,
@@ -38,6 +40,7 @@ const Login = ({ test }) => {
     } catch (error) {
       console.error("Login failed:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -176,9 +179,10 @@ const Login = ({ test }) => {
           </div>
           <button
             type="submit"
+            disabled={loading}
             className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
           >
-            Login
+            {loading ? getConstant("LOADING_TEXT") : "Login"}
           </button>
           {loginError && (
             <p className="text-red-500 text-center mt-4">{loginError}</p>
