@@ -368,37 +368,55 @@ export default function EnhancedScoreboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
+<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
   {refereeScores.map((score, index) => (
     <div
       key={index}
-      className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out  hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
+      className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
     >
       <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
         पंच {index + 1}
       </h4>
-      <input
-        type="number"
-        max={10}
-        min={0}
-        placeholder="Enter score"
-        value={score !== null ? score : ''}
-        onChange={(e) => {
-          const value = Math.min(
-            Math.max(parseInt(e.target.value) || 0, 0),
-            10
-          );
-          setRefereeScores((prev) => {
-            const updatedScores = [...prev];
-            updatedScores[index] = value;
-            return updatedScores;
-          });
-        }}
-        className="mt-8 text-center text-5xl bg-transparent text-white rounded-lg p-4 appearance-none no-spinner outline-none focus:ring-0"
-      />
+      <p className="mt-4 text-lg text-white">
+        Given Score: {score !== null ? score : "None"}
+      </p>
+      <div className="mt-4 w-full">
+        {/* Input Box for Score */}
+        <input
+          type="number"
+          min="5"
+          max="10"
+          step="1"
+          value={score || ""}
+          onChange={(e) => {
+            let value = parseInt(e.target.value, 10);
+
+            // Prevent numbers less than 5
+            if (value < 5) {
+              value = 5;
+            }
+
+            // Update the state
+            setRefereeScores((prev) => {
+              const updatedScores = [...prev];
+              updatedScores[index] = isNaN(value) ? null : value;
+              return updatedScores;
+            });
+          }}
+          onInput={(e) => {
+            // Prevent typing directly below 5
+            if (e.target.value < 5) {
+              e.target.value = 5;
+            }
+          }}
+          className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          placeholder="Enter score"
+        />
+      </div>
     </div>
   ))}
 </div>
+
 
     </div>
   );
