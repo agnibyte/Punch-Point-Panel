@@ -377,7 +377,7 @@ export default function EnhancedScoreboard() {
       <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
         पंच {index + 1}
       </h4>
-      <p className="mt-4 text-lg text-yellow-300 ">
+      <p className="mt-4 text-lg text-yellow-400 ">
         Given Score: {score !== null ? score : "None"}
       </p>
       <div className="mt-4 w-full">
