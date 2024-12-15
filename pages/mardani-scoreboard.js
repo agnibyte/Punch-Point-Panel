@@ -225,7 +225,7 @@ export default function EnhancedScoreboard() {
         {/* Center Section: Title */}
         <div className="flex justify-center items-center flex-1">
           <h1 className="text-3xl md:text-5xl font-bold text-gray-100 text-center">
-            3rd National Mardani Club Championship 2024
+            3rd National Mardani Sports Championship 2024
           </h1>
         </div>
 
