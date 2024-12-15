@@ -137,7 +137,7 @@ export default function AllMatchesWrapper() {
         {loading ? (
           <div className="relative border border-gray-300 h-[80vh] overflow-hidden rounded-lg bg-white">
             <table className="table-auto w-full border-collapse">
-              <thead className="sticky top-0 bg-indigo-700 z-10">
+              <thead className="sticky top-0 bg-indigo-950 z-10">
                 <tr className="text-white">
                   {[
                     "Match No",
@@ -190,7 +190,7 @@ export default function AllMatchesWrapper() {
           <div className="relative overflow-hidden">
             <div className="relative border border-gray-300 h-[80vh] overflow-auto rounded-lg bg-white shadow-lg">
               <table className="table-auto w-full border-collapse">
-                <thead className="sticky top-0 bg-indigo-700 text-white">
+                <thead className="sticky top-0 bg-indigo-950 text-white">
                   <tr>
                     {[
                       "Match No",

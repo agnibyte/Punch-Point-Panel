@@ -43,7 +43,7 @@ export default function StartMardaniMatchModal({
   return (
     <form
       onSubmit={handleSubmit(onClickContinue)}
-      className="p-6 bg-white shadow-lg rounded-lg border border-gray-200 min-h-full"
+      className="p-6 bg-white shadow-lg  border border-gray-200 min-h-full"
     >
       {/* Match Number Field */}
       <div className="mb-6">

@@ -57,3 +57,11 @@ body {
 .no-spinner {
   -moz-appearance: textfield; /* Firefox */
 }
+@keyframes slide-bg {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

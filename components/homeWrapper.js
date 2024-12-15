@@ -105,7 +105,7 @@ export default function HomeWrapper() {
             Start Sports Mardani Fight - ScoreBoard
           </button>
           <button
-            onClick={() => onClickSportsMardaniFight("referee")}
+            onClick={() => onClickSportsMardaniFight("/referee")}
             className="px-6 py-3 bg-purple-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-purple-600 hover:scale-105"
           >
             Start Sports Mardani Fight - Referee
@@ -160,7 +160,9 @@ export default function HomeWrapper() {
         modalOpen={sportsMardaniMatchModal}
         setModalOpen={setSportsMardaniMatchModal}
         backDrop={false}
-        modalTitle="Select Match No."
+        modalTitle={`${
+          refereePath == "/referee" ? "Referee Pannel" : "Scoreboard"
+        }  `}
         // modalSize="w-[95%] md:w-3/4"
       >
         <StartMardaniMatchModal

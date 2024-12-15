@@ -15,6 +15,7 @@ export default function RefreeWrapper() {
 
   const [redScoreLoading, setRedScoreLoading] = useState(false);
   const [blueScoreLoading, setBlueScoreLoading] = useState(false);
+  const [isMatchStarted, setIsMatchStarted] = useState(false);
 
   useEffect(() => {
     const userRole = getCookie("auth_role");
@@ -75,7 +76,30 @@ export default function RefreeWrapper() {
         Referee Panel Match : {currentMatchNo}
       </h1>
 
-      {apiError ? (
+      {!isMatchStarted ? (
+        <>
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <button
+              onClick={() => setIsMatchStarted(true)}
+              className="relative text-white text-xl md:text-3xl font-semibold py-4 px-10 rounded-full shadow-lg hover:scale-105 hover:shadow-2xl transition duration-300 ease-in-out transform flex items-center justify-center overflow-hidden group"
+            >
+              {/* Static Base Background */}
+              <span className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-700"></span>
+
+              {/* Animated Sliding Gradient */}
+              <span
+                className="absolute inset-0 bg-gradient-to-r from-green-900 via-green-500 to-green-900 opacity-50 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  animation: "slide-bg 8s linear infinite",
+                }}
+              ></span>
+
+              {/* Button Text */}
+              <span className="relative z-10">Click Here to Start Match</span>
+            </button>
+          </div>
+        </>
+      ) : apiError ? (
         <div className="flex justify-center items-center w-full text-red-600 text-lg font-semibold">
           {apiError}
         </div>
@@ -88,7 +112,7 @@ export default function RefreeWrapper() {
               className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
               disabled={redScoreLoading}
             >
-              {redScoreLoading ? "Please wait" : "Give a Ponit"}
+              {redScoreLoading ? "Please wait" : "Give a Point"}
               {animation.show && animation.player === "red" && (
                 <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   +1
@@ -104,7 +128,7 @@ export default function RefreeWrapper() {
               className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
               disabled={blueScoreLoading}
             >
-              {blueScoreLoading ? "Please wait" : "Give a Ponit"}
+              {blueScoreLoading ? "Please wait" : "Give a Point"}
               {animation.show && animation.player === "blue" && (
                 <div className="absolute text-5xl font-extrabold text-green-500 animate-pop-out -top-14 opacity-80 group-hover:opacity-100 transition-opacity duration-300 ease-in-out">
                   +1
