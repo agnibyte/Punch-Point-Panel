@@ -264,9 +264,9 @@ export default function Scoreboard() {
         <Image
           src="/images/image.png"
           alt="Logo"
-          className="w-12 h-1w-12 mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
-          width={"96"}
-          height={"96"}
+          className="mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"50"}
+          height={"50"}
         />
         <Link
           href={"/"}

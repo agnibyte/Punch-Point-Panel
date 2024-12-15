@@ -6,7 +6,7 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { convertFirstLetterCapital } from "@/utils/utils";
+import { convertFirstLetterCapital, getCookie } from "@/utils/utils";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -191,6 +191,14 @@ export default function EnhancedScoreboard() {
     }
   };
 
+  useEffect(() => {
+    const isLoginCheck = getCookie("temp_auth");
+
+    if (isLoginCheck != "true") {
+      router.push("/login");
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
       {/* Header */}
@@ -199,9 +207,9 @@ export default function EnhancedScoreboard() {
         <Image
           src="/images/image.png"
           alt="Logo"
-          className="rounded-full border-4 border-yellow-400 shadow-lg"
-          width={"75"}
-          height={"75"}
+          className=" mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"55"}
+          height={"55"}
         />
         {/* <Image
             src="/images/trophy.gif"
@@ -225,8 +233,8 @@ export default function EnhancedScoreboard() {
             src="/images/flag.png"
             alt="Right Logo"
             className="rounded-full border-4 border-black-450 shadow-lg"
-            width={"96"}
-            height={"96"}
+            width={"75"}
+            height={"75"}
           />
         </div>
       </header>
@@ -284,7 +292,7 @@ export default function EnhancedScoreboard() {
 
             <p
               className="text-9xl font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
-              style={{ fontFamily: 'Orbitron, sans-serif' }}
+              style={{ fontFamily: "Orbitron, sans-serif" }}
             >
               {formatTime(timer)}
             </p>
