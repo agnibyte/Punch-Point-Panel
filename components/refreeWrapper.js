@@ -22,7 +22,7 @@ export default function RefreeWrapper() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Preload the audio
-      const sound = new Audio("/click-sound.mp3");
+      const sound = new Audio("/images/click-sound.mp3");
       sound.load();
       clickSoundRef.current = sound;
     }
