@@ -242,7 +242,7 @@ export default function EnhancedScoreboard() {
 
 {/* Participant Name Section */}
 {participantName && (
-  <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md p-4 space-y-6 md:space-y-0 md:space-x-8 rounded-lg shadow-lg">
+  <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md p-4 space-y-6 md:space-y-0 md:space-x-8 rounded-lg">
     {/* Participant Name Details */}
     <div className="flex flex-col items-center justify-center w-full h-full">
       
