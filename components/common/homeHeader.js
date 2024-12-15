@@ -13,9 +13,9 @@ export default function HomeHeader({ userId, onclickLogOut = () => {} }) {
             <Image
               src="/images/image.png"
               alt="Logo"
-              className="h-8"
-              width={"32"}
-              height={"32"}
+              className=""
+              width={"50"}
+              height={"50"}
             />
             <span className="text-xl font-bold text-gray-800">
               3rd National Mardani Sports Championship 2024
