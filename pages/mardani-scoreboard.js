@@ -13,7 +13,7 @@ export default function EnhancedScoreboard() {
   const { participant } = router.query;
   const participantName = convertFirstLetterCapital(participant);
 
-  const [refereeScores, setRefereeScores] = useState([0, 0, 0, 0]);
+  const [refereeScores, setRefereeScores] = useState([null, null, null, null]);
   const [timer, setTimer] = useState(120); // Set to 120 seconds for a 2-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
@@ -369,35 +369,37 @@ export default function EnhancedScoreboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
-        {refereeScores.map((score, index) => (
-          <div
-            key={index}
-            className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out  hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
-          >
-            <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
-              पंच {index + 1}
-            </h4>
-            <input
-              type="number"
-              max={10}
-              min={0}
-              value={score}
-              onChange={(e) => {
-                const value = Math.min(
-                  Math.max(parseInt(e.target.value) || 0, 0),
-                  10
-                );
-                setRefereeScores((prev) => {
-                  const updatedScores = [...prev];
-                  updatedScores[index] = value;
-                  return updatedScores;
-                });
-              }}
-              className="mt-8 text-center text-5xl bg-transparent text-white rounded-lg p-4 appearance-none no-spinner outline-none focus:ring-0"
-            />
-          </div>
-        ))}
-      </div>
+  {refereeScores.map((score, index) => (
+    <div
+      key={index}
+      className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out  hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
+    >
+      <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
+        पंच {index + 1}
+      </h4>
+      <input
+        type="number"
+        max={10}
+        min={0}
+        placeholder="Enter score"
+        value={score !== null ? score : ''}
+        onChange={(e) => {
+          const value = Math.min(
+            Math.max(parseInt(e.target.value) || 0, 0),
+            10
+          );
+          setRefereeScores((prev) => {
+            const updatedScores = [...prev];
+            updatedScores[index] = value;
+            return updatedScores;
+          });
+        }}
+        className="mt-8 text-center text-5xl bg-transparent text-white rounded-lg p-4 appearance-none no-spinner outline-none focus:ring-0"
+      />
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }
