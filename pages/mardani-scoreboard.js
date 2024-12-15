@@ -246,7 +246,7 @@ export default function EnhancedScoreboard() {
         <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md p-4 space-y-6 md:space-y-0 md:space-x-8 rounded-lg">
           {/* Participant Name Details */}
           <div className="flex flex-col items-center justify-center w-full h-full">
-            <h2 className="text-3xl font-bold text-center text-gray-100 mt-4">
+            <h2 className="text-3xl font-bold text-center text-gray-100 mt-4 uppercase">
               <span className="text-yellow-400">Participant:</span>{" "}
               {participantName}
             </h2>
@@ -254,14 +254,13 @@ export default function EnhancedScoreboard() {
 
           {/* Start New Match Button */}
           <div>
-          <button
-  onClick={() => router.push("/")}
-  className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-orange-500 hover:via-red-500 hover:to-yellow-500 hover:shadow-orange-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-orange-400"
->
-  <GiHighKick size={28} className="mb-1" />
-  <span>start New Match</span>
-</button>
-
+            <button
+              onClick={() => router.push("/")}
+              className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:via-red-500 hover:to-yellow-500 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+              >
+              <GiHighKick size={28} className="mb-1" />
+              <span>start New Match</span>
+            </button>
           </div>
         </div>
       )}
