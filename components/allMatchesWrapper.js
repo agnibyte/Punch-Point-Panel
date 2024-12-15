@@ -97,7 +97,7 @@ export default function AllMatchesWrapper() {
     // Footer
     doc.setFont("helvetica", "italic");
     doc.setFontSize(10);
-    doc.text("Issued by: Mardani Sports Club ", 105, 260, {
+    doc.text("Issued by: Mardani Sports Federation India", 105, 260, {
       align: "center",
     });
   

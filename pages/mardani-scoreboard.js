@@ -106,7 +106,7 @@ export default function EnhancedScoreboard() {
       doc.text(`${participantName}`, 105, 80, { align: "center" });
 
       doc.setFont("Times", "B", 14);
-      doc.text(`has participated in the Mardani Sports Championship`, 105, 90, {
+      doc.text(`has participated in the Third National Mardani Sports Championship 2024`, 105, 90, {
         align: "center",
       });
 
