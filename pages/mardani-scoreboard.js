@@ -84,7 +84,7 @@ export default function EnhancedScoreboard() {
 
       // Certificate Title
       doc.setFont("Times", "B", 20);
-      doc.text("Mardani Sports Championship", 105, 40, { align: "center" });
+      doc.text(" Teaditional Mardani Sports Championship 2024", 105, 40, { align: "center" });
 
       // Add Logo in Header Center
       const pageWidth = doc.internal.pageSize.getWidth(); // Get the PDF page width
@@ -225,7 +225,7 @@ export default function EnhancedScoreboard() {
             className="text-yellow-400 animate-bounce"
             size={36}
           /> */}
-          Traditional Mardani Scoreboard
+          Issued by: Mardani Sports Federation India
         </h1>
 
         <div className="flex items-center gap-6">
