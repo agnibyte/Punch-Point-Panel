@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { getCookie } from "@/utils/utils";
 import { postApiData } from "@/utils/services/apiService";
@@ -17,13 +17,14 @@ export default function RefreeWrapper() {
   const [blueScoreLoading, setBlueScoreLoading] = useState(false);
   const [isMatchStarted, setIsMatchStarted] = useState(false);
 
-  const [clickSound, setClickSound] = useState(null); // State for the audio object
+  const clickSoundRef = useRef(null); // Ref for the audio object
 
   useEffect(() => {
-    // Only initialize the Audio object on the client side
     if (typeof window !== "undefined") {
-      const sound = new Audio("/images/click-sound.mp3"); // Place the sound file in your public folder
-      setClickSound(sound);
+      // Preload the audio
+      const sound = new Audio("/click-sound.mp3");
+      sound.load();
+      clickSoundRef.current = sound;
     }
 
     const userRole = getCookie("auth_role");
@@ -37,14 +38,17 @@ export default function RefreeWrapper() {
   }, []);
 
   const handleButtonClick = (player) => {
-    // Play click sound only if it's initialized
-    if (clickSound) {
-      clickSound.play();
+    // Play click sound without delay
+    if (clickSoundRef.current) {
+      clickSoundRef.current.currentTime = 0; // Reset to start
+      clickSoundRef.current.play();
     }
+
     // Vibrate on mobile
     if (navigator.vibrate) {
       navigator.vibrate(100); // Vibrates for 100ms
     }
+
     handleGivePoint(player);
   };
 
