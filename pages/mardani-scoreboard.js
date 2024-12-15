@@ -6,7 +6,11 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { convertFirstLetterCapital, getCookie } from "@/utils/utils";
+import {
+  convertFirstLetterCapital,
+  getConstant,
+  getCookie,
+} from "@/utils/utils";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -84,7 +88,9 @@ export default function EnhancedScoreboard() {
 
       // Certificate Title
       doc.setFont("Times", "B", 20);
-      doc.text(" Traditional Mardani Sports Championship 2024", 105, 40, { align: "center" });
+      doc.text(" Traditional Mardani Sports Championship 2024", 105, 40, {
+        align: "center",
+      });
 
       // Add Logo in Header Center
       const pageWidth = doc.internal.pageSize.getWidth(); // Get the PDF page width
@@ -106,9 +112,14 @@ export default function EnhancedScoreboard() {
       doc.text(`${participantName}`, 105, 80, { align: "center" });
 
       doc.setFont("Times", "B", 14);
-      doc.text(`has participated in the Third National Mardani Sports Championship 2024`, 105, 90, {
-        align: "center",
-      });
+      doc.text(
+        `has participated in the Third National Mardani Sports Championship 2024`,
+        105,
+        90,
+        {
+          align: "center",
+        }
+      );
 
       doc.setFont("Times", "B", 14);
       doc.text(`and achieved the following score`, 105, 100, {
@@ -208,8 +219,8 @@ export default function EnhancedScoreboard() {
           src="/images/image.png"
           alt="Logo"
           className=" mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
-          width={"55"}
-          height={"55"}
+          width={"80"}
+          height={"80"}
         />
         {/* <Image
             src="/images/trophy.gif"
@@ -225,7 +236,7 @@ export default function EnhancedScoreboard() {
             className="text-yellow-400 animate-bounce"
             size={36}
           /> */}
-          Third 3rd Sports Mardani Club Championship 2024
+          {getConstant("TOURNAMENT_TITLE")}
         </h1>
 
         <div className="flex items-center gap-6">
@@ -233,31 +244,19 @@ export default function EnhancedScoreboard() {
             src="/images/flag.png"
             alt="Right Logo"
             className="rounded-full border-4 border-black-450 shadow-lg"
-            width={"75"}
-            height={"75"}
+            width={"85"}
+            height={"85"}
           />
         </div>
       </header>
 
       {/* participantName Section */}
       {participantName && (
-        <div className="flex flex-col md:flex-row items-center justify-between w-full  backdrop-blur-md p-2 r space-y-6 md:space-y-0 md:space-x-8">
-          {/* Trophy Image */}
-          <div className="relative flex items-center justify-center">
-            <Image
-              src="/images/trophy.gif"
-              alt="Trophy Animation"
-              width={60}
-              height={60}
-              className=" rounded-full  shadow-lg transition-transform duration-300 hover:scale-110 hover:border-yellow-500"
-            />
-            <div className="absolute w-full h-full rounded-full border-2 border-yellow-300 animate-pulse" />
-          </div>
-
-          {/* participantName Details */}
-          <div className="flex flex-col items-center md:items-start">
-            <h2 className="text-3xl font-bold text-center text-gray-100 md:text-left">
-              <span className="">Participant:</span> {participantName}
+        <div className="flex items-center justify-between w-full backdrop-blur-md p-4 space-y-0">
+          {/* Participant Name */}
+          <div className="flex-grow text-center">
+            <h2 className="text-3xl font-bold text-gray-100">
+              <span>Participant:</span> {participantName}
             </h2>
           </div>
 
@@ -369,41 +368,40 @@ export default function EnhancedScoreboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
-  {refereeScores.map((score, index) => (
-    <div
-      key={index}
-      className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
-    >
-      <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
-        पंच {index + 1}
-      </h4>
-      <p className="mt-4 text-lg text-yellow-400 ">
-        Given Score: {score !== null ? score : "None"}
-      </p>
-      <div className="mt-4 w-full">
-        {/* Input Box for Score */}
-        <input
-          type="number"
-          min="5"
-          max="10"
-          step="1"
-          value={score || ""}
-          onChange={(e) => {
-            const value = parseInt(e.target.value, 10);
-            setRefereeScores((prev) => {
-              const updatedScores = [...prev];
-              updatedScores[index] = isNaN(value) ? null : value; // Update or reset score
-              return updatedScores;
-            });
-          }}
-          className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
-          placeholder="Enter score"
-        />
+        {refereeScores.map((score, index) => (
+          <div
+            key={index}
+            className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
+          >
+            <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
+              पंच {index + 1}
+            </h4>
+            <p className="mt-4 text-lg text-yellow-400 ">
+              Given Score: {score !== null ? score : "None"}
+            </p>
+            <div className="mt-4 w-full">
+              {/* Input Box for Score */}
+              <input
+                type="number"
+                min="5"
+                max="10"
+                step="1"
+                value={score || ""}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value, 10);
+                  setRefereeScores((prev) => {
+                    const updatedScores = [...prev];
+                    updatedScores[index] = isNaN(value) ? null : value; // Update or reset score
+                    return updatedScores;
+                  });
+                }}
+                className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="Enter score"
+              />
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
-
     </div>
   );
 }

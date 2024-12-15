@@ -122,7 +122,7 @@ export default function Scoreboard() {
     };
 
     if (userId == "fightadmin" && team === "red") {
-      value == 1 ? setRedScoreLoading(true) : setRedMiniusScoreLoading(false);
+      value == 1 ? setRedScoreLoading(true) : setRedMiniusScoreLoading(true);
       payload.referee5_red_score = value;
     }
     if (userId == "fightadmin" && team === "blue") {
@@ -333,10 +333,14 @@ export default function Scoreboard() {
 
                 <button
                   onClick={() => handleScoreChange("red", -1)} // Subtract 1 point
-                  disabled={redMiniusScoreLoading}
-                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                  disabled={redMiniusScoreLoading || redScore == 0}
+                  className={`font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300 ${
+                    redScore > 0 && !redMiniusScoreLoading
+                      ? "bg-gray-500 hover:bg-gray-700 text-white"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
                 >
-                  {blueMiniusScoreLoading ? "Updating..." : "Subtract Point -1"}
+                  {redMiniusScoreLoading ? "Updating..." : "Subtract Point -1"}
                 </button>
               </div>
             )}
@@ -381,8 +385,12 @@ export default function Scoreboard() {
 
                 <button
                   onClick={() => handleScoreChange("blue", -1)} // Subtract 1 point
-                  disabled={blueMiniusScoreLoading}
-                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300"
+                  disabled={blueMiniusScoreLoading || blueScore == 0}
+                  className={`font-bold py-2 px-4 rounded-lg transition ease-in-out duration-300 ${
+                    blueScore > 0 && !blueMiniusScoreLoading
+                      ? "bg-gray-500 hover:bg-gray-700 text-white"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
                 >
                   {blueMiniusScoreLoading ? "Updating..." : "Subtract Point -1"}
                 </button>

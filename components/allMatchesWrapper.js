@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { jsPDF } from "jspdf";
 import { AiOutlineFilePdf } from "react-icons/ai";
+import { getConstant } from "@/utils/utils";
 
 export default function AllMatchesWrapper() {
   const [allMatchesData, setAllMatchesData] = useState([]);
@@ -34,19 +35,21 @@ export default function AllMatchesWrapper() {
 
   const downloadMatchCertificate = (match) => {
     const doc = new jsPDF();
-  
+
     // Decorative Borders (Optional - can be enhanced with images or lines)
     doc.setDrawColor(0, 0, 0);
     doc.setLineWidth(1);
     doc.rect(10, 10, 190, 277, "S");
     doc.setLineWidth(0.5);
     doc.rect(15, 15, 180, 267, "S");
-  
+
     // Title
     doc.setFont("helvetica", "bold");
     doc.setFontSize(20);
-    doc.text(`REPORT CARD MATCH : ${match.matchNo}`, 105, 40, { align: "center" }); //`${matchNo}`
-  
+    doc.text(`REPORT CARD MATCH : ${match.matchNo}`, 105, 40, {
+      align: "center",
+    }); //`${matchNo}`
+
     // Add Logo Below the Title
     const logoUrl = "/images/image.png"; // Replace with the actual path to the logo image
     const logoWidth = 32; // Adjust logo width
@@ -54,23 +57,27 @@ export default function AllMatchesWrapper() {
     const logoX = 90; // Center the logo horizontally
     const logoY = 45; // Position below the title
     doc.addImage(logoUrl, "PNG", logoX, logoY, logoWidth, logoHeight);
-  
+
     // Subtitle
     doc.setFont("helvetica", "italic");
     doc.setFontSize(14);
     doc.text("This is to report that", 105, 90, { align: "center" });
-  
+
     // Player Names (Winner Highlighted if available)
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
     if (match.winner) {
       doc.text(`Winner: ${match.winner}`, 105, 110, { align: "center" });
     } else {
-      doc.text(`${match.playerRed} (Red Corner)`, 105, 110, { align: "center" });
+      doc.text(`${match.playerRed} (Red Corner)`, 105, 110, {
+        align: "center",
+      });
       doc.text("and", 105, 120, { align: "center" });
-      doc.text(`${match.playerBlue} (Blue Corner)`, 105, 130, { align: "center" });
+      doc.text(`${match.playerBlue} (Blue Corner)`, 105, 130, {
+        align: "center",
+      });
     }
-  
+
     // Match Details Section
     doc.setFont("helvetica", "normal");
     doc.setFontSize(12);
@@ -78,7 +85,7 @@ export default function AllMatchesWrapper() {
     doc.text(`Category: ${match.category}`, 105, 160, { align: "center" });
     doc.text(`Age: ${match.age}`, 105, 170, { align: "center" });
     doc.text(`Weight: ${match.weight} kg`, 105, 180, { align: "center" });
-  
+
     // Scores Section
     doc.setFont("helvetica", "bold");
     doc.text("Scores", 105, 200, { align: "center" });
@@ -93,18 +100,17 @@ export default function AllMatchesWrapper() {
       140,
       210
     );
-  
+
     // Footer
     doc.setFont("helvetica", "italic");
     doc.setFontSize(10);
     doc.text("Issued by: Mardani Sports Federation India", 105, 260, {
       align: "center",
     });
-  
+
     // Save the PDF
     doc.save(`Report_of_the_match${match.matchNo}.pdf`);
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -120,8 +126,11 @@ export default function AllMatchesWrapper() {
               width={"32"}
               height={"32"}
             />
-            <Link href="/" className="text-xl font-bold text-gray-800">
-              third 3rd Sports Mardani Club Championship 2024
+            <Link
+              href="/"
+              className="text-xl font-bold text-gray-800"
+            >
+              {getConstant("TOURNAMENT_TITLE")}
             </Link>
           </div>
         </div>
