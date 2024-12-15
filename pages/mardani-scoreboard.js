@@ -368,7 +368,7 @@ export default function EnhancedScoreboard() {
         </div>
       </div>
 
-<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
   {refereeScores.map((score, index) => (
     <div
       key={index}
@@ -377,7 +377,7 @@ export default function EnhancedScoreboard() {
       <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
         पंच {index + 1}
       </h4>
-      <p className="mt-4 text-lg text-white">
+      <p className="mt-4 text-lg text-yellow-300 ">
         Given Score: {score !== null ? score : "None"}
       </p>
       <div className="mt-4 w-full">
@@ -389,25 +389,12 @@ export default function EnhancedScoreboard() {
           step="1"
           value={score || ""}
           onChange={(e) => {
-            let value = parseInt(e.target.value, 10);
-
-            // Prevent numbers less than 5
-            if (value < 5) {
-              value = 5;
-            }
-
-            // Update the state
+            const value = parseInt(e.target.value, 10);
             setRefereeScores((prev) => {
               const updatedScores = [...prev];
-              updatedScores[index] = isNaN(value) ? null : value;
+              updatedScores[index] = isNaN(value) ? null : value; // Update or reset score
               return updatedScores;
             });
-          }}
-          onInput={(e) => {
-            // Prevent typing directly below 5
-            if (e.target.value < 5) {
-              e.target.value = 5;
-            }
           }}
           className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
           placeholder="Enter score"
@@ -416,7 +403,6 @@ export default function EnhancedScoreboard() {
     </div>
   ))}
 </div>
-
 
     </div>
   );
