@@ -7,6 +7,7 @@ import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
 import { convertFirstLetterCapital, getCookie } from "@/utils/utils";
+import { GiHighKick } from "react-icons/gi"; // Karate kick icon from react-icons
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -253,12 +254,14 @@ export default function EnhancedScoreboard() {
 
           {/* Start New Match Button */}
           <div>
-            <button
-              onClick={() => router.push("/")}
-              className="px-8 py-3 text-lg font-semibold text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg shadow-lg hover:from-yellow-500 hover:to-yellow-600 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-400"
-            >
-              Start New Match
-            </button>
+          <button
+  onClick={() => router.push("/")}
+  className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-500 via-yellow-500 to-orange-500 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-orange-500 hover:via-red-500 hover:to-yellow-500 hover:shadow-orange-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-orange-400"
+>
+  <GiHighKick size={28} className="mb-1" />
+  <span>start New Match</span>
+</button>
+
           </div>
         </div>
       )}
@@ -361,7 +364,7 @@ export default function EnhancedScoreboard() {
               पंच {index + 1}
             </h4>
             <p className="mt-4 text-lg text-yellow-400">
-              Given Score: {score !== null ? score : "None"}
+              Given Score: {score !== null ? score : "-"}
             </p>
             <div className="mt-4 w-full">
               {/* Input Box for Score */}
