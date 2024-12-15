@@ -109,7 +109,9 @@ export default function RefreeWrapper() {
           {(userRole == "fight_admin" || userRole == "red_referee") && (
             <button
               onClick={() => handleGivePoint("red")}
-              className="relative bg-gradient-to-r from-red-500 to-red-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+              className={`relative bg-gradient-to-r text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group ${
+                redScoreLoading ? " " : "  from-red-500 to-red-700"
+              }`}
               disabled={redScoreLoading}
             >
               {redScoreLoading ? "Please wait" : "Give a Point"}
@@ -125,7 +127,9 @@ export default function RefreeWrapper() {
           {(userRole == "fight_admin" || userRole == "blue_referee") && (
             <button
               onClick={() => handleGivePoint("blue")}
-              className="relative bg-gradient-to-r from-blue-500 to-blue-700 text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group"
+              className={`relative bg-gradient-to-r  text-white text-2xl md:text-4xl w-full md:w-72 h-72 rounded-full shadow-xl hover:scale-105 hover:shadow-2xl transition transform duration-300 ease-out flex items-center justify-center group ${
+                blueScoreLoading ? "" : "from-blue-500 to-blue-700"
+              }`}
               disabled={blueScoreLoading}
             >
               {blueScoreLoading ? "Please wait" : "Give a Point"}
