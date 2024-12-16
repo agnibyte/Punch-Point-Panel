@@ -254,13 +254,14 @@ export default function EnhancedScoreboard() {
 
           {/* Start New Match Button */}
           <div>
-            <button
-              onClick={() => router.push("/")}
-              className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:via-red-500 hover:to-yellow-500 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-400"
-              >
-              <GiHighKick size={28} className="mb-1" />
-              <span>start New Match</span>
-            </button>
+          <button
+  onClick={() => router.push("/")}
+  className="w-20 h-20 md:w-24 md:h-12 flex flex-col items-center justify-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-full shadow-lg hover:to-yellow-500 hover:scale-110 focus:ring-4 focus:ring-yellow-400 transition duration-300"
+>
+  <GiHighKick size={14} className="mb-1" />
+  <span>Start New Match</span>
+</button>
+
           </div>
         </div>
       )}
