@@ -6,8 +6,11 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { convertFirstLetterCapital, getCookie } from "@/utils/utils";
-import { GiHighKick } from "react-icons/gi"; // Karate kick icon from react-icons
+import {
+  convertFirstLetterCapital,
+  getConstant,
+  getCookie,
+} from "@/utils/utils";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -210,68 +213,79 @@ export default function EnhancedScoreboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-black bg-opacity-90 py-4 px-6 flex items-center justify-between shadow-lg rounded-lg">
-        {/* Left Section: Logo */}
-        <div className="flex items-center gap-4">
-          <Image
-            src="/images/image.png"
-            alt="Left Logo"
-            className="rounded-full border-4 border-yellow-400 shadow-md"
-            width={120} // Increased size for desktop
-            height={120} // Increased size for desktop
-          />
-        </div>
+      <header className="w-full bg-gradient-to-r from-gray-800 to-black bg-opacity-90 p-3 flex items-center justify-between shadow-2xl rounded-lg">
+        {/* Left Logo */}
+        <Image
+          src="/images/image.png"
+          alt="Logo"
+          className=" mr-3 rounded-full border-4 border-yellow-400 shadow-lg"
+          width={"80"}
+          height={"80"}
+        />
+        {/* <Image
+            src="/images/trophy.gif"
+            alt="Trophy Animation"
+            width={80} // Set the width in pixels
+            height={80} // Set the height in pixels
+            className="w-24 h-24"
+          /> */}
 
-        {/* Center Section: Title */}
-        <div className="flex justify-center items-center flex-1">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-100 text-center">
-            3rd National Mardani Sports Championship 2024
-          </h1>
-        </div>
+        {/* Title */}
+        <h1 className="text-xl md:text-3xl font-bold flex items-center gap-4">
+          {/* <FaTrophy
+            className="text-yellow-400 animate-bounce"
+            size={36}
+          /> */}
+          {getConstant("TOURNAMENT_TITLE")}
+        </h1>
 
-        {/* Right Section: Flag */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <Image
             src="/images/flag.png"
             alt="Right Logo"
-            className="rounded-full border-4 border-yellow-400 shadow-md"
-            width={120} // Increased size for desktop
-            height={120} // Increased size for desktop
+            className="rounded-full border-4 border-black-450 shadow-lg"
+            width={"85"}
+            height={"85"}
           />
         </div>
       </header>
 
-      {/* Participant Name Section */}
+      {/* participantName Section */}
       {participantName && (
-        <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md p-4 space-y-6 md:space-y-0 md:space-x-8 rounded-lg">
-          {/* Participant Name Details */}
-          <div className="flex flex-col items-center justify-center w-full h-full">
-            <h2 className="text-3xl font-bold text-center text-gray-100 mt-4 uppercase">
-              <span className="text-yellow-400">Participant:</span>{" "}
-              {participantName}
+        <div className="flex items-center justify-between w-full backdrop-blur-md p-4 space-y-0">
+          {/* Participant Name */}
+          <div className="flex-grow text-center">
+            <h2 className="text-3xl font-bold text-gray-100">
+              <span>Participant:</span> {participantName}
             </h2>
           </div>
 
           {/* Start New Match Button */}
           <div>
-          <button
-  onClick={() => router.push("/")}
-  className="w-20 h-20 md:w-24 md:h-12 flex flex-col items-center justify-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-full shadow-lg hover:to-yellow-500 hover:scale-110 focus:ring-4 focus:ring-yellow-400 transition duration-300"
->
-  <GiHighKick size={14} className="mb-1" />
-  <span>Start New Match</span>
-</button>
-
+            <button
+              onClick={() => router.push("/")}
+              className="px-8 py-3 text-lg font-semibold text-gray-900 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg shadow-lg hover:from-yellow-500 hover:to-yellow-600 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-400"
+            >
+              Start New Match
+            </button>
           </div>
         </div>
       )}
+
+      {/* // <h2 className="mt-12 text-3xl md:text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-400 text-black px-8 py-4 rounded-lg shadow-lg text-center">
+        //   participantName: {participantName}
+        // </h2>
+      )} */}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {/* Timer Section */}
         <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl flex flex-col items-center justify-between transform transition duration-300 ease-in-out hover:scale-105 ">
           <div className="flex flex-col items-center justify-center mb-4">
             <h3 className="text-2xl font-semibold mb-4 flex items-center">
-              <FaStopwatch className="mr-4" size={36} />
+              <FaStopwatch
+                className="mr-4"
+                size={36}
+              />
               {isMatchOver ? "Match Over" : "Time Remaining"}
             </h3>
 
@@ -327,7 +341,7 @@ export default function EnhancedScoreboard() {
               </button>
               <button
                 onClick={endMatch}
-                className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-900 transition duration-200"
+                className="rounded-full px-8 py-4 text-2xl font-bold bg-yellow-600 hover:bg-yellow-700 transition duration-200"
               >
                 End Match
               </button>
@@ -353,7 +367,6 @@ export default function EnhancedScoreboard() {
         </div>
       </div>
 
-      {/* //Referee */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
         {refereeScores.map((score, index) => (
           <div
@@ -363,8 +376,8 @@ export default function EnhancedScoreboard() {
             <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
               पंच {index + 1}
             </h4>
-            <p className="mt-4 text-lg text-yellow-400">
-              Given Score: {score !== null ? score : "-"}
+            <p className="mt-4 text-lg text-yellow-400 ">
+              Given Score: {score !== null ? score : "None"}
             </p>
             <div className="mt-4 w-full">
               {/* Input Box for Score */}
@@ -375,30 +388,12 @@ export default function EnhancedScoreboard() {
                 step="1"
                 value={score || ""}
                 onChange={(e) => {
-                  const value = e.target.value;
-
-                  // Allow user to type, but don't update invalid scores yet
-                  if (value === "" || (value >= 0 && value <= 10)) {
-                    setRefereeScores((prev) => {
-                      const updatedScores = [...prev];
-                      updatedScores[index] =
-                        value === "" ? null : parseInt(value, 10);
-                      return updatedScores;
-                    });
-                  }
-                }}
-                onBlur={(e) => {
                   const value = parseInt(e.target.value, 10);
-
-                  // Validate final input on blur (focus out)
-                  if (value < 5 || value > 10) {
-                    alert("Score must be between 5 and 10.");
-                    setRefereeScores((prev) => {
-                      const updatedScores = [...prev];
-                      updatedScores[index] = null;
-                      return updatedScores;
-                    });
-                  }
+                  setRefereeScores((prev) => {
+                    const updatedScores = [...prev];
+                    updatedScores[index] = isNaN(value) ? null : value; // Update or reset score
+                    return updatedScores;
+                  });
                 }}
                 className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter score"
