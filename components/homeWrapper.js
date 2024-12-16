@@ -96,7 +96,7 @@ export default function HomeWrapper() {
             <>
               <button
                 onClick={onClickSetup}
-                className="px-6 py-3 bg-green-500 text-black-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+                className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
               >
                 Setup Match
               </button>
