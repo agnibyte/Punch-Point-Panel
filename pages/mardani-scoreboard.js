@@ -217,8 +217,8 @@ export default function EnhancedScoreboard() {
             src="/images/image.png"
             alt="Left Logo"
             className="rounded-full border-4 border-yellow-400 shadow-md"
-            width={120} // Increased size for desktop
-            height={120} // Increased size for desktop
+            width={100} // Increased size for desktop
+            height={100} // Increased size for desktop
           />
         </div>
 
@@ -235,8 +235,8 @@ export default function EnhancedScoreboard() {
             src="/images/flag.png"
             alt="Right Logo"
             className="rounded-full border-4 border-yellow-400 shadow-md"
-            width={120} // Increased size for desktop
-            height={120} // Increased size for desktop
+            width={100} // Increased size for desktop
+            height={100} // Increased size for desktop
           />
         </div>
       </header>
@@ -254,14 +254,13 @@ export default function EnhancedScoreboard() {
 
           {/* Start New Match Button */}
           <div>
-            <button
-              onClick={() => router.push("/")}
-              className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-full shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:via-red-500 hover:to-yellow-500 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-400"
-              >
-              <GiHighKick size={28} className="mb-1" />
-              <span>start New Match</span>
-            </button>
-          </div>
+           <button
+            onClick={() => router.push("/")}
+              className="w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-yellow-400 border-2 border-yellow-400 rounded-full shadow-lg hover:bg-transparent hover:border-yellow-500 hover:text-yellow-500 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-400 transition-transform duration-300 transform">
+                <GiHighKick size={28} className="mb-1 text-yellow-400" />
+                <span className="text-yellow-400">Start New Match</span>
+                </button>
+            </div>
         </div>
       )}
 
