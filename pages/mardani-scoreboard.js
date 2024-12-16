@@ -243,7 +243,7 @@ export default function EnhancedScoreboard() {
 
       {/* Participant Name Section */}
       {participantName && (
-        <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md p-4 space-y-6 md:space-y-0 md:space-x-8 rounded-lg">
+        <div className="flex flex-col md:flex-row items-center justify-between w-full backdrop-blur-md space-y-6 md:space-y-0 md:space-x-8 rounded-lg">
           {/* Participant Name Details */}
           <div className="flex flex-col items-center justify-center w-full h-full">
             <h2 className="text-3xl font-bold text-center text-gray-100 mt-4 uppercase">
@@ -253,16 +253,24 @@ export default function EnhancedScoreboard() {
           </div>
 
           {/* Start New Match Button */}
-          <div>
+          <div className="flex justify-center items-center p-4">
             <button
-  onClick={() => router.push("/")}
-  className="w-24 h-24 flex flex-col items-center justify-center text-center text-sm md:text-base font-bold text-white bg-gradient-to-r from-red-600 via-red-500 to-red-600 rounded-lg shadow-lg hover:bg-gradient-to-r hover:from-red-600 hover:via-red-500 hover:to-yellow-500 hover:shadow-yellow-500/50 transition-transform duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-yellow-400"
->
-  <GiHighKick size={28} className="mb-1" />
-  <span>start New Match</span>
-</button>
+              onClick={() => router.push("/")}
+              className="p-2 flex flex-row items-center justify-center text-center 
+             text-sm md:text-base font-bold text-white bg-gradient-to-r 
+             from-red-600 via-red-500 to-red-600 rounded-lg transition-transform 
+             duration-300 transform hover:scale-110"
+            >
+              {/* Icon */}
+              <GiHighKick
+                size={30}
+                className="mr-1"
+              />
 
-            </div>
+              {/* Text */}
+              <span className="leading-tight">Start New Match</span>
+            </button>
+          </div>
         </div>
       )}
 
@@ -271,7 +279,10 @@ export default function EnhancedScoreboard() {
         <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl flex flex-col items-center justify-between transform transition duration-300 ease-in-out hover:scale-105 ">
           <div className="flex flex-col items-center justify-center mb-4">
             <h3 className="text-2xl font-semibold mb-4 flex items-center">
-              <FaStopwatch className="mr-4" size={36} />
+              <FaStopwatch
+                className="mr-4"
+                size={36}
+              />
               {isMatchOver ? "Match Over" : "Time Remaining"}
             </h3>
 
