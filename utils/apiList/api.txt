@@ -70,14 +70,14 @@ this is my table to update the scores columns, iwill pass in payload which colum
 
 
  const payload = {
-      user_id: "fightadmin",
-      hash_password: "fightadmin@m1",
+      user_id: "Mardaniadmin",
+      hash_password: "Mardaniadmin@m1",
       role: "fight_admin",
     };
 
 
   const payload = {
-      user_id: "fightreferee1",
+      user_id: "Referee@R1",
       hash_password: "fightreferee@m1",
       role: "red_referee",
     };

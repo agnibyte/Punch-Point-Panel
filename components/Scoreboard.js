@@ -121,11 +121,11 @@ export default function Scoreboard() {
       matchId: parseInt(currentMatchNo),
     };
 
-    if (userId == "fightadmin" && team === "red") {
+    if (userId == "Mardaniadmin" && team === "red") {
       value == 1 ? setRedScoreLoading(true) : setRedMiniusScoreLoading(true);
       payload.referee5_red_score = value;
     }
-    if (userId == "fightadmin" && team === "blue") {
+    if (userId == "Mardaniadmin" && team === "blue") {
       value == 1 ? setBlueScoreLoading(true) : setBlueMiniusScoreLoading(true);
       payload.referee5_blue_score = value;
     }

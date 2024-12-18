@@ -7,7 +7,6 @@ import { hashWithSHA256 } from "@/utils/utils";
 export function getAllUsers() {
   return new Promise((resolve, reject) => {
     const getSql = "SELECT matchNo FROM fight_master";
-    // const hashedPassword = hashWithSHA256("fightadmin@m1");
 
     executeQuery(getSql)
       .then((checkResult) => {
@@ -24,7 +23,7 @@ export function getAllUsers() {
 }
 export function addNeUserModel(request) {
   return new Promise((resolve, reject) => {
-    const hashedPassword = hashWithSHA256(request.hash_password);
+    const hashedPassword = hashWithSHA256(request.password);
 
     let tempObj = {
       user_id: request.user_id,

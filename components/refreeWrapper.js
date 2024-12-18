@@ -66,11 +66,11 @@ export default function RefreeWrapper() {
 
   const fetchRefereeScores = async (player) => {
     const payload = { matchId: currentMatchNo };
-    if (userId === "fightreferee1") payload.referee1_score = 1;
-    if (userId === "fightreferee2") payload.referee2_score = 1;
-    if (userId === "fightreferee3") payload.referee3_score = 1;
-    if (userId === "fightreferee4") payload.referee4_score = 1;
-    if (userId === "fightadmin") {
+    if (userId === "Referee1") payload.referee1_score = 1;
+    if (userId === "Referee2") payload.referee2_score = 1;
+    if (userId === "Referee3") payload.referee3_score = 1;
+    if (userId === "Referee4") payload.referee4_score = 1;
+    if (userId === "Mardaniadmin") {
       if (player === "red") payload.referee5_red_score = 1;
       if (player === "blue") payload.referee5_blue_score = 1;
     }
