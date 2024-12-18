@@ -79,15 +79,15 @@ export default function HomeWrapper() {
             src="/images/image.png"
             alt="Karate Logo"
             className="rounded-full border-4 border-blue-500 shadow-xl transform hover:scale-110 transition-transform"
-            width={160}
-            height={160}
+            width={140}
+            height={140}
           />
           <h1 className="text-5xl font-extrabold text-blue-300 mt-6 drop-shadow-md animate-pulse">
             Mardani Sports
           </h1>
-          <p className="text-gray-300 mt-2 font-light">
+          {/* <p className="text-gray-300 mt-2 font-light">
             The ultimate platform for Mardani martial arts matches.
-          </p>
+          </p> */}
         </div>
 
         {/* Navigation Buttons */}
