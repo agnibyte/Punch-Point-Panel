@@ -53,7 +53,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
       {/* Header Section */}
-      <header className="bg-white/70 backdrop-blur-md shadow-md sticky top-0 z-10">
+      <header className="bg-purpule/20 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
           <div className="flex items-center space-x-4">
             <Image
@@ -61,12 +61,13 @@ const Login = () => {
               alt="Logo"
               width={50}
               height={50}
-              className="w-10 h-10"
+              className="w-10 h-10 rounded-full border-2 border-white shadow-md"
             />
-            <span className="text-xl font-bold text-gray-800">
-            3rd National Mardani Sports Championship 2024
+            <span className="text-xl font-bold text-white">
+              3rd National Mardani Sports Championship 2024
             </span>
           </div>
+
           <nav className="space-x-6">
             {/* <a
               href="/"
@@ -142,7 +143,9 @@ const Login = () => {
                     <input
                       id="user_id"
                       type="text"
-                      {...register("user_id", { required: "User ID is required" })}
+                      {...register("user_id", {
+                        required: "User ID is required",
+                      })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                     />
                     {errors.user_id && (
@@ -189,7 +192,9 @@ const Login = () => {
                     {loading ? "Loading..." : "Login"}
                   </button>
                   {loginError && (
-                    <p className="text-red-500 text-center mt-3">{loginError}</p>
+                    <p className="text-red-500 text-center mt-3">
+                      {loginError}
+                    </p>
                   )}
                 </form>
                 {/* <p className="text-center text-gray-600 mt-4">
