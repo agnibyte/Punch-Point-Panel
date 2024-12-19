@@ -100,7 +100,7 @@ const Login = () => {
               <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg"></div>
             ) : (
               <ReactPlayer
-                url="https://www.youtube.com/watch?v=lVLKVuJsYxw"
+                url="https://www.youtube.com/watch?v=JvSVgaOl1ew"
                 width="100%"
                 height="100%"
                 controls
