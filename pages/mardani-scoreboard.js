@@ -15,7 +15,7 @@ export default function EnhancedScoreboard() {
   const participantName = convertFirstLetterCapital(participant);
 
   const [refereeScores, setRefereeScores] = useState([null, null, null, null]);
-  const [timer, setTimer] = useState(120); // Set to 120 seconds for a 2-minute match
+  const [timer, setTimer] = useState(60); // Set to 60 seconds for a 1-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
@@ -58,7 +58,7 @@ export default function EnhancedScoreboard() {
   };
 
   const resetTimer = () => {
-    setTimer(120);
+    setTimer(60);
     setIsTimerRunning(false);
     setIsMatchOver(false);
   };
@@ -299,7 +299,7 @@ export default function EnhancedScoreboard() {
             <div
               className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
               style={{
-                width: `${(timer / 120) * 100}%`, // Dynamically adjust width based on time
+                width: `${(timer / 60) * 100}%`, // Dynamically adjust width based on time
                 transition: "width 0.5s ease-in-out",
               }}
             />
