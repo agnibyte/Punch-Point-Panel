@@ -5,7 +5,7 @@ import { postApiData } from "@/utils/services/apiService";
 import { setCookie } from "@/utils/utils";
 import Image from "next/image";
 
-const Login = () => {
+const Signup = () => {
   const {
     register,
     handleSubmit,
@@ -13,29 +13,33 @@ const Login = () => {
   } = useForm();
   const router = useRouter();
 
-  const [loginError, setLoginError] = useState(null);
+  const [signupError, setSignupError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(true);
 
   const onSubmit = async (data) => {
-    const { user_id, password, login_type } = data; // Login type added
+    const { user_id, password, confirm_password, login_type } = data;
+    if (password !== confirm_password) {
+      setSignupError("Passwords do not match");
+      return;
+    }
     setLoading(true);
     try {
-      const payload = { user_id, password, login_type }; // Include login_type in the payload
-      const response = await postApiData("VERIFY_USER", payload);
+      const payload = { user_id, password, login_type };
+      const response = await postApiData("SIGNUP_USER", payload); // Update endpoint to SIGNUP_USER
 
       if (response.status) {
         setCookie("temp_auth", true);
         setCookie("auth_role", response.user);
         setCookie("auth_user", response.userId);
-        router.push("/");
+        router.push("/"); // Redirect to homepage or dashboard after successful signup
       } else {
-        setLoginError(response.message);
+        setSignupError(response.message);
       }
     } catch (error) {
-      console.error("Login failed:", error);
-      setLoginError("An error occurred during login.");
+      console.error("Signup failed:", error);
+      setSignupError("An error occurred during signup.");
     }
     setLoading(false);
   };
@@ -48,7 +52,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex flex-col">
       {/* Header Section */}
-      <header className="bg-purpule/20 backdrop-blur-md shadow-md sticky top-0 z-10">
+      <header className="bg-purple/20 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
           <div className="flex items-center space-x-4">
             <Image
@@ -68,7 +72,7 @@ const Login = () => {
       {/* Main Content */}
       <div className="flex-grow flex items-center justify-center py-10">
         <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col items-stretch overflow-hidden">
-          {/* Login Form Section */}
+          {/* Signup Form Section */}
           <div className="flex-1 w-full p-8 md:p-12 bg-white/80 backdrop-blur-md">
             {isFormLoading ? (
               <div className="space-y-4">
@@ -79,18 +83,8 @@ const Login = () => {
               </div>
             ) : (
               <>
-                {/* <div className="flex justify-center mb-6">
-                  <Image
-                    src="/images/image.png"
-                    alt="Logo"
-                    width={80}
-                    height={80}
-                    className="w-20 h-auto"
-                  />
-                </div> */}
-                < div className="text-3xl font-bold text-center text-gray-800 mb-6">
-                  Login
-                
+                <div className="text-3xl font-bold text-center text-gray-800 mb-6">
+                  Sign Up
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
@@ -144,6 +138,29 @@ const Login = () => {
                       </p>
                     )}
                   </div>
+                  <div>
+                    <label
+                      htmlFor="confirm_password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="confirm_password"
+                        type={showPassword ? "text" : "password"}
+                        {...register("confirm_password", {
+                          required: "Please confirm your password",
+                        })}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                      />
+                    </div>
+                    {errors.confirm_password && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.confirm_password.message}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Login Type Selection */}
                   <div>
@@ -161,19 +178,11 @@ const Login = () => {
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                     >
                       <option value="">-- Select Login Type --</option>
-
-                      {/* Admin Option */}
                       <option value="fight_admin">Main Admin</option>
-
-                      {/* Mardani Referees */}
                       <optgroup label="Mardani Referees">
                         <option value="red_referee">Red Mardani Referee</option>
-                        <option value="blue_referee">
-                          Blue Mardani Referee
-                        </option>
+                        <option value="blue_referee">Blue Mardani Referee</option>
                       </optgroup>
-
-                      {/* Traditional Referees */}
                       <optgroup label="Traditional Referees">
                         <option value="traditional_referee_1">
                           Traditional Referee 1
@@ -201,11 +210,11 @@ const Login = () => {
                     disabled={loading}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all"
                   >
-                    {loading ? "Loading..." : "Login"}
+                    {loading ? "Loading..." : "Sign Up"}
                   </button>
-                  {loginError && (
+                  {signupError && (
                     <p className="text-red-500 text-center mt-3">
-                      {loginError}
+                      {signupError}
                     </p>
                   )}
                 </form>
@@ -244,4 +253,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
