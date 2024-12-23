@@ -46,7 +46,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 flex flex-col">
       {/* Header Section */}
       <header className="bg-purpule/20 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
@@ -66,7 +66,7 @@ const Login = () => {
       </header>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center py-10">
+      <div className="flex-grow flex items-center justify-center py-10">
         <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col items-stretch overflow-hidden">
           {/* Login Form Section */}
           <div className="flex-1 w-full p-8 md:p-12 bg-white/80 backdrop-blur-md">
@@ -79,7 +79,7 @@ const Login = () => {
               </div>
             ) : (
               <>
-                <div className="flex justify-center mb-6">
+                {/* <div className="flex justify-center mb-6">
                   <Image
                     src="/images/image.png"
                     alt="Logo"
@@ -87,10 +87,11 @@ const Login = () => {
                     height={80}
                     className="w-20 h-auto"
                   />
-                </div>
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                </div> */}
+                < div className="text-3xl font-bold text-center text-gray-800 mb-6">
                   Login
-                </h2>
+                
+                </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
                     <label
@@ -209,9 +210,9 @@ const Login = () => {
                   )}
                 </form>
                 <p className="text-center text-gray-600 mt-4">
-                  Already have an account?{" "}
-                  <a href="/login" className="text-blue-500 hover:underline">
-                    Log in
+                  Don’t have an account?{" "}
+                  <a href="/signup" className="text-blue-500 hover:underline">
+                    Sign up
                   </a>
                 </p>
               </>
@@ -219,6 +220,26 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-800 text-gray-300 py-6">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-sm">
+            © 2024 Mardani Sports Federation India. All rights reserved.
+          </p>
+          <p className="text-sm mt-2">
+            Developed by{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              AgniByte Private Limited
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
