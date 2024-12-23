@@ -6,7 +6,6 @@ import { postApiData } from "@/utils/services/apiService";
 import { deleteCookie, getCookie } from "@/utils/utils";
 import { useRouter } from "next/router";
 import StartMardaniMatchModal from "./common/startMardaniMatchModal";
-import ProfileButton from "./common/profileButton";
 import TraditionalMardaniSetUpForm from "./common/traditionalMardaniSetUpForm";
 import HomeFooter from "./common/homeFooter";
 import HomeHeader from "./common/homeHeader";
@@ -24,26 +23,20 @@ export default function HomeWrapper() {
   const [pendingMatches, setPendingMatches] = useState([]);
   const router = useRouter();
 
-  const onClickSetup = () => {
-    setSetUpMatchModal(true);
-  };
-
+  const onClickSetup = () => setSetUpMatchModal(true);
   const onClickSportsMardaniFight = (destination) => {
     setSportsMardaniMatchModal(true);
     setRefereePath(destination);
   };
-
-  const onClickSetupMardaniMatch = () => {
-    setTraditionalMatchModal(true);
-  };
+  const onClickSetupMardaniMatch = () => setTraditionalMatchModal(true);
 
   useEffect(() => {
     const isLoginCheck = getCookie("temp_auth");
     const userCheck = getCookie("auth_role");
     const user = getCookie("auth_user");
-    setIsAdmin(userCheck == "fight_admin");
+    setIsAdmin(userCheck === "fight_admin");
     setUserId(user);
-    if (isLoginCheck != "true") {
+    if (isLoginCheck !== "true") {
       router.push("/login");
       setIsLogin(false);
     }
@@ -54,7 +47,6 @@ export default function HomeWrapper() {
       const response = await postApiData("GET_AVAILABLE_MATCHES");
       if (response.status && response.data.length > 0) {
         setPendingMatches(response.data);
-      } else {
       }
     } catch (error) {
       console.error("Error occurred during form submission:", error);
@@ -71,68 +63,80 @@ export default function HomeWrapper() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 flex flex-col">
       {/* Header */}
       <HomeHeader
         userId={userId}
         onclickLogOut={onclickLogOut}
+        className="bg-blue/10 backdrop-blur-lg shadow-lg border-b border-gray-700 flex justify-center items-center w-full max-w-5xl mx-auto px-6 py-4"
       />
 
       {/* Main Content */}
-      <main className="flex flex-col items-center w-full max-w-md mt-8">
-        <Image
-          src="/images/image.png"
-          alt="Karate Logo"
-          className="rounded-full border w-40 h-40 mb-4"
-          width={"160"}
-          height={"160"}
-        />
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
-          Mardani Sports
-        </h1>
+      <main className="flex flex-col items-center w-full max-w-5xl mx-auto px-6 py-12 text-white">
+        {/* Logo and Title Section */}
+        <div className="text-center mb-10">
+          <Image
+            src="/images/image.png"
+            alt="Karate Logo"
+            className="rounded-full border-4 border-blue-500 shadow-xl transform hover:scale-110 transition-transform"
+            width={140}
+            height={140}
+            style={{ display: "block", margin: "auto" }}
+          />
 
-        <nav className="flex flex-col space-y-4">
+          <h1 className="text-5xl font-extrabold text-blue-300 mt-6 drop-shadow-md animate-pulse">
+            Mardani Sports
+          </h1>
+          {/* <p className="text-gray-300 mt-2 font-light">
+            The ultimate platform for Mardani martial arts matches.
+          </p> */}
+        </div>
+
+        {/* Navigation Buttons */}
+        <nav className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {isAdmin && (
             <>
               <button
                 onClick={onClickSetup}
-                className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+                className="px-6 py-4 bg-gradient-to-r from-green-400 to-green-600 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
               >
                 Setup Match
               </button>
               <button
                 onClick={() => onClickSportsMardaniFight("/scoreboard")}
-                className="px-6 py-3 bg-white text-red-500 font-semibold rounded-lg shadow-md transform transition-all hover:bg-gray-200 hover:scale-105 hover:shadow-xl"
+                className="px-6 py-4 bg-white text-red-600 font-semibold rounded-lg shadow-lg transform transition-transform hover:bg-gray-100 hover:scale-105"
               >
-                Start Sports Mardani Fight - ScoreBoard
-              </button>{" "}
+                Start Sports Mardani Fight - Scoreboard
+              </button>
             </>
           )}
           <button
             onClick={() => onClickSportsMardaniFight("/referee")}
-            className="px-6 py-3 bg-purple-500 text-white font-semibold rounded-lg shadow-md transform transition-all hover:bg-purple-600 hover:scale-105"
+            className="px-6 py-4 bg-gradient-to-r from-purple-400 to-purple-600 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
           >
             Start Sports Mardani Fight - Referee
           </button>
-
           {isAdmin && (
             <button
               onClick={onClickSetupMardaniMatch}
-              className="w-full bg-red-500 font-semibold text-white py-3 rounded-lg shadow-md transition hover:bg-red-600 hover:scale-105"
+              className="px-6 py-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
             >
               Start Traditional Mardani Match
             </button>
           )}
           <Link
             href="/matches"
-            className="block w-full bg-yellow-300 font-semibold text-teal-700 py-3 rounded-lg text-center shadow-md transition hover:bg-yellow-500 hover:scale-105"
+            className="block px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 font-semibold text-center rounded-lg shadow-lg transform transition-transform hover:scale-105"
           >
             View All Matches
           </Link>
         </nav>
       </main>
 
-      {/* Modal for Mardani Match */}
+      {/* Footer */}
+      <HomeFooter className="bg-white/10 backdrop-blur-md shadow-md text-gray-300 mt-auto py-4" />
+
+      {/* Modals */}
       <CommonModal
         modalOpen={traditionalMatchModal}
         setModalOpen={setTraditionalMatchModal}
@@ -145,7 +149,6 @@ export default function HomeWrapper() {
         />
       </CommonModal>
 
-      {/* Modal for Setup Match */}
       <CommonModal
         modalOpen={setUpMatchModal}
         setModalOpen={setSetUpMatchModal}
@@ -159,17 +162,13 @@ export default function HomeWrapper() {
         />
       </CommonModal>
 
-      {/* Footer */}
-      <HomeFooter />
-
       <CommonModal
         modalOpen={sportsMardaniMatchModal}
         setModalOpen={setSportsMardaniMatchModal}
         backDrop={false}
         modalTitle={`${
-          refereePath == "/referee" ? "Referee Pannel" : "Scoreboard"
-        }  `}
-        // modalSize="w-[95%] md:w-3/4"
+          refereePath === "/referee" ? "Referee Panel" : "Scoreboard"
+        }`}
       >
         <StartMardaniMatchModal
           pendingMatches={pendingMatches}
