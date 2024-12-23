@@ -51,7 +51,7 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
       {/* Header Section */}
       <header className="bg-purpule/20 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
@@ -67,32 +67,11 @@ const Login = () => {
               3rd National Mardani Sports Championship 2024
             </span>
           </div>
-
-          <nav className="space-x-6">
-            {/* <a
-              href="/"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              Home
-            </a>
-            <a
-              href="/about"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              About
-            </a>
-            <a
-              href="/contact"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              Contact
-            </a> */}
-          </nav>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="flex items-center justify-center py-10">
+      <div className="flex-grow flex items-center justify-center py-10">
         <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col md:flex-row items-stretch overflow-hidden">
           {/* Left Section - Video */}
           <div className="flex-1 flex items-center justify-center p-6 bg-black/20">
@@ -130,7 +109,7 @@ const Login = () => {
                   />
                 </div>
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                  login!
+                  Login
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
@@ -208,6 +187,32 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-800 text-gray-300 py-6 mt-auto">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-sm">
+            © 2024 Mardani Sports Federation India. All rights reserved. Developed by{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            ></a>
+          </p>
+          <p className="text-sm mt-2">
+            Developed by{" "}
+            <a
+              href="https://www.agni-byte.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline"
+            >
+              AgniByte Private Limited
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
