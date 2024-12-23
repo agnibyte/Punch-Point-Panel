@@ -210,9 +210,9 @@ const Login = () => {
                   )}
                 </form>
                 <p className="text-center text-gray-600 mt-4">
-                  Don’t have an account?{" "}
-                  <a href="/signup" className="text-blue-500 hover:underline">
-                    Sign up
+                  Already have an account?{" "}
+                  <a href="/login" className="text-blue-500 hover:underline">
+                    Log in
                   </a>
                 </p>
               </>
