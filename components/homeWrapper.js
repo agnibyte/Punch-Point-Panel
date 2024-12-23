@@ -68,7 +68,7 @@ export default function HomeWrapper() {
       <HomeHeader
         userId={userId}
         onclickLogOut={onclickLogOut}
-        className="bg-blue/10 backdrop-blur-lg shadow-lg border-b border-gray-700 flex justify-center items-center w-full max-w-5xl mx-auto px-6 py-4"
+        className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-white shadow-lg border-b border-gray-700 flex justify-center items-center w-full max-w-5xl mx-auto px-6 py-4 rounded-t-lg"
       />
 
       {/* Main Content */}
@@ -133,8 +133,7 @@ export default function HomeWrapper() {
         </nav>
       </main>
 
-      {/* Footer */}
-      <HomeFooter className="bg-white/10 backdrop-blur-md shadow-md text-gray-300 mt-auto py-4" />
+      <HomeFooter className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-gray-300 shadow-lg mt-auto py-4 rounded-b-lg" />
 
       {/* Modals */}
       <CommonModal
