@@ -83,13 +83,9 @@ export default function HomeWrapper() {
             height={140}
             style={{ display: "block", margin: "auto" }}
           />
-
           <h1 className="text-5xl font-extrabold text-blue-300 mt-6 drop-shadow-md animate-pulse">
             Mardani Sports
           </h1>
-          {/* <p className="text-gray-300 mt-2 font-light">
-            The ultimate platform for Mardani martial arts matches.
-          </p> */}
         </div>
 
         {/* Navigation Buttons */}
@@ -133,7 +129,10 @@ export default function HomeWrapper() {
         </nav>
       </main>
 
-      <HomeFooter className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-gray-300 shadow-lg mt-auto py-4 rounded-b-lg" />
+      {/* Footer */}
+      <HomeFooter
+        className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-gray-300 shadow-lg mt-auto py-4 rounded-b-lg"
+      />
 
       {/* Modals */}
       <CommonModal

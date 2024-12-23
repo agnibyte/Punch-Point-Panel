@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService";
 import { setCookie } from "@/utils/utils";
 import Image from "next/image";
-import ReactPlayer from "react-player";
 
 const Login = () => {
   const {
@@ -17,14 +16,13 @@ const Login = () => {
   const [loginError, setLoginError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [isFormLoading, setIsFormLoading] = useState(true);
 
   const onSubmit = async (data) => {
-    const { user_id, password } = data;
+    const { user_id, password, login_type } = data; // Login type added
     setLoading(true);
     try {
-      const payload = { user_id, password };
+      const payload = { user_id, password, login_type }; // Include login_type in the payload
       const response = await postApiData("VERIFY_USER", payload);
 
       if (response.status) {
@@ -37,17 +35,14 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login failed:", error);
+      setLoginError("An error occurred during login.");
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    const videoTimer = setTimeout(() => setIsVideoLoading(false), 1500);
     const formTimer = setTimeout(() => setIsFormLoading(false), 1000);
-    return () => {
-      clearTimeout(videoTimer);
-      clearTimeout(formTimer);
-    };
+    return () => clearTimeout(formTimer);
   }, []);
 
   return (
@@ -67,48 +62,12 @@ const Login = () => {
               3rd National Mardani Sports Championship 2024
             </span>
           </div>
-
-          <nav className="space-x-6">
-            {/* <a
-              href="/"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              Home
-            </a>
-            <a
-              href="/about"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              About
-            </a>
-            <a
-              href="/contact"
-              className="text-gray-700 hover:text-blue-500 font-medium transition"
-            >
-              Contact
-            </a> */}
-          </nav>
         </div>
       </header>
 
       {/* Main Content */}
       <div className="flex items-center justify-center py-10">
-        <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col md:flex-row items-stretch overflow-hidden">
-          {/* Left Section - Video */}
-          <div className="flex-1 flex items-center justify-center p-6 bg-black/20">
-            {isVideoLoading ? (
-              <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg"></div>
-            ) : (
-              <ReactPlayer
-                url="https://www.youtube.com/watch?v=JvSVgaOl1ew"
-                width="100%"
-                height="100%"
-                controls
-                className="rounded-lg"
-              />
-            )}
-          </div>
-
+        <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col items-stretch overflow-hidden">
           {/* Login Form Section */}
           <div className="flex-1 w-full p-8 md:p-12 bg-white/80 backdrop-blur-md">
             {isFormLoading ? (
@@ -130,7 +89,7 @@ const Login = () => {
                   />
                 </div>
                 <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-                  login!
+                  Login
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
@@ -184,6 +143,58 @@ const Login = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Login Type Selection */}
+                  <div>
+                    <label
+                      htmlFor="login_type"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Login Type
+                    </label>
+                    <select
+                      id="login_type"
+                      {...register("login_type", {
+                        required: "Please select a login type",
+                      })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                    >
+                      <option value="">-- Select Login Type --</option>
+
+                      {/* Admin Option */}
+                      <option value="fight_admin">Main Admin</option>
+
+                      {/* Mardani Referees */}
+                      <optgroup label="Mardani Referees">
+                        <option value="red_referee">Red Mardani Referee</option>
+                        <option value="blue_referee">
+                          Blue Mardani Referee
+                        </option>
+                      </optgroup>
+
+                      {/* Traditional Referees */}
+                      <optgroup label="Traditional Referees">
+                        <option value="traditional_referee_1">
+                          Traditional Referee 1
+                        </option>
+                        <option value="traditional_referee_2">
+                          Traditional Referee 2
+                        </option>
+                        <option value="traditional_referee_3">
+                          Traditional Referee 3
+                        </option>
+                        <option value="traditional_referee_4">
+                          Traditional Referee 4
+                        </option>
+                      </optgroup>
+                    </select>
+                    {errors.login_type && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.login_type.message}
+                      </p>
+                    )}
+                  </div>
+
                   <button
                     type="submit"
                     disabled={loading}
@@ -198,9 +209,9 @@ const Login = () => {
                   )}
                 </form>
                 <p className="text-center text-gray-600 mt-4">
-                  Don’t have an account?{" "}
-                  <a href="/signup" className="text-blue-500 hover:underline">
-                    Sign up
+                  Already have an account?{" "}
+                  <a href="/login" className="text-blue-500 hover:underline">
+                    Log in
                   </a>
                 </p>
               </>
