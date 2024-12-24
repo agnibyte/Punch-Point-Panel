@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { postApiData } from "@/utils/services/apiService";
-import { setCookie } from "@/utils/utils";
+import { postApiData } from "@/utils/services/apiService"; // API service for backend calls
+import { setCookie } from "@/utils/utils"; // Cookie handling utility
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,32 +19,39 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(true);
 
+  // Submit form data to backend API
   const onSubmit = async (data) => {
     const { user_id, password, confirm_password, login_type } = data;
+
+    // Check for matching passwords
     if (password !== confirm_password) {
       setSignupError("Passwords do not match");
       return;
     }
+
     setLoading(true);
+
     try {
       const payload = { user_id, password, login_type };
-      const response = await postApiData("SIGNUP_USER", payload);
+      const response = await postApiData("SIGNUP_USER", payload); // POST request to backend API
 
       if (response.status) {
-        setCookie("temp_auth", true);
+        setCookie("temp_auth", true); // Store temporary authentication
         setCookie("auth_role", response.user);
         setCookie("auth_user", response.userId);
-        router.push("/"); // Redirect to homepage or dashboard after successful signup
+        router.push("/login"); // Redirect to login after successful signup
       } else {
-        setSignupError(response.message);
+        setSignupError(response.message); // Display API error message
       }
     } catch (error) {
       console.error("Signup failed:", error);
       setSignupError("An error occurred during signup.");
     }
+
     setLoading(false);
   };
 
+  // Simulate loading state for the form
   useEffect(() => {
     const formTimer = setTimeout(() => setIsFormLoading(false), 1000);
     return () => clearTimeout(formTimer);
@@ -87,6 +94,7 @@ const Signup = () => {
                   Sign Up
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  {/* User ID */}
                   <div>
                     <label
                       htmlFor="user_id"
@@ -108,6 +116,8 @@ const Signup = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Password */}
                   <div>
                     <label
                       htmlFor="password"
@@ -138,6 +148,8 @@ const Signup = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Confirm Password */}
                   <div>
                     <label
                       htmlFor="confirm_password"
@@ -159,6 +171,8 @@ const Signup = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Login Type */}
                   <div>
                     <label
                       htmlFor="login_type"
@@ -200,6 +214,8 @@ const Signup = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={loading}
@@ -207,6 +223,8 @@ const Signup = () => {
                   >
                     {loading ? "Loading..." : "Sign Up"}
                   </button>
+
+                  {/* Error Message */}
                   {signupError && (
                     <p className="text-red-500 text-center mt-3">
                       {signupError}
@@ -224,6 +242,8 @@ const Signup = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer Section */}
       <footer className="bg-gray-800 text-gray-300 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm">
