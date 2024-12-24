@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService";
 import { setCookie } from "@/utils/utils";
 import Image from "next/image";
+import Link from "next/link";
 
 const Signup = () => {
   const {
@@ -27,7 +28,7 @@ const Signup = () => {
     setLoading(true);
     try {
       const payload = { user_id, password, login_type };
-      const response = await postApiData("SIGNUP_USER", payload); // Update endpoint to SIGNUP_USER
+      const response = await postApiData("SIGNUP_USER", payload);
 
       if (response.status) {
         setCookie("temp_auth", true);
@@ -72,7 +73,6 @@ const Signup = () => {
       {/* Main Content */}
       <div className="flex-grow flex items-center justify-center py-10">
         <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col items-stretch overflow-hidden">
-          {/* Signup Form Section */}
           <div className="flex-1 w-full p-8 md:p-12 bg-white/80 backdrop-blur-md">
             {isFormLoading ? (
               <div className="space-y-4">
@@ -145,24 +145,20 @@ const Signup = () => {
                     >
                       Confirm Password
                     </label>
-                    <div className="relative">
-                      <input
-                        id="confirm_password"
-                        type={showPassword ? "text" : "password"}
-                        {...register("confirm_password", {
-                          required: "Please confirm your password",
-                        })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                      />
-                    </div>
+                    <input
+                      id="confirm_password"
+                      type={showPassword ? "text" : "password"}
+                      {...register("confirm_password", {
+                        required: "Please confirm your password",
+                      })}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                    />
                     {errors.confirm_password && (
                       <p className="text-red-500 text-xs mt-1">
                         {errors.confirm_password.message}
                       </p>
                     )}
                   </div>
-
-                  {/* Login Type Selection */}
                   <div>
                     <label
                       htmlFor="login_type"
@@ -204,7 +200,6 @@ const Signup = () => {
                       </p>
                     )}
                   </div>
-
                   <button
                     type="submit"
                     disabled={loading}
@@ -220,17 +215,15 @@ const Signup = () => {
                 </form>
                 <p className="text-center text-gray-600 mt-4">
                   Already have an account?{" "}
-                  <a href="/login" className="text-blue-500 hover:underline">
+                  <Link href="/login" className="text-blue-500 hover:underline">
                     Log in
-                  </a>
+                  </Link>
                 </p>
               </>
             )}
           </div>
         </div>
       </div>
-
-      {/* Footer Section */}
       <footer className="bg-gray-800 text-gray-300 py-6">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm">
