@@ -231,12 +231,12 @@ const Signup = () => {
                     </p>
                   )}
                 </form>
-                <p className="text-center text-gray-600 mt-4">
+                {/* <p className="text-center text-gray-600 mt-4">
                   Already have an account?{" "}
                   <Link href="/login" className="text-blue-500 hover:underline">
                     Log in
                   </Link>
-                </p>
+                </p> */}
               </>
             )}
           </div>
