@@ -1,6 +1,7 @@
 export const internalList = {
   GET_ALL_USERS: "/api/user/get-users",
   ADD_FIGHT_MATCH: "/api/fight/add-fight-match",
+  ADD_TRADITIONAL_MATCH: "/api/fight/add-traditional-match",
   GET_AVAILABLE_MATCHES: "/api/fight/get-available-matches",
   GET_ALL_MATCHES: "/api/fight/get-all-matches",
   GET_MATCH_SCORES: "/api/fight/get-match-scores",

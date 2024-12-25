@@ -1,5 +1,5 @@
 import executeQuery from "@/helpers/dbConnection";
-import { FIGHT_MASTER, MATCH_SCORES } from "@/utils/tables";
+import { FIGHT_MASTER, MATCH_SCORES, TRADITIONAL_MASTER } from "@/utils/tables";
 
 export function addNewFightMatchModel(request) {
   return new Promise((resolve, reject) => {
@@ -15,6 +15,33 @@ export function addNewFightMatchModel(request) {
     };
 
     const insertQuery = `INSERT INTO ${FIGHT_MASTER} SET ?`;
+
+    executeQuery(insertQuery, [tempObj])
+      .then((insertResult) => {
+        if (insertResult.affectedRows > 0) {
+          const matchNo = insertResult.insertId;
+          resolve({
+            success: true,
+            matchNo,
+          });
+        } else {
+          reject(new Error("Insertion failed"));
+        }
+      })
+      .catch((error) => {
+        console.error("Error inserting fight match:", error);
+        reject(error);
+      });
+  });
+}
+export function addNewTraditionalMatchModel(request) {
+  return new Promise((resolve, reject) => {
+    const tempObj = {
+      name: request.name,
+      city: request.city,
+    };
+
+    const insertQuery = `INSERT INTO ${TRADITIONAL_MASTER} SET ?`;
 
     executeQuery(insertQuery, [tempObj])
       .then((insertResult) => {
@@ -149,7 +176,6 @@ export function updateMatchScores(matchId, payload) {
     // Add the WHERE condition
     updateQuery += " WHERE match_id = ? AND status = 'active' ";
     updateValues.push(matchId);
-
 
     // Execute the query
     executeQuery(updateQuery, updateValues)

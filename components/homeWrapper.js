@@ -10,37 +10,44 @@ import TraditionalMardaniSetUpForm from "./common/traditionalMardaniSetUpForm";
 import HomeFooter from "./common/homeFooter";
 import HomeHeader from "./common/homeHeader";
 import Image from "next/image";
+import TraditionalMatchForm from "./common/traditionalMatchForm";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
+  const [setUpTraditionalModal, setSetUpTraditionalModal] = useState(false);
   const [sportsMardaniMatchModal, setSportsMardaniMatchModal] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
   const [userId, setUserId] = useState("");
   const [refereePath, setRefereePath] = useState("/");
 
   const [traditionalMatchModal, setTraditionalMatchModal] = useState(false);
   const [pendingMatches, setPendingMatches] = useState([]);
+  const [pendingTraditionalMatches, setPendingTraditionalMatches] = useState(
+    []
+  );
   const router = useRouter();
 
   const onClickSetup = () => setSetUpMatchModal(true);
+  const onClickSetupTraditional = () => setSetUpTraditionalModal(true);
+
   const onClickSportsMardaniFight = (destination) => {
     setSportsMardaniMatchModal(true);
     setRefereePath(destination);
   };
   const onClickSetupMardaniMatch = () => setTraditionalMatchModal(true);
 
-  useEffect(() => {
-    const isLoginCheck = getCookie("temp_auth");
-    const userCheck = getCookie("auth_role");
-    const user = getCookie("auth_user");
-    setIsAdmin(userCheck === "fight_admin");
-    setUserId(user);
-    if (isLoginCheck !== "true") {
-      router.push("/login");
-      setIsLogin(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const isLoginCheck = getCookie("temp_auth");
+  //   const userCheck = getCookie("auth_role");
+  //   const user = getCookie("auth_user");
+  //   setIsAdmin(userCheck === "fight_admin");
+  //   setUserId(user);
+  //   if (isLoginCheck !== "true") {
+  //     router.push("/login");
+  //     setIsLogin(false);
+  //   }
+  // }, []);
 
   const getAvailableMatches = async () => {
     try {
@@ -104,6 +111,12 @@ export default function HomeWrapper() {
               >
                 Start Sports Mardani Fight - Scoreboard
               </button>
+              <button
+                onClick={onClickSetupTraditional}
+                className="px-6 py-4 bg-gradient-to-r from-orange-400 to-orange-600 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
+              >
+                Setup Traditional Match
+              </button>
             </>
           )}
           <button
@@ -130,9 +143,7 @@ export default function HomeWrapper() {
       </main>
 
       {/* Footer */}
-      <HomeFooter
-        className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-gray-300 shadow-lg mt-auto py-4 rounded-b-lg"
-      />
+      <HomeFooter className="bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800 text-gray-300 shadow-lg mt-auto py-4 rounded-b-lg" />
 
       {/* Modals */}
       <CommonModal
@@ -157,6 +168,18 @@ export default function HomeWrapper() {
         <MatchForm
           setSetUpMatchModal={setSetUpMatchModal}
           setPendingMatches={setPendingMatches}
+        />
+      </CommonModal>
+
+      <CommonModal
+        modalOpen={setUpTraditionalModal}
+        setModalOpen={setSetUpTraditionalModal}
+        backDrop={false}
+        modalTitle="Sports Match Details Form"
+        modalSize="w-[95%] md:w-3/4"
+      >
+        <TraditionalMatchForm
+          setPendingTraditionalMatches={setPendingTraditionalMatches}
         />
       </CommonModal>
 
