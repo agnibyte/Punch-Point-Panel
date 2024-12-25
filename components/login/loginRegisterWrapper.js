@@ -51,9 +51,9 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800">
       {/* Header Section */}
-      <header className="bg-purpule/20 backdrop-blur-md shadow-md sticky top-0 z-10">
+      <header className="bg-gray-900/50 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
           <div className="flex items-center space-x-4">
             <Image
@@ -72,11 +72,11 @@ const Login = () => {
 
       {/* Main Content */}
       <div className="flex-grow flex items-center justify-center py-10">
-        <div className="w-full max-w-4xl bg-white/40 backdrop-blur-md rounded-lg shadow-xl flex flex-col md:flex-row items-stretch overflow-hidden">
+        <div className="w-full max-w-4xl bg-white/10 backdrop-blur-md rounded-lg shadow-xl flex flex-col md:flex-row items-stretch overflow-hidden">
           {/* Left Section - Video */}
-          <div className="flex-1 flex items-center justify-center p-6 bg-black/20">
+          <div className="flex-1 flex items-center justify-center p-6 bg-gray-800">
             {isVideoLoading ? (
-              <div className="w-full h-full bg-gray-300 animate-pulse rounded-lg"></div>
+              <div className="w-full h-full bg-gray-600 animate-pulse rounded-lg"></div>
             ) : (
               <ReactPlayer
                 url="https://www.youtube.com/watch?v=JvSVgaOl1ew"
@@ -89,13 +89,13 @@ const Login = () => {
           </div>
 
           {/* Login Form Section */}
-          <div className="flex-1 w-full p-8 md:p-12 bg-white/80 backdrop-blur-md">
+          <div className="flex-1 w-full p-8 md:p-12 bg-gray-900">
             {isFormLoading ? (
               <div className="space-y-4">
-                <div className="h-8 bg-gray-300 animate-pulse rounded-lg"></div>
-                <div className="h-12 bg-gray-300 animate-pulse rounded-lg"></div>
-                <div className="h-12 bg-gray-300 animate-pulse rounded-lg"></div>
-                <div className="h-10 bg-gray-300 animate-pulse rounded-lg"></div>
+                <div className="h-8 bg-gray-700 animate-pulse rounded-lg"></div>
+                <div className="h-12 bg-gray-700 animate-pulse rounded-lg"></div>
+                <div className="h-12 bg-gray-700 animate-pulse rounded-lg"></div>
+                <div className="h-10 bg-gray-700 animate-pulse rounded-lg"></div>
               </div>
             ) : (
               <>
@@ -108,14 +108,14 @@ const Login = () => {
                     className="w-20 h-auto"
                   />
                 </div>
-                <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+                <h2 className="text-3xl font-bold text-center text-white mb-6">
                   Login
                 </h2>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div>
                     <label
                       htmlFor="user_id"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-300"
                     >
                       User ID
                     </label>
@@ -125,7 +125,7 @@ const Login = () => {
                       {...register("user_id", {
                         required: "User ID is required",
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                      className="w-full px-4 py-3 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                     />
                     {errors.user_id && (
                       <p className="text-red-500 text-xs mt-1">
@@ -136,7 +136,7 @@ const Login = () => {
                   <div>
                     <label
                       htmlFor="password"
-                      className="block text-sm font-medium text-gray-700"
+                      className="block text-sm font-medium text-gray-300"
                     >
                       Password
                     </label>
@@ -147,12 +147,12 @@ const Login = () => {
                         {...register("password", {
                           required: "Password is required",
                         })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                        className="w-full px-4 py-3 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-3 text-gray-600"
+                        className="absolute right-4 top-3 text-gray-500"
                       >
                         {showPassword ? "👀" : "🙈"}
                       </button>
@@ -166,7 +166,7 @@ const Login = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all"
+                    className="w-full bg-gradient-to-r from-green-400 to-green-600 text-white py-3 rounded-lg hover:from-green-500 hover:to-green-700 transition-all"
                   >
                     {loading ? "Loading..." : "Login"}
                   </button>
@@ -176,12 +176,6 @@ const Login = () => {
                     </p>
                   )}
                 </form>
-                {/* <p className="text-center text-gray-600 mt-4">
-                  Don’t have an account?{" "}
-                  <a href="/signup" className="text-blue-500 hover:underline">
-                    Sign up
-                  </a>
-                </p> */}
               </>
             )}
           </div>
@@ -189,16 +183,10 @@ const Login = () => {
       </div>
 
       {/* Footer Section */}
-      <footer className="bg-gray-800 text-gray-300 py-6 mt-auto">
+      <footer className="bg-gray-900 text-gray-400 py-6 mt-auto">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm">
-            © 2024 Mardani Sports Federation India. All rights reserved. Developed by{" "}
-            <a
-              href="https://www.agni-byte.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:underline"
-            ></a>
+            © 2024 Mardani Sports Federation India. All rights reserved.
           </p>
           <p className="text-sm mt-2">
             Developed by{" "}
