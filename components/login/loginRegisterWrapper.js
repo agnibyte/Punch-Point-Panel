@@ -176,12 +176,12 @@ const Login = () => {
                     </p>
                   )}
                 </form>
-                <p className="text-center text-gray-600 mt-4">
+                {/* <p className="text-center text-gray-600 mt-4">
                   Don’t have an account?{" "}
                   <a href="/signup" className="text-blue-500 hover:underline">
                     Sign up
                   </a>
-                </p>
+                </p> */}
               </>
             )}
           </div>
