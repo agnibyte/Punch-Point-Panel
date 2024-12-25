@@ -50,60 +50,79 @@ const Login = () => {
     };
   }, []);
 
-  // Mouse move handler for parallel line effect
+  // Mouse move handler for parallel line and orbit effect
   useEffect(() => {
-    const cursorTrail = [];
-    const maxTrailLength = 25; // Control the number of segments in the trail
-    const colors = ['#FF7F00', '#FFFFFF', '#008000']; // Orange, White, Green
+    let cursorTrail = [];
+    const maxTrailLength = 25;
+    const colors = ["#FF7F00", "#FFFFFF", "#008000"];
+    let timeoutId = null;
+    let mouseIsMoving = false;
 
     const handleMouseMove = (e) => {
+      mouseIsMoving = true;
+
+      // Clear previous timeout to prevent premature stop detection
+      clearTimeout(timeoutId);
+
       const trailContainer = document.getElementById("cursor-trail");
+      const newPoint = { x: e.pageX, y: e.pageY };
 
-      // Create new point for the trail
-      const newPoint = {
-        x: e.pageX,
-        y: e.pageY,
-      };
-
-      // Add the new point to the front of the trail
+      // Update trail points
       cursorTrail.unshift(newPoint);
+      if (cursorTrail.length > maxTrailLength) cursorTrail.pop();
 
-      // Keep the trail size fixed by removing the last point
-      if (cursorTrail.length > maxTrailLength) {
-        cursorTrail.pop();
-      }
-
-      // Update the trail container with the new line segments
+      // Clear previous lines
       if (trailContainer) {
-        trailContainer.innerHTML = ''; // Clear previous lines
+        trailContainer.innerHTML = "";
         cursorTrail.forEach((point, index) => {
           if (index < cursorTrail.length - 1) {
             const nextPoint = cursorTrail[index + 1];
-
-            // Create the 3 parallel lines
             for (let i = 0; i < 3; i++) {
-              const segmentElement = document.createElement('div');
-              segmentElement.classList.add('tricolor-line');
-              segmentElement.style.position = 'absolute';
-              segmentElement.style.left = `${point.x + (i - 1) * 5}px`; // Offset each line slightly for parallel effect
-              segmentElement.style.top = `${point.y + i * 5}px`; // Stack the lines vertically
-              segmentElement.style.width = `${Math.sqrt(Math.pow(nextPoint.x - point.x, 2) + Math.pow(nextPoint.y - point.y, 2))}px`;
-              segmentElement.style.height = '2px'; // Thickness of the line
-              segmentElement.style.transformOrigin = '0 0';
-              segmentElement.style.transform = `rotate(${Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x)}rad)`;
-              segmentElement.style.backgroundColor = colors[i % colors.length]; // Cycle through the colors
-              segmentElement.style.transition = 'all 0.1s ease-out';
-
+              const segmentElement = document.createElement("div");
+              segmentElement.classList.add("tricolor-line");
+              segmentElement.style.left = `${point.x + (i - 1) * 5}px`;
+              segmentElement.style.top = `${point.y + i * 5}px`;
+              segmentElement.style.width = `${Math.sqrt(
+                Math.pow(nextPoint.x - point.x, 2) +
+                  Math.pow(nextPoint.y - point.y, 2)
+              )}px`;
+              segmentElement.style.transformOrigin = "0 0";
+              segmentElement.style.transform = `rotate(${Math.atan2(
+                nextPoint.y - point.y,
+                nextPoint.x - point.x
+              )}rad)`;
+              segmentElement.style.backgroundColor = colors[i % colors.length];
               trailContainer.appendChild(segmentElement);
             }
           }
         });
+      }
+
+      // Reset timer for detecting stationary state
+      timeoutId = setTimeout(() => {
+        if (!mouseIsMoving) startOrbitAnimation(newPoint);
+      }, 500);
+    };
+
+    const startOrbitAnimation = (point) => {
+      const trailContainer = document.getElementById("cursor-trail");
+      trailContainer.innerHTML = ""; // Clear static lines
+
+      // Add orbiting lines
+      for (let i = 0; i < 3; i++) {
+        const orbitElement = document.createElement("div");
+        orbitElement.classList.add("orbit-line");
+        orbitElement.style.borderColor = colors[i % colors.length];
+        orbitElement.style.left = `${point.x - 25}px`;
+        orbitElement.style.top = `${point.y - 25}px`;
+        trailContainer.appendChild(orbitElement);
       }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      clearTimeout(timeoutId);
     };
   }, []);
 
