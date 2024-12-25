@@ -50,8 +50,76 @@ const Login = () => {
     };
   }, []);
 
+  // Mouse move handler for parallel line effect
+  useEffect(() => {
+    const cursorTrail = [];
+    const maxTrailLength = 25; // Control the number of segments in the trail
+    const colors = ['#FF7F00', '#FFFFFF', '#008000']; // Orange, White, Green
+
+    const handleMouseMove = (e) => {
+      const trailContainer = document.getElementById("cursor-trail");
+
+      // Create new point for the trail
+      const newPoint = {
+        x: e.pageX,
+        y: e.pageY,
+      };
+
+      // Add the new point to the front of the trail
+      cursorTrail.unshift(newPoint);
+
+      // Keep the trail size fixed by removing the last point
+      if (cursorTrail.length > maxTrailLength) {
+        cursorTrail.pop();
+      }
+
+      // Update the trail container with the new line segments
+      if (trailContainer) {
+        trailContainer.innerHTML = ''; // Clear previous lines
+        cursorTrail.forEach((point, index) => {
+          if (index < cursorTrail.length - 1) {
+            const nextPoint = cursorTrail[index + 1];
+
+            // Create the 3 parallel lines
+            for (let i = 0; i < 3; i++) {
+              const segmentElement = document.createElement('div');
+              segmentElement.classList.add('tricolor-line');
+              segmentElement.style.position = 'absolute';
+              segmentElement.style.left = `${point.x + (i - 1) * 5}px`; // Offset each line slightly for parallel effect
+              segmentElement.style.top = `${point.y + i * 5}px`; // Stack the lines vertically
+              segmentElement.style.width = `${Math.sqrt(Math.pow(nextPoint.x - point.x, 2) + Math.pow(nextPoint.y - point.y, 2))}px`;
+              segmentElement.style.height = '2px'; // Thickness of the line
+              segmentElement.style.transformOrigin = '0 0';
+              segmentElement.style.transform = `rotate(${Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x)}rad)`;
+              segmentElement.style.backgroundColor = colors[i % colors.length]; // Cycle through the colors
+              segmentElement.style.transition = 'all 0.1s ease-out';
+
+              trailContainer.appendChild(segmentElement);
+            }
+          }
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-blue-700 to-gray-800">
+      {/* Mouse Trail */}
+      <div
+        id="cursor-trail"
+        className="pointer-events-none absolute left-0 top-0 z-50"
+        style={{
+          width: "10px",
+          height: "10px",
+          transition: "transform 0.05s ease",
+        }}
+      ></div>
+
       {/* Header Section */}
       <header className="bg-gray-900/50 backdrop-blur-md shadow-md sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
