@@ -18,9 +18,10 @@ export default function EnhancedScoreboard() {
   const router = useRouter();
   const { participant } = router.query;
   const participantName = convertFirstLetterCapital(participant);
+  const matchTimer = 5;
 
   const [refereeScores, setRefereeScores] = useState([null, null, null, null]);
-  const [timer, setTimer] = useState(5); // Set to 60 seconds for a 1-minute match
+  const [timer, setTimer] = useState(matchTimer); // Set to 60 seconds for a 1-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
@@ -28,6 +29,7 @@ export default function EnhancedScoreboard() {
   const [errorMsg, setErrorMsg] = useState("");
   const [refreeScoreErrorMsg, setRefreeScoreErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchLoading, setFetchLoading] = useState(false);
   const [refreeScoreLoading, setRefreeScoreLoading] = useState(false);
   const [userRole, setUserRole] = useState();
   const [userId, setUserId] = useState();
@@ -251,6 +253,22 @@ export default function EnhancedScoreboard() {
     }
   };
 
+  const fetchRefereeScores = async () => {
+    const payload = {
+      matchId: currentMatchNo,
+    };
+    setFetchLoading(true);
+    const response = await postApiData("GET_TRADITIONAL_MATCH_SCORES", payload);
+    const { data } = response;
+    console.log({ response });
+    if (response.status) {
+      const scores = Object.values(data[0]).map(Number);
+      setRefereeScores(scores);
+    } else {
+    }
+    setFetchLoading(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
       {/* Header */}
@@ -296,7 +314,7 @@ export default function EnhancedScoreboard() {
             </h2>
           </div>
 
-          {/* Start New Match Button */}
+          {/* Start New Match Button 
           <div className="flex justify-center items-center p-4">
             <button
               onClick={() => router.push("/")}
@@ -305,14 +323,24 @@ export default function EnhancedScoreboard() {
              from-red-600 via-red-500 to-red-600 rounded-lg transition-transform 
              duration-300 transform hover:scale-110"
             >
-              {/* Icon */}
               <GiHighKick
                 size={30}
                 className="mr-1"
               />
-
-              {/* Text */}
               <span className="leading-tight">Start New Match</span>
+            </button>
+          </div>*/}
+          <div className="flex justify-center items-center p-4">
+            <button
+              onClick={fetchRefereeScores}
+              className="p-2 flex flex-row items-center justify-center text-center 
+             text-sm md:text-base font-bold text-white bg-gradient-to-r 
+             from-red-600 via-red-500 to-red-600 rounded-lg transition-transform 
+             duration-300 transform hover:scale-110"
+            >
+              {fetchLoading
+                ? getConstant("LOADING_TEXT")
+                : "Fetch Refree Scores"}
             </button>
           </div>
         </div>
@@ -345,7 +373,7 @@ export default function EnhancedScoreboard() {
                 <div
                   className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
                   style={{
-                    width: `${(timer / 60) * 100}%`, // Dynamically adjust width based on time
+                    width: `${(timer / matchTimer) * 100}%`, // Dynamically adjust width based on time
                     transition: "width 0.5s ease-in-out",
                   }}
                 />

@@ -466,27 +466,3 @@ export default function Scoreboard() {
     </div>
   );
 }
-
-// this is my scoreboard
-// CREATE TABLE `match_scores` (
-//   `id` int NOT NULL AUTO_INCREMENT,
-//   `match_id` int NOT NULL,
-//   `round_number` int NOT NULL,
-//   `red_score` int DEFAULT '0',
-//   `blue_score` int DEFAULT '0',
-//   `round_winner` enum('red','blue','none') DEFAULT 'none',
-//   `start_time` datetime DEFAULT NULL,
-//   `end_time` datetime DEFAULT NULL,
-//   `status` enum('active','completed') DEFAULT 'active',
-//   `referee1_score` varchar(20) DEFAULT NULL,
-//   `referee2_score` varchar(20) DEFAULT NULL,
-//   `referee3_score` varchar(20) DEFAULT NULL,
-//   `referee4_score` varchar(20) DEFAULT NULL,
-//   `referee5_red_score` varchar(20) DEFAULT NULL,
-//   `referee5_blue_score` varchar(20) DEFAULT NULL,
-//   PRIMARY KEY (`id`)
-// )
-// this is my table
-
-// like previous give me query function which will give me values of referee1_score referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score  that can wrap in api function  call that api for every 10 sec if match is started until timer is zero
-// also in this coponent logic change for states redScore and blueScore, red and blue scores are the totals of  referee1_score referee2_score, referee3_score, referee4_score, referee5_red_score, referee5_blue_score

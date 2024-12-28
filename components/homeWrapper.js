@@ -66,7 +66,7 @@ export default function HomeWrapper() {
       console.error("Error occurred during form submission:", error);
     }
   };
-  
+
   const getAvailableTraditionalMatches = async () => {
     try {
       const response = await postApiData("GET_AVAILABLE_TRADITIONAL_MATCHES");
@@ -144,17 +144,15 @@ export default function HomeWrapper() {
           >
             Start Sports Mardani Fight - Referee
           </button>
-          {isAdmin && (
-            <button
-              // onClick={onClickSetupMardaniMatch}
-              onClick={() =>
-                onClickTraditionalMardaniFight("/mardani-scoreboard")
-              }
-              className="px-6 py-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
-            >
-              Start Traditional Mardani Match
-            </button>
-          )}
+          <button
+            // onClick={onClickSetupMardaniMatch}
+            onClick={() =>
+              onClickTraditionalMardaniFight("/mardani-scoreboard")
+            }
+            className="px-6 py-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
+          >
+            Start Traditional Mardani Match
+          </button>
           <Link
             href="/matches"
             className="block px-6 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-yellow-900 font-semibold text-center rounded-lg shadow-lg transform transition-transform hover:scale-105"

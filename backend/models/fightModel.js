@@ -327,3 +327,23 @@ export function updateTraditionalMaster(matchNo, payload) {
       });
   });
 }
+
+export function getTraditionalRefereeScoresModel(matchId) {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT referee1_score, referee2_score, referee3_score, referee4_score FROM ${TRADITIONAL_MASTER} WHERE matchNo = ? AND status = 'active' ;`;
+
+    executeQuery(query, [matchId])
+      .then((result) => {
+        console.log('result', result)
+        if (result) {
+          resolve(result);
+        } else {
+          resolve([]); // No pending matches found
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching referee scores:", error);
+        reject(error);
+      });
+  });
+}
