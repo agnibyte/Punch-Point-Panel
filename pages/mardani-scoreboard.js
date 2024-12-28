@@ -249,8 +249,8 @@ export default function EnhancedScoreboard() {
     if (response.status) {
     } else {
       setErrorMsg(response.message);
-      setRefreeScoreLoading(false);
     }
+    setRefreeScoreLoading(false);
   };
 
   const fetchRefereeScores = async () => {
@@ -330,19 +330,21 @@ export default function EnhancedScoreboard() {
               <span className="leading-tight">Start New Match</span>
             </button>
           </div>*/}
-          <div className="flex justify-center items-center p-4">
-            <button
-              onClick={fetchRefereeScores}
-              className="p-2 flex flex-row items-center justify-center text-center 
+          {userRole == "fight_admin" && (
+            <div className="flex justify-center items-center p-4">
+              <button
+                onClick={fetchRefereeScores}
+                className="p-2 flex flex-row items-center justify-center text-center 
              text-sm md:text-base font-bold text-white bg-gradient-to-r 
              from-red-600 via-red-500 to-red-600 rounded-lg transition-transform 
              duration-300 transform hover:scale-110"
-            >
-              {fetchLoading
-                ? getConstant("LOADING_TEXT")
-                : "Fetch Refree Scores"}
-            </button>
-          </div>
+              >
+                {fetchLoading
+                  ? getConstant("LOADING_TEXT")
+                  : "Fetch Refree Scores"}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -508,14 +510,14 @@ export default function EnhancedScoreboard() {
         </>
       ) : (
         <>
-          <div className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-lg hover:from-gray-600 hover:to-gray-800">
+          <div className=" mt-8 bg-gradient-to-t from-gray-500 to-gray-800 p-16 rounded-lg shadow-xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-lg hover:from-gray-600 hover:to-gray-800">
             <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
               पंच
             </h4>
             <p className="mt-4 text-lg text-yellow-400">
               Given Score: {refreeScore !== null ? refreeScore : "-"}
             </p>
-            <div className="mt-4 w-full">
+            <div className="mt-4 ">
               {/* Input Box for Score */}
               <input
                 type="number"
@@ -527,7 +529,7 @@ export default function EnhancedScoreboard() {
                   const value = e.target.value;
                   setRefreeScore(value);
                 }}
-                className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                className="w-56 p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter score"
               />
             </div>
