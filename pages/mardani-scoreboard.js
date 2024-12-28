@@ -15,7 +15,7 @@ export default function EnhancedScoreboard() {
   const participantName = convertFirstLetterCapital(participant);
 
   const [refereeScores, setRefereeScores] = useState([null, null, null, null]);
-  const [timer, setTimer] = useState(60); // Set to 60 seconds for a 1-minute match
+  const [timer, setTimer] = useState(5); // Set to 60 seconds for a 1-minute match
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
@@ -166,21 +166,6 @@ export default function EnhancedScoreboard() {
           fillColor: [255, 218, 179], // Slightly darker orange for alternate rows
         },
       });
-
-      // // // Add Watermark in the Background
-      // const watermarkWidth = 150; // Adjust the size of the watermark
-      // const watermarkHeight = 150;
-      // doc.addImage(
-      //   watermark,
-      //   "PNG",
-      //   30, // x-coordinate
-      //   100, // y-coordinate
-      //   watermarkWidth,
-      //   watermarkHeight,
-      //   undefined,
-      //   "0",
-      //   0 // Opacity (0 for fully transparent, 1 for fully opaque)
-      // );
 
       // Footer
       doc.setFont("Arial", "I", 10);
