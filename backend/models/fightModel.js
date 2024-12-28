@@ -285,19 +285,19 @@ export function updateTraditionalMaster(matchNo, payload) {
       updateValues.push(payload.status);
     }
     if (payload.referee1_score !== undefined) {
-      updateQuery += "referee1_score = referee1_score + ?, ";
+      updateQuery += "referee1_score = ?, ";
       updateValues.push(payload.referee1_score);
     }
     if (payload.referee2_score !== undefined) {
-      updateQuery += "referee2_score = referee2_score + ?, ";
+      updateQuery += "referee2_score = ?, ";
       updateValues.push(payload.referee2_score);
     }
     if (payload.referee3_score !== undefined) {
-      updateQuery += "referee3_score = referee3_score + ?, ";
+      updateQuery += "referee3_score = ?, ";
       updateValues.push(payload.referee3_score);
     }
     if (payload.referee4_score !== undefined) {
-      updateQuery += "referee4_score = referee4_score + ?, ";
+      updateQuery += "referee4_score = ?, ";
       updateValues.push(payload.referee4_score);
     }
 
@@ -334,7 +334,7 @@ export function getTraditionalRefereeScoresModel(matchId) {
 
     executeQuery(query, [matchId])
       .then((result) => {
-        console.log('result', result)
+        console.log("result", result);
         if (result) {
           resolve(result);
         } else {

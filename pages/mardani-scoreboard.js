@@ -234,7 +234,7 @@ export default function EnhancedScoreboard() {
   }, []);
 
   const handleSubmitScore = async () => {
-    setErrorMsg("");
+    setRefreeScoreErrorMsg("");
     setRefreeScoreLoading(true);
     const payload = { matchId: currentMatchNo };
 
@@ -248,7 +248,7 @@ export default function EnhancedScoreboard() {
     );
     if (response.status) {
     } else {
-      setErrorMsg(response.message);
+      setRefreeScoreErrorMsg(response.message);
     }
     setRefreeScoreLoading(false);
   };
@@ -533,18 +533,18 @@ export default function EnhancedScoreboard() {
                 placeholder="Enter score"
               />
             </div>
-            <button
+           {refreeScoreErrorMsg == "" && <button
               onClick={() => handleSubmitScore()}
               className="mt-4 px-6 py-2 bg-yellow-400 text-gray-800 font-bold rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             >
               {refreeScoreLoading ? getConstant("LOADING_TEXT") : "Submit"}
-            </button>
-            {refreeScoreErrorMsg != "" && (
-              <div className="text-red-500 text-xl text-center w-full ">
-                {refreeScoreErrorMsg}
-              </div>
-            )}
+            </button>}
           </div>
+          {refreeScoreErrorMsg != "" && (
+            <div className="text-red-500 text-xl mt-4 text-center w-full ">
+              {refreeScoreErrorMsg}
+            </div>
+          )}
         </>
       )}
     </div>
