@@ -6,8 +6,9 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { convertFirstLetterCapital, getCookie } from "@/utils/utils";
+import { convertFirstLetterCapital, getConstant, getCookie } from "@/utils/utils";
 import { GiHighKick } from "react-icons/gi"; // Karate kick icon from react-icons
+import { postApiData } from "@/utils/services/apiService";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
@@ -19,6 +20,9 @@ export default function EnhancedScoreboard() {
   const [isMatchOver, setIsMatchOver] = useState(false);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [matchStarted, setMatchStarted] = useState(false);
+  const [currentMatchNo, setCurrentMatchNo] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -61,6 +65,21 @@ export default function EnhancedScoreboard() {
     setTimer(60);
     setIsTimerRunning(false);
     setIsMatchOver(false);
+  };
+  const finishMatch = async () => {
+    setErrorMsg("");
+    setLoading(true);
+    const payload = { matchId: currentMatchNo, status: "complete" };
+    const response = await postApiData(
+      "UPDATED_TRADITIONAL_MATCH_SCORES",
+      payload
+    );
+    if (response.status) {
+      downloadPDF();
+    } else {
+      setErrorMsg(response.message);
+      setLoading(false);
+    }
   };
 
   const downloadPDF = async () => {
@@ -178,6 +197,7 @@ export default function EnhancedScoreboard() {
 
       // Save the PDF
       doc.save(`${participantName}_certificate.pdf`);
+      setLoading(false);
     } catch (error) {
       console.error("Error loading images: ", error);
       alert("Failed to load images. Please check the image paths.");
@@ -189,6 +209,10 @@ export default function EnhancedScoreboard() {
 
     if (isLoginCheck != "true") {
       router.push("/login");
+    }
+    const localMatchNo = localStorage.getItem("currentMatch");
+    if (localMatchNo) {
+      setCurrentMatchNo(localMatchNo);
     }
   }, []);
 
@@ -333,12 +357,21 @@ export default function EnhancedScoreboard() {
           {/* Download PDF Button */}
           {(isMatchOver || timer == 0) && (
             <button
-              onClick={downloadPDF}
+              onClick={() => {
+                finishMatch();
+              }}
               className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-700 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out "
             >
-              <AiOutlineFilePdf size={24} />
-              <span>Download PDF</span>
+              {/* <AiOutlineFilePdf size={24} /> */}
+              {loading
+                ? getConstant("LOADING_TEXT")
+                : "Finish & Download Report"}
             </button>
+          )}
+          {errorMsg != "" && (
+            <div className="text-red-500 text-xl text-center w-full ">
+              {errorMsg}
+            </div>
           )}
         </div>
 

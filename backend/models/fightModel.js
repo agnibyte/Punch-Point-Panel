@@ -38,7 +38,7 @@ export function addNewTraditionalMatchModel(request) {
   return new Promise((resolve, reject) => {
     const tempObj = {
       name: request.name,
-      city: request.city,
+      state: request.state,
     };
 
     const insertQuery = `INSERT INTO ${TRADITIONAL_MASTER} SET ?`;
@@ -50,6 +50,7 @@ export function addNewTraditionalMatchModel(request) {
           resolve({
             success: true,
             matchNo,
+            name: request.name,
           });
         } else {
           reject(new Error("Insertion failed"));
@@ -79,6 +80,32 @@ export function getAvailableMatches() {
           resolve(pendingMatches);
         } else {
           resolve([]); // No pending matches found
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching available matches:", error);
+        reject(error);
+      });
+  });
+}
+export function getAvailableTraditionalMatches() {
+  return new Promise((resolve, reject) => {
+    // const selectQuery = `SELECT matchNo AS id, CONCAT('Match ', matchNo) AS label, matchNo AS value FROM ${FIGHT_MASTER} `;
+    const selectQuery = `SELECT matchNo AS id,  CONCAT('Match ', matchNo,' - ', name) AS label,  matchNo AS value, name, state FROM ${TRADITIONAL_MASTER} WHERE status = 'active'`;
+
+    executeQuery(selectQuery)
+      .then((result) => {
+        if (result && result.length > 0) {
+          const pendingMatches = result.map((match) => ({
+            id: match.id.toString(),
+            label: match.label,
+            state: match.state,
+            name: match.name,
+            value: match.value.toString(),
+          }));
+          resolve(pendingMatches);
+        } else {
+          resolve([]);
         }
       })
       .catch((error) => {
@@ -233,6 +260,53 @@ export function getRedAndBluePlayers(matchId) {
       .catch((error) => {
         console.error("Error fetching red and blue player names:", error);
 
+        reject(error);
+      });
+  });
+}
+
+export function updateTraditionalMaster(matchNo, payload) {
+  return new Promise((resolve, reject) => {
+    // Start building the update query dynamically
+    let updateQuery = `UPDATE ${TRADITIONAL_MASTER} SET `;
+    const updateValues = [];
+
+    // Add columns to be updated based on the payload
+    if (payload.name !== undefined) {
+      updateQuery += "name = ?, ";
+      updateValues.push(payload.name);
+    }
+    if (payload.state !== undefined) {
+      updateQuery += "state = ?, ";
+      updateValues.push(payload.state);
+    }
+    if (payload.status !== undefined) {
+      updateQuery += "status = ?, ";
+      updateValues.push(payload.status);
+    }
+
+    // Remove the trailing comma and space
+    updateQuery = updateQuery.slice(0, -2);
+
+    // Add the WHERE condition
+    updateQuery += " WHERE matchNo = ? AND status = 'active'";
+    updateValues.push(matchNo);
+
+    // Execute the query
+    executeQuery(updateQuery, updateValues)
+      .then((result) => {
+        if (result.affectedRows > 0) {
+          resolve({ success: true, message: "Record updated successfully" });
+        } else {
+          resolve({
+            success: false,
+            message:
+              "No active match found with the provided match number. Record could not be updated.",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating traditional master record:", error);
         reject(error);
       });
   });

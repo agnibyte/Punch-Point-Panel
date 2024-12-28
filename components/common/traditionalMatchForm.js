@@ -3,7 +3,7 @@ import { useState } from "react";
 import { postApiData } from "@/utils/services/apiService";
 import { getConstant } from "@/utils/utils";
 
-export default function TraditionalMatchForm({ setParticipantList }) {
+export default function TraditionalMatchForm({ setPendingTraditionalMatches }) {
   const {
     register,
     handleSubmit,
@@ -25,12 +25,12 @@ export default function TraditionalMatchForm({ setParticipantList }) {
       const response = await postApiData("ADD_TRADITIONAL_MATCH", data);
 
       if (response.status) {
-        setParticipantId(response.participantId);
+        setParticipantId(response.matchNo);
 
         // Update participant list
-        setParticipantList((prevList) => [
+        setPendingTraditionalMatches((prevList) => [
           ...prevList,
-          { id: response.participantId, ...data },
+          { id: response.matchNo, ...data },
         ]);
 
         reset();
@@ -70,31 +70,29 @@ export default function TraditionalMatchForm({ setParticipantList }) {
               })}
             />
             {errors.name && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.name.message}
-              </p>
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
           <div>
             <label className="block text-gray-700 font-medium mb-2">
-              Participant City
+              Participant State
             </label>
             <input
               type="text"
-              placeholder="Enter Participant City"
+              placeholder="Enter Participant State"
               className={`w-full p-4 border rounded-lg focus:ring-2 ${
-                errors.city
+                errors.state
                   ? "border-red-500 focus:ring-red-500"
                   : "border-gray-300 focus:ring-gray-500"
               }`}
-              {...register("city", {
+              {...register("state", {
                 required: "This field is required.",
               })}
             />
-            {errors.city && (
+            {errors.state && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.city.message}
+                {errors.state.message}
               </p>
             )}
           </div>
@@ -107,7 +105,7 @@ export default function TraditionalMatchForm({ setParticipantList }) {
             className="w-1/2 bg-indigo-500 text-white text-lg p-4 rounded-lg hover:bg-indigo-600 transition"
             disabled={apiLoading}
           >
-            {apiLoading ? getConstant("LOADING_TEXT") : "Submit"}
+            {apiLoading ? getConstant("LOADING_TEXT") : "submit & add more"}
           </button>
 
           {apiError && (
@@ -117,7 +115,7 @@ export default function TraditionalMatchForm({ setParticipantList }) {
           )}
           {showSuccessMsg && participantId && (
             <div className="text-green-700 text-2xl my-6 font-bold">
-              Successfully added participant with ID: {participantId}
+              Successfully registred participant with match no: {participantId}
             </div>
           )}
         </div>

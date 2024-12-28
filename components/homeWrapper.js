@@ -11,11 +11,14 @@ import HomeFooter from "./common/homeFooter";
 import HomeHeader from "./common/homeHeader";
 import Image from "next/image";
 import TraditionalMatchForm from "./common/traditionalMatchForm";
+import StartTraditionalMatchModal from "./common/startTraditionalMatchModal";
 
 export default function HomeWrapper() {
   const [setUpMatchModal, setSetUpMatchModal] = useState(false);
   const [setUpTraditionalModal, setSetUpTraditionalModal] = useState(false);
   const [sportsMardaniMatchModal, setSportsMardaniMatchModal] = useState(false);
+  const [startTraditionalMatchModal, setStartTraditionalMatchModal] =
+    useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isAdmin, setIsAdmin] = useState(true);
   const [userId, setUserId] = useState("");
@@ -27,7 +30,7 @@ export default function HomeWrapper() {
     []
   );
   const router = useRouter();
-
+  console.log("pendingTraditionalMatches", pendingTraditionalMatches);
   const onClickSetup = () => setSetUpMatchModal(true);
   const onClickSetupTraditional = () => setSetUpTraditionalModal(true);
 
@@ -35,19 +38,23 @@ export default function HomeWrapper() {
     setSportsMardaniMatchModal(true);
     setRefereePath(destination);
   };
+  const onClickTraditionalMardaniFight = (destination) => {
+    setStartTraditionalMatchModal(true);
+    setRefereePath(destination);
+  };
   const onClickSetupMardaniMatch = () => setTraditionalMatchModal(true);
 
-  // useEffect(() => {
-  //   const isLoginCheck = getCookie("temp_auth");
-  //   const userCheck = getCookie("auth_role");
-  //   const user = getCookie("auth_user");
-  //   setIsAdmin(userCheck === "fight_admin");
-  //   setUserId(user);
-  //   if (isLoginCheck !== "true") {
-  //     router.push("/login");
-  //     setIsLogin(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const isLoginCheck = getCookie("temp_auth");
+    const userCheck = getCookie("auth_role");
+    const user = getCookie("auth_user");
+    setIsAdmin(userCheck === "fight_admin");
+    setUserId(user);
+    if (isLoginCheck !== "true") {
+      router.push("/login");
+      setIsLogin(false);
+    }
+  }, []);
 
   const getAvailableMatches = async () => {
     try {
@@ -59,9 +66,21 @@ export default function HomeWrapper() {
       console.error("Error occurred during form submission:", error);
     }
   };
+  
+  const getAvailableTraditionalMatches = async () => {
+    try {
+      const response = await postApiData("GET_AVAILABLE_TRADITIONAL_MATCHES");
+      if (response.status && response.data.length > 0) {
+        setPendingTraditionalMatches(response.data);
+      }
+    } catch (error) {
+      console.error("Error occurred during form submission:", error);
+    }
+  };
 
   useEffect(() => {
     getAvailableMatches();
+    getAvailableTraditionalMatches();
   }, []);
 
   const onclickLogOut = () => {
@@ -127,7 +146,10 @@ export default function HomeWrapper() {
           </button>
           {isAdmin && (
             <button
-              onClick={onClickSetupMardaniMatch}
+              // onClick={onClickSetupMardaniMatch}
+              onClick={() =>
+                onClickTraditionalMardaniFight("/mardani-scoreboard")
+              }
               className="px-6 py-4 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-lg shadow-lg transform transition-transform hover:scale-105"
             >
               Start Traditional Mardani Match
@@ -193,6 +215,19 @@ export default function HomeWrapper() {
       >
         <StartMardaniMatchModal
           pendingMatches={pendingMatches}
+          refereePath={refereePath}
+        />
+      </CommonModal>
+      <CommonModal
+        modalOpen={startTraditionalMatchModal}
+        setModalOpen={setStartTraditionalMatchModal}
+        backDrop={false}
+        modalTitle={`${
+          refereePath === "/referee" ? "Referee Panel" : "Scoreboard"
+        }`}
+      >
+        <StartTraditionalMatchModal
+          pendingMatches={pendingTraditionalMatches}
           refereePath={refereePath}
         />
       </CommonModal>

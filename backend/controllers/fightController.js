@@ -2,10 +2,12 @@ import {
   addNewFightMatchModel,
   addNewTraditionalMatchModel,
   getAvailableMatches,
+  getAvailableTraditionalMatches,
   getFightMasterData,
   getRedAndBluePlayers,
   getRefereeScoresModel,
   updateMatchScores,
+  updateTraditionalMaster,
 } from "../models/fightModel";
 
 export function addNewFightMatch(request) {
@@ -43,6 +45,7 @@ export function addNewTraditionalMatch(request) {
         if (result) {
           response.status = true;
           response.matchNo = result.matchNo;
+          response.name = result.name;
           response.message = "Match added successfully";
           resolve(response);
         } else {
@@ -64,6 +67,29 @@ export function getAvailableMatchesController(request) {
     };
 
     getAvailableMatches()
+      .then((result) => {
+        if (result.length > 0) {
+          response.status = true;
+          response.data = result;
+          resolve(response);
+        } else {
+          response.data = [];
+          response.message = "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+export function getAvailableTraditionalMatchesController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+
+    getAvailableTraditionalMatches()
       .then((result) => {
         if (result.length > 0) {
           response.status = true;
@@ -113,6 +139,28 @@ export function giveScoreforMatchController(request) {
 
     const matchId = request.matchId;
     updateMatchScores(matchId, request)
+      .then((result) => {
+        if (result.success) {
+          response.status = true;
+          resolve(response);
+        } else {
+          response.message = result.message || "No matches were found";
+          resolve(response);
+        }
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
+export function giveScoreforTraditionalMatchController(request) {
+  return new Promise((resolve, reject) => {
+    const response = {
+      status: false,
+    };
+
+    const matchId = request.matchId;
+    updateTraditionalMaster(matchId, request)
       .then((result) => {
         if (result.success) {
           response.status = true;
