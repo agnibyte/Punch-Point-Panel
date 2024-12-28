@@ -6,7 +6,11 @@ import { FaStopwatch, FaTrophy, FaArrowLeft } from "react-icons/fa";
 import "jspdf-autotable";
 import Image from "next/image";
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { convertFirstLetterCapital, getConstant, getCookie } from "@/utils/utils";
+import {
+  convertFirstLetterCapital,
+  getConstant,
+  getCookie,
+} from "@/utils/utils";
 import { GiHighKick } from "react-icons/gi"; // Karate kick icon from react-icons
 import { postApiData } from "@/utils/services/apiService";
 
@@ -22,7 +26,12 @@ export default function EnhancedScoreboard() {
   const [matchStarted, setMatchStarted] = useState(false);
   const [currentMatchNo, setCurrentMatchNo] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [refreeScoreErrorMsg, setRefreeScoreErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [refreeScoreLoading, setRefreeScoreLoading] = useState(false);
+  const [userRole, setUserRole] = useState();
+  const [userId, setUserId] = useState();
+  const [refreeScore, setRefreeScore] = useState(0);
 
   useEffect(() => {
     let interval;
@@ -66,6 +75,7 @@ export default function EnhancedScoreboard() {
     setIsTimerRunning(false);
     setIsMatchOver(false);
   };
+
   const finishMatch = async () => {
     setErrorMsg("");
     setLoading(true);
@@ -214,7 +224,32 @@ export default function EnhancedScoreboard() {
     if (localMatchNo) {
       setCurrentMatchNo(localMatchNo);
     }
+
+    const userRole = getCookie("auth_role");
+    const user = getCookie("auth_user");
+    setUserRole(userRole);
+    setUserId(user);
   }, []);
+
+  const handleSubmitScore = async () => {
+    setErrorMsg("");
+    setRefreeScoreLoading(true);
+    const payload = { matchId: currentMatchNo };
+
+    if (userId === "Referee1") payload.referee1_score = refreeScore;
+    if (userId === "Referee2") payload.referee2_score = refreeScore;
+    if (userId === "Referee3") payload.referee3_score = refreeScore;
+    if (userId === "Referee4") payload.referee4_score = refreeScore;
+    const response = await postApiData(
+      "UPDATED_TRADITIONAL_MATCH_SCORES",
+      payload
+    );
+    if (response.status) {
+    } else {
+      setErrorMsg(response.message);
+      setRefreeScoreLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
@@ -283,117 +318,174 @@ export default function EnhancedScoreboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
-        {/* Timer Section */}
-        <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl flex flex-col items-center justify-between transform transition duration-300 ease-in-out hover:scale-105 ">
-          <div className="flex flex-col items-center justify-center mb-4">
-            <h3 className="text-2xl font-semibold mb-4 flex items-center">
-              <FaStopwatch
-                className="mr-4"
-                size={36}
-              />
-              {isMatchOver ? "Match Over" : "Time Remaining"}
-            </h3>
+      {userRole == "fight_admin" ? (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
+            {/* Timer Section */}
+            <div className="relative bg-gradient-to-tr from-gray-800 to-gray-900 text-white rounded-2xl shadow-2xl flex flex-col items-center justify-between transform transition duration-300 ease-in-out hover:scale-105 ">
+              <div className="flex flex-col items-center justify-center mb-4">
+                <h3 className="text-2xl font-semibold mb-4 flex items-center">
+                  <FaStopwatch
+                    className="mr-4"
+                    size={36}
+                  />
+                  {isMatchOver ? "Match Over" : "Time Remaining"}
+                </h3>
 
-            <p
-              className="text-9xl font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
-              style={{ fontFamily: "Orbitron, sans-serif" }}
-            >
-              {formatTime(timer)}
-            </p>
+                <p
+                  className="text-9xl font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
+                  style={{ fontFamily: "Orbitron, sans-serif" }}
+                >
+                  {formatTime(timer)}
+                </p>
+              </div>
+
+              {/* Progress Bar Container at the bottom */}
+              <div className="w-full h-3 bg-gray-600 rounded-full mt-4 ">
+                <div
+                  className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
+                  style={{
+                    width: `${(timer / 60) * 100}%`, // Dynamically adjust width based on time
+                    transition: "width 0.5s ease-in-out",
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-8 justify-center">
+              {/* Start Match Button */}
+              {!matchStarted && !isMatchOver && (
+                <button
+                  onClick={startMatch}
+                  className="rounded-full px-2 py-4 text-2xl font-bold bg-blue-600 hover:bg-blue-700 transition duration-200"
+                >
+                  Start Match
+                </button>
+              )}
+
+              {/* Pause Timer Button */}
+              {matchStarted && !isMatchOver && isTimerRunning && (
+                <button
+                  onClick={toggleTimer}
+                  className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-500 transition duration-200"
+                >
+                  Pause Timer
+                </button>
+              )}
+
+              {/* Resume Timer Button */}
+              {matchStarted &&
+                !isMatchOver &&
+                !isTimerRunning &&
+                timer != 0 && (
+                  <div className="flex gap-4">
+                    <button
+                      onClick={toggleTimer}
+                      className="rounded-full px-8 py-4 text-2xl font-bold bg-green-600 hover:bg-green-700 transition duration-200"
+                    >
+                      Resume Timer
+                    </button>
+                    <button
+                      onClick={endMatch}
+                      className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-900 transition duration-200"
+                    >
+                      End Match
+                    </button>
+                  </div>
+                )}
+
+              {/* Download PDF Button */}
+              {(isMatchOver || timer == 0) && (
+                <button
+                  onClick={() => {
+                    finishMatch();
+                  }}
+                  className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-700 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out "
+                >
+                  {/* <AiOutlineFilePdf size={24} /> */}
+                  {loading
+                    ? getConstant("LOADING_TEXT")
+                    : "Finish & Download Report"}
+                </button>
+              )}
+              {errorMsg != "" && (
+                <div className="text-red-500 text-xl text-center w-full ">
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+
+            {/* Total Score */}
+            <div className="bg-gradient-to-br from-yellow-600 to-yellow-400 text-black p-12 rounded-2xl shadow-2xl flex flex-col items-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-yellow-500 hover:to-yellow-300">
+              <h3 className="text-4xl font-bold mb-4">Total Score</h3>
+              <p className="text-6xl md:text-8xl font-extrabold">
+                {totalScore}
+              </p>
+            </div>
           </div>
 
-          {/* Progress Bar Container at the bottom */}
-          <div className="w-full h-3 bg-gray-600 rounded-full mt-4 ">
-            <div
-              className="h-full bg-gradient-to-r from-green-400 to-green-500 rounded-full"
-              style={{
-                width: `${(timer / 60) * 100}%`, // Dynamically adjust width based on time
-                transition: "width 0.5s ease-in-out",
-              }}
-            />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
+            {refereeScores.map((score, index) => (
+              <div
+                key={index}
+                className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-lg hover:from-gray-600 hover:to-gray-800"
+              >
+                <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
+                  पंच {index + 1}
+                </h4>
+                <p className="mt-4 text-lg text-yellow-400">
+                  Given Score: {score !== null ? score : "-"}
+                </p>
+                <div className="mt-4 w-full">
+                  {/* Input Box for Score */}
+                  <input
+                    type="number"
+                    min="5"
+                    max="10"
+                    step="1"
+                    value={score || ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // Allow user to type, but don't update invalid scores yet
+                      if (value === "" || (value >= 0 && value <= 10)) {
+                        setRefereeScores((prev) => {
+                          const updatedScores = [...prev];
+                          updatedScores[index] =
+                            value === "" ? null : parseInt(value, 10);
+                          return updatedScores;
+                        });
+                      }
+                    }}
+                    onBlur={(e) => {
+                      const value = parseInt(e.target.value, 10);
+
+                      // Validate final input on blur (focus out)
+                      if (value < 5 || value > 10) {
+                        alert("Score must be between 5 and 10.");
+                        setRefereeScores((prev) => {
+                          const updatedScores = [...prev];
+                          updatedScores[index] = null;
+                          return updatedScores;
+                        });
+                      }
+                    }}
+                    className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    placeholder="Enter score"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-
-        <div className="flex flex-col gap-8 justify-center">
-          {/* Start Match Button */}
-          {!matchStarted && !isMatchOver && (
-            <button
-              onClick={startMatch}
-              className="rounded-full px-2 py-4 text-2xl font-bold bg-blue-600 hover:bg-blue-700 transition duration-200"
-            >
-              Start Match
-            </button>
-          )}
-
-          {/* Pause Timer Button */}
-          {matchStarted && !isMatchOver && isTimerRunning && (
-            <button
-              onClick={toggleTimer}
-              className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-500 transition duration-200"
-            >
-              Pause Timer
-            </button>
-          )}
-
-          {/* Resume Timer Button */}
-          {matchStarted && !isMatchOver && !isTimerRunning && timer != 0 && (
-            <div className="flex gap-4">
-              <button
-                onClick={toggleTimer}
-                className="rounded-full px-8 py-4 text-2xl font-bold bg-green-600 hover:bg-green-700 transition duration-200"
-              >
-                Resume Timer
-              </button>
-              <button
-                onClick={endMatch}
-                className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-900 transition duration-200"
-              >
-                End Match
-              </button>
-            </div>
-          )}
-
-          {/* Download PDF Button */}
-          {(isMatchOver || timer == 0) && (
-            <button
-              onClick={() => {
-                finishMatch();
-              }}
-              className="rounded-full px-8 py-4 text-2xl font-bold bg-red-600 hover:bg-red-700 flex justify-center items-center space-x-2 transition-transform duration-300 ease-in-out "
-            >
-              {/* <AiOutlineFilePdf size={24} /> */}
-              {loading
-                ? getConstant("LOADING_TEXT")
-                : "Finish & Download Report"}
-            </button>
-          )}
-          {errorMsg != "" && (
-            <div className="text-red-500 text-xl text-center w-full ">
-              {errorMsg}
-            </div>
-          )}
-        </div>
-
-        {/* Total Score */}
-        <div className="bg-gradient-to-br from-yellow-600 to-yellow-400 text-black p-12 rounded-2xl shadow-2xl flex flex-col items-center transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-yellow-500 hover:to-yellow-300">
-          <h3 className="text-4xl font-bold mb-4">Total Score</h3>
-          <p className="text-6xl md:text-8xl font-extrabold">{totalScore}</p>
-        </div>
-      </div>
-
-      {/* //Referee */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mt-16 w-full max-w-screen-2xl px-8">
-        {refereeScores.map((score, index) => (
-          <div
-            key={index}
-            className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-1xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-[0_10px_25px_rgba(0,0,0,0.3)] hover:from-gray-600 hover:to-gray-800"
-          >
+        </>
+      ) : (
+        <>
+          <div className="bg-gradient-to-t from-gray-500 to-gray-800 p-8 rounded-lg shadow-xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-lg hover:from-gray-600 hover:to-gray-800">
             <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
-              पंच {index + 1}
+              पंच
             </h4>
             <p className="mt-4 text-lg text-yellow-400">
-              Given Score: {score !== null ? score : "-"}
+              Given Score: {refreeScore !== null ? refreeScore : "-"}
             </p>
             <div className="mt-4 w-full">
               {/* Input Box for Score */}
@@ -402,40 +494,29 @@ export default function EnhancedScoreboard() {
                 min="5"
                 max="10"
                 step="1"
-                value={score || ""}
+                value={refreeScore || ""}
                 onChange={(e) => {
                   const value = e.target.value;
-
-                  // Allow user to type, but don't update invalid scores yet
-                  if (value === "" || (value >= 0 && value <= 10)) {
-                    setRefereeScores((prev) => {
-                      const updatedScores = [...prev];
-                      updatedScores[index] =
-                        value === "" ? null : parseInt(value, 10);
-                      return updatedScores;
-                    });
-                  }
-                }}
-                onBlur={(e) => {
-                  const value = parseInt(e.target.value, 10);
-
-                  // Validate final input on blur (focus out)
-                  if (value < 5 || value > 10) {
-                    alert("Score must be between 5 and 10.");
-                    setRefereeScores((prev) => {
-                      const updatedScores = [...prev];
-                      updatedScores[index] = null;
-                      return updatedScores;
-                    });
-                  }
+                  setRefreeScore(value);
                 }}
                 className="w-full p-2 text-2xl font-bold rounded-lg bg-gray-700 text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter score"
               />
             </div>
+            <button
+              onClick={() => handleSubmitScore()}
+              className="mt-4 px-6 py-2 bg-yellow-400 text-gray-800 font-bold rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              {refreeScoreLoading ? getConstant("LOADING_TEXT") : "Submit"}
+            </button>
+            {refreeScoreErrorMsg != "" && (
+              <div className="text-red-500 text-xl text-center w-full ">
+                {refreeScoreErrorMsg}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }

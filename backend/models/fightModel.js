@@ -284,6 +284,22 @@ export function updateTraditionalMaster(matchNo, payload) {
       updateQuery += "status = ?, ";
       updateValues.push(payload.status);
     }
+    if (payload.referee1_score !== undefined) {
+      updateQuery += "referee1_score = referee1_score + ?, ";
+      updateValues.push(payload.referee1_score);
+    }
+    if (payload.referee2_score !== undefined) {
+      updateQuery += "referee2_score = referee2_score + ?, ";
+      updateValues.push(payload.referee2_score);
+    }
+    if (payload.referee3_score !== undefined) {
+      updateQuery += "referee3_score = referee3_score + ?, ";
+      updateValues.push(payload.referee3_score);
+    }
+    if (payload.referee4_score !== undefined) {
+      updateQuery += "referee4_score = referee4_score + ?, ";
+      updateValues.push(payload.referee4_score);
+    }
 
     // Remove the trailing comma and space
     updateQuery = updateQuery.slice(0, -2);
