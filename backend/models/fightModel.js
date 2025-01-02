@@ -226,8 +226,8 @@ export function updateMatchScores(matchId, payload) {
 
 export function getFightMasterData() {
   return new Promise((resolve, reject) => {
-    // const selectQuery = `SELECT * FROM ${FIGHT_MASTER} `;
-    const selectQuery = `SELECT  fm.*,  ms.red_score,  ms.blue_score,  ms.round_winner AS winner,  ms.status FROM fight_master AS fm LEFT JOIN match_scores AS ms ON fm.matchNo = ms.match_id; `;
+    // const selectQuery = `SELECT * FROM ${FIGHT_MASTER} `; 
+    const selectQuery = `SELECT  fm.*,  ms.red_score, ms.referee4_score, ms.referee3_score,  ms.referee2_score,  ms.referee1_score,  ms.blue_score,  ms.round_winner AS winner,  ms.status FROM fight_master AS fm LEFT JOIN match_scores AS ms ON fm.matchNo = ms.match_id; `;
 
     executeQuery(selectQuery)
       .then((result) => {

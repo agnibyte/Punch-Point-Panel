@@ -11,6 +11,7 @@ export default function AllMatchesWrapper() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  console.log("allMatchesData", allMatchesData);
   const getAllMatches = async () => {
     try {
       setLoading(true);
@@ -32,6 +33,24 @@ export default function AllMatchesWrapper() {
   useEffect(() => {
     getAllMatches();
   }, []);
+
+  const tableHeaders = [
+    "Match No",
+    "Red Corner",
+    "Blue Corner",
+    "Category",
+    "Age",
+    "Weight (kg)",
+    "Red Score",
+    "Blue Score",
+    "Winner",
+    "Status",
+    "Referee 1 Score",
+    "Referee 2 Score",
+    "Referee 3 Score",
+    "Referee 4 Score",
+    "Report",
+  ];
 
   const downloadMatchCertificate = (match) => {
     const doc = new jsPDF();
@@ -148,19 +167,7 @@ export default function AllMatchesWrapper() {
             <table className="table-auto w-full border-collapse">
               <thead className="sticky top-0 bg-indigo-950 z-10">
                 <tr className="text-white">
-                  {[
-                    "Match No",
-                    "Red Corner",
-                    "Blue Corner",
-                    "Category",
-                    "Age",
-                    "Weight (kg)",
-                    "Red Score",
-                    "Blue Score",
-                    "Winner",
-                    "Status",
-                    "Report",
-                  ].map((header, index) => (
+                  {tableHeaders.map((header, index) => (
                     <th
                       key={index}
                       className="border border-indigo-200 px-4 py-2 text-left text-lg font-semibold"
@@ -176,16 +183,14 @@ export default function AllMatchesWrapper() {
                     key={rowIndex}
                     className="animate-pulse bg-gray-50 hover:bg-gray-200"
                   >
-                    {Array(11)
-                      .fill("")
-                      .map((_, colIndex) => (
-                        <td
-                          key={colIndex}
-                          className="border border-gray-200 px-4 py-3"
-                        >
-                          <div className="h-5 bg-gray-300 rounded"></div>
-                        </td>
-                      ))}
+                    {tableHeaders.fill("").map((_, colIndex) => (
+                      <td
+                        key={colIndex}
+                        className="border border-gray-200 px-4 py-3"
+                      >
+                        <div className="h-5 bg-gray-300 rounded"></div>
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
@@ -201,19 +206,7 @@ export default function AllMatchesWrapper() {
               <table className="table-auto w-full border-collapse">
                 <thead className="sticky top-0 bg-indigo-950 text-white">
                   <tr>
-                    {[
-                      "Match No",
-                      "Red Corner",
-                      "Blue Corner",
-                      "Category",
-                      "Age",
-                      "Weight (kg)",
-                      "Red Score",
-                      "Blue Score",
-                      "Winner",
-                      "Status",
-                      "Report",
-                    ].map((header, index) => (
+                    {tableHeaders.map((header, index) => (
                       <th
                         key={index}
                         className="border border-indigo-200 px-4 py-3 text-left text-lg font-semibold"
@@ -266,13 +259,37 @@ export default function AllMatchesWrapper() {
                           className: "text-gray-800",
                         },
                         {
+                          value: match.referee1_score || "-",
+                          className: "text-gray-800",
+                        },
+                        {
+                          value: match.referee2_score || "-",
+                          className: "text-gray-800",
+                        },
+                        {
+                          value: match.referee3_score || "-",
+                          className: "text-gray-800",
+                        },
+                        {
+                          value: match.referee4_score || "-",
+                          className: "text-gray-800",
+                        },
+                        {
                           value: (
-                            <button
-                              onClick={() => downloadMatchCertificate(match)} // Corrected function name
-                              className="text-red-600 hover:text-red-900"
-                            >
-                              <AiOutlineFilePdf size={24} /> PDF
-                            </button>
+                            <>
+                              {match.status == "completed" ? (
+                                <button
+                                  onClick={() =>
+                                    downloadMatchCertificate(match)
+                                  } // Corrected function name
+                                  className="text-red-600 hover:text-red-900"
+                                >
+                                  <AiOutlineFilePdf size={24} /> PDF
+                                </button>
+                              ) : (
+                                "-"
+                              )}
+                            </>
                           ),
                           className: "text-center",
                         },

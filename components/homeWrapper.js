@@ -30,7 +30,6 @@ export default function HomeWrapper() {
     []
   );
   const router = useRouter();
-  console.log("pendingTraditionalMatches", pendingTraditionalMatches);
   const onClickSetup = () => setSetUpMatchModal(true);
   const onClickSetupTraditional = () => setSetUpTraditionalModal(true);
 
