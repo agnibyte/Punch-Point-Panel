@@ -512,10 +512,17 @@ export default function EnhancedScoreboard() {
         <>
           <div className=" mt-8 bg-gradient-to-t from-gray-500 to-gray-800 p-16 rounded-lg shadow-xl text-center flex flex-col justify-center items-center transform transition duration-300 ease-in-out hover:shadow-lg hover:from-gray-600 hover:to-gray-800">
             <h4 className="text-4xl md:text-3xl font-bold text-yellow-400">
-              पंच
+              पंच{" "}
+              {userId == "Referee1"
+                ? 1
+                : userId == "Referee2"
+                ? 2
+                : userId == "Referee3"
+                ? 3
+                : 4}
             </h4>
             <p className="mt-4 text-lg text-yellow-400">
-              Given Score: {refreeScore !== null ? refreeScore : "-"}
+              Given Score: {refreeScore || "-"}
             </p>
             <div className="mt-4 ">
               {/* Input Box for Score */}
@@ -533,12 +540,14 @@ export default function EnhancedScoreboard() {
                 placeholder="Enter score"
               />
             </div>
-           {refreeScoreErrorMsg == "" && <button
-              onClick={() => handleSubmitScore()}
-              className="mt-4 px-6 py-2 bg-yellow-400 text-gray-800 font-bold rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-            >
-              {refreeScoreLoading ? getConstant("LOADING_TEXT") : "Submit"}
-            </button>}
+            {refreeScoreErrorMsg == "" && (
+              <button
+                onClick={() => handleSubmitScore()}
+                className="mt-4 px-6 py-2 bg-yellow-400 text-gray-800 font-bold rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              >
+                {refreeScoreLoading ? getConstant("LOADING_TEXT") : "Submit"}
+              </button>
+            )}
           </div>
           {refreeScoreErrorMsg != "" && (
             <div className="text-red-500 text-xl mt-4 text-center w-full ">
