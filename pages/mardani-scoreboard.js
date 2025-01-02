@@ -16,9 +16,10 @@ import { postApiData } from "@/utils/services/apiService";
 
 export default function EnhancedScoreboard() {
   const router = useRouter();
-  const { participant } = router.query;
+  const { participant, state } = router.query;
   const participantName = convertFirstLetterCapital(participant);
-  const matchTimer = 5;
+  const participantState = convertFirstLetterCapital(state);
+  const matchTimer = 60;
 
   const [refereeScores, setRefereeScores] = useState([null, null, null, null]);
   const [timer, setTimer] = useState(matchTimer); // Set to 60 seconds for a 1-minute match
@@ -272,7 +273,7 @@ export default function EnhancedScoreboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white flex flex-col items-center">
       {/* Header */}
-      <header className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-black bg-opacity-90 py-4 px-6 flex items-center justify-between shadow-lg rounded-lg">
+      <header className="w-full bg-gradient-to-r from-gray-900 via-gray-800 to-black bg-opaState-90 py-4 px-6 flex items-center justify-between shadow-lg rounded-lg">
         {/* Left Section: Logo */}
         <div className="flex items-center gap-4">
           <Image
@@ -310,7 +311,7 @@ export default function EnhancedScoreboard() {
           <div className="flex flex-col items-center justify-center w-full h-full">
             <h2 className="text-3xl font-bold text-center text-gray-100 mt-4 uppercase">
               <span className="text-yellow-400">Participant:</span>{" "}
-              {participantName}
+              {participantName} {participantState && `(${participantState})`}
             </h2>
           </div>
 
