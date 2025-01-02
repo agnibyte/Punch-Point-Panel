@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService"; // API service for backend calls
-import { setCookie } from "@/utils/utils"; // Cookie handling utility
+import { getConstant, setCookie } from "@/utils/utils"; // Cookie handling utility
 import Image from "next/image";
 import Link from "next/link";
 
@@ -71,7 +71,7 @@ const Signup = () => {
               className="w-10 h-10 rounded-full border-2 border-white shadow-md"
             />
             <span className="text-xl font-bold text-white">
-              3rd National Mardani Sports Championship 2024
+              {getConstant("TOURNAMENT_TITLE")}
             </span>
           </div>
         </div>
@@ -93,7 +93,10 @@ const Signup = () => {
                 <div className="text-3xl font-bold text-center text-gray-800 mb-6">
                   Sign Up
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
                   {/* User ID */}
                   <div>
                     <label
@@ -191,7 +194,9 @@ const Signup = () => {
                       <option value="fight_admin">Main Admin</option>
                       <optgroup label="Mardani Referees">
                         <option value="red_referee">Red Mardani Referee</option>
-                        <option value="blue_referee">Blue Mardani Referee</option>
+                        <option value="blue_referee">
+                          Blue Mardani Referee
+                        </option>
                       </optgroup>
                       <optgroup label="Traditional Referees">
                         <option value="traditional_referee_1">

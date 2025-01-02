@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import ProfileButton from "./profileButton";
 import Image from "next/image";
+import { getConstant } from "@/utils/utils";
 
 export default function HomeHeader({ userId, onclickLogOut = () => {} }) {
   return (
@@ -18,10 +19,9 @@ export default function HomeHeader({ userId, onclickLogOut = () => {} }) {
               height={50}
             />
             <span className="text-2xl font-bold text-white">
-              3rd National Mardani Sports Championship 2024
+              {getConstant("TOURNAMENT_TITLE")}
             </span>
           </div>
-
 
           {/* Profile Button */}
           <ProfileButton

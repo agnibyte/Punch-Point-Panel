@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { postApiData } from "@/utils/services/apiService";
-import { setCookie } from "@/utils/utils";
+import { getConstant, setCookie } from "@/utils/utils";
 import Image from "next/image";
 import ReactPlayer from "react-player";
 
@@ -151,7 +151,7 @@ const Login = () => {
               className="w-10 h-10 rounded-full border-2 border-white shadow-md"
             />
             <span className="text-xl font-bold text-white">
-              3rd National Mardani Sports Championship 2024
+              {getConstant("TOURNAMENT_TITLE")}
             </span>
           </div>
         </div>
@@ -198,7 +198,10 @@ const Login = () => {
                 <h2 className="text-3xl font-bold text-center text-white mb-6">
                   Login
                 </h2>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
                   <div>
                     <label
                       htmlFor="user_id"
